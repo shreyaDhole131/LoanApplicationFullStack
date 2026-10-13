@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="LoanApp_API.Application/LoanApp_API.Application.csproj" />
+  <Project Path="LoanApp_API.Domain/LoanApp_API.Domain.csproj" />
+  <Project Path="LoanApp_API.Infrastructure/LoanApp_API.Infrastructure.csproj" />
+  <Project Path="LoanApp_API/LoanApp_API.csproj" />
+</Solution>

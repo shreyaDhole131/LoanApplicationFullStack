@@ -1,0 +1,38 @@
+# =========================
+# .NET / ASP.NET Core
+# =========================
+
+**/bin/
+**/obj/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+
+# EF Core Migrations
+**/Migrations/
+
+# =========================
+# Angular
+# =========================
+
+**/node_modules/
+**/dist/
+.angular/
+
+# Angular cache
+**/.angular/
+
+# =========================
+# Environment / secrets
+# =========================
+
+.env
+*.env
+
+# =========================
+# Logs
+# =========================
+
+*.log
