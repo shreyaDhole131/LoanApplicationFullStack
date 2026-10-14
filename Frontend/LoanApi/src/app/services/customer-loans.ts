@@ -1,35 +1,51 @@
 
 import { HttpClient } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
+import { Service, inject } from '@angular/core';
 
-@Injectable({
-  providedIn: 'root'
-})
-export class CustomerLoansService {
+@Service()
+export class customer_loans{
+  http=inject(HttpClient);
 
-  http = inject(HttpClient);
-
-  baseUrl = 'https://localhost:7277/api/customer/foreclosure';
-
-  // Get customer loan accounts
-  getCustomerLoans() {
-    return this.http.get<any[]>(`${this.baseUrl}/loans`);
+  // on Customer forclosure request page 
+  //for getting all the loan accounts of a respective customer
+  url="https://localhost:7277/api/customer/foreclosure/loans";
+  getLoanAccounts(){
+    return this.http.get<any>(this.url);
   }
 
-  // Get selected loan summary
-  getLoanSummary(loanAccountId: number) {
-    return this.http.get<any>(
-      `${this.baseUrl}/summary/${loanAccountId}`
+  url2="https://localhost:7277/api/customer/foreclosure/summary";
+  getCardsData(loanAccountId: number) {
+return this.http.get<any>(`${this.url2}/${loanAccountId}`);
+}
+
+url3="https://localhost:7277/api/customer/foreclosure";
+AddForeClosure(data:any){
+  return this.http.post<any>(this.url3,data);
+}
+
+
+url4="https://localhost:7277/api/customer/foreclosure/requests";
+getForeClosureRequests(){
+  return this.http.get<any>(this.url4);
+}
+
+url5="https://localhost:7277/api/customer/foreclosure/payment/create-order"
+createPaymentOrder(requestId:number){
+  return this.http.post<any>(`${this.url5}/${requestId}`,{});
+}
+
+
+url6="https://localhost:7277/api/customer/foreclosure/payment"
+verifyPayment(
+  data: {
+    requestId: number;
+    razorpayOrderId: string;
+    razorpayPaymentId: string;
+    razorpaySignature: string;
+  }) {
+    return this.http.post<any>(
+      `${this.url6}/verify`,
+      data
     );
-  }
-
-  // Submit foreclosure request
-  submitForeclosureRequest(data: any) {
-    return this.http.post<any>(this.baseUrl, data);
-  }
-
-  // Get customer's foreclosure requests
-  getMyRequests() {
-    return this.http.get<any[]>(`${this.baseUrl}/requests`);
   }
 }

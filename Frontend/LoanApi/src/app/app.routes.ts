@@ -1,8 +1,7 @@
 import { Routes } from '@angular/router';
-import { ForeclosureRequest } from './foreclosure-request/foreclosure-request';
-export const routes: Routes = [ {
-   
-  path: 'foreclosure-request',
-  component: ForeclosureRequest
+import { foreclosure_request } from './foreclosure-request/foreclosure-request';
+import { PaymentHistory } from './payment-history/payment-history';
 
-  }];
+export const routes: Routes = [
+  {path: 'payment-history',component: PaymentHistory}, 
+  { path: 'foreclosure-request',component: foreclosure_request}];

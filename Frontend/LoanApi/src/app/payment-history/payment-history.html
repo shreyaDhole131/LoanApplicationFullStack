@@ -1,0 +1,164 @@
+
+<div class="container py-4">
+
+  <h2 class="mb-4">Payment History</h2>
+
+  <!-- Filters -->
+  <div class="row g-3 mb-4">
+
+    <div class="col-md-6">
+      <label class="form-label">Select Loan</label>
+      <select
+        class="form-select"
+        [(ngModel)]="loanAccountId"
+        (ngModelChange)="onFilterChange()">
+
+        <option [ngValue]="null">Select Loan</option>
+
+        <option *ngFor="let loan of loans"
+                [ngValue]="loan.loanAccountId">
+          {{ loan.loanAccountNumber }}
+        </option>
+
+      </select>
+    </div>
+
+    <div class="col-md-6">
+      <label class="form-label">Period</label>
+      <select
+        class="form-select"
+        [(ngModel)]="period"
+        (ngModelChange)="onFilterChange()">
+
+        <option value="1M">Last 1 Month</option>
+        <option value="3M">Last 3 Months</option>
+        <option value="6M">Last 6 Months</option>
+        <option value="1Y">Last 1 Year</option>
+        <option value="ALL">All</option>
+
+      </select>
+    </div>
+
+  </div>
+
+  <!-- Table Toolbar -->
+  <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-3">
+
+    <div class="d-flex align-items-center gap-2">
+      <span>Show</span>
+
+      <select
+        class="form-select form-select-sm"
+        style="width: auto"
+        [(ngModel)]="pageSize"
+        (ngModelChange)="onPageSizeChange()">
+
+        <option [ngValue]="10">10</option>
+        <option [ngValue]="25">25</option>
+        <option [ngValue]="50">50</option>
+        <option [ngValue]="100">100</option>
+
+      </select>
+
+      <span>entries</span>
+    </div>
+
+    <div class="d-flex align-items-center gap-2">
+      <label for="paymentSearch">Search:</label>
+
+      <input
+        id="paymentSearch"
+        type="text"
+        class="form-control form-control-sm"
+        [(ngModel)]="searchText"
+        (ngModelChange)="onSearchChange()">
+    </div>
+
+  </div>
+
+  <!-- Payment Table -->
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover align-middle">
+
+      <thead class="table-dark">
+        <tr>
+          <th (click)="sortBy('paymentDate')" role="button">
+            Date {{ sortColumn === 'paymentDate' ? (sortDirection === 'asc' ? '▲' : '▼') : '↕' }}
+          </th>
+
+          <th (click)="sortBy('loanAccountNumber')" role="button">
+            Loan Account {{ sortColumn === 'loanAccountNumber' ? (sortDirection === 'asc' ? '▲' : '▼') : '↕' }}
+          </th>
+
+          <th (click)="sortBy('amount')" role="button">
+            Amount {{ sortColumn === 'amount' ? (sortDirection === 'asc' ? '▲' : '▼') : '↕' }}
+          </th>
+
+          <th (click)="sortBy('paymentMode')" role="button">
+            Payment Mode {{ sortColumn === 'paymentMode' ? (sortDirection === 'asc' ? '▲' : '▼') : '↕' }}
+          </th>
+
+          <th (click)="sortBy('referenceNumber')" role="button">
+            Reference {{ sortColumn === 'referenceNumber' ? (sortDirection === 'asc' ? '▲' : '▼') : '↕' }}
+          </th>
+
+          <th (click)="sortBy('status')" role="button">
+            Status {{ sortColumn === 'status' ? (sortDirection === 'asc' ? '▲' : '▼') : '↕' }}
+          </th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let payment of paginatedPayments">
+          <td>{{ payment.paymentDate | date:'dd-MM-yyyy' }}</td>
+          <td>{{ payment.loanAccountNumber }}</td>
+          <td>{{ payment.amount | currency:'INR':'symbol':'1.2-2' }}</td>
+          <td>{{ payment.paymentMode }}</td>
+          <td>{{ payment.referenceNumber }}</td>
+          <td>{{ payment.status }}</td>
+        </tr>
+
+        <tr *ngIf="paginatedPayments.length === 0">
+          <td colspan="6" class="text-center">
+            No data available in table
+          </td>
+        </tr>
+      </tbody>
+
+    </table>
+  </div>
+
+  <!-- Table Footer -->
+  <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+
+    <span>
+      Showing {{ startEntry }} to {{ endEntry }}
+      of {{ filteredPayments.length }} entries
+    </span>
+
+    <div class="btn-group">
+      <button
+        type="button"
+        class="btn btn-outline-secondary btn-sm"
+        [disabled]="currentPage === 1"
+        (click)="changePage(currentPage - 1)">
+        Previous
+      </button>
+
+      <button
+        type="button"
+        class="btn btn-outline-secondary btn-sm"
+        [disabled]="currentPage >= totalPages"
+        (click)="changePage(currentPage + 1)">
+        Next
+      </button>
+    </div>
+
+  </div>
+
+  <!-- Page Footer -->
+  <footer class="text-center mt-5">
+    © 2026 LoanApp | Smart Loan Management System
+  </footer>
+
+</div>
