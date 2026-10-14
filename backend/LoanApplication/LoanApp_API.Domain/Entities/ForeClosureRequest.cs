@@ -49,5 +49,9 @@ namespace LoanApp_API.Domain.Entities
         public int? ClosedBy { get; set; }
 
         public LoanAccount? LoanAccount { get; set; }
+        public string? RazorpayOrderId { get; set; }
+        public string? RazorpayPaymentId { get; set; }
+
+
     }
 }
