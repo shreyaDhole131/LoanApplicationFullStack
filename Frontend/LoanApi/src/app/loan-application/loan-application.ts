@@ -26,7 +26,8 @@ export class LoanApplication {
     }
     this.service.SaveLoan(payload).subscribe({
       next: res => {
-        alert(res.message)
+        alert(res.message);
+        this.loans.reset();
       },
       error: err => {
         console.log(err);

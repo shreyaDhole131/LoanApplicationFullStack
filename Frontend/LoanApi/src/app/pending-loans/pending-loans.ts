@@ -22,7 +22,7 @@ export class PendingLoans {
   maxAmount: any = '';
   dateFilter = '';
   fromDate: any = '';
-  toDate: any = ''
+  toDate: any = '';
   search: any = '';
 
   getAllPendingDeals() {
