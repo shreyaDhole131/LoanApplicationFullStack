@@ -1,5 +1,10 @@
 import { Routes } from '@angular/router';
-import { ForeclosureRequest } from './foreclosure-request/foreclosure-request';
+import { foreclosure_request } from './foreclosure-request/foreclosure-request';
+import { PaymentHistory } from './payment-history/payment-history';
+
+export const routes: Routes = [
+  {path: 'payment-history',component: PaymentHistory}, 
+  { path: 'foreclosure-request',component: foreclosure_request}];
 import { LoanApplication } from './loan-application/loan-application';
 import { PendingLoans } from './pending-loans/pending-loans';
 import { CustomerProfileDetails } from './customer-profile-details/customer-profile-details';

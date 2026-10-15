@@ -1,223 +1,91 @@
+<label for="LoanAccount">Select Loan Account</label>
 
-<div class="container py-4">
+<select id="LoanAccount" name="LoanAccount" class="form-select" [(ngModel)]="SelectedLoanAccount" (change)="getCardsData(+$any($event.target).value    )" (ngModelChange)="onLoanChange($event)">
 
-  <h2 class="mb-1">Foreclosure Request</h2>
-  <p class="text-secondary mb-4">
-    View your loan details and submit a foreclosure request.
-  </p>
+  <option value="">--- Select Loan Account ---</option>
 
-  <!-- Messages -->
-  <div class="alert alert-success" *ngIf="message">
-    {{ message }}
-  </div>
+  <option *ngFor="let loan of LoanAccounts" [value]="loan.LoanAccountId">
+    {{ loan.LoanAccountNo }}
+  </option>
+</select>
 
-  <div class="alert alert-danger" *ngIf="errorMessage">
-    {{ errorMessage }}
-  </div>
+<div>
+  <div>
+    <h1>Foreclosure Request</h1>
+    <div>
+      
+      <div *ngIf="info">
+          <p>Loan Account Number: {{ loanAccountNo }}</p>
 
-  <!-- Select Loan -->
-  <div class="mb-4">
-    <label for="loanAccount" class="form-label">
-      Select Loan Account
-    </label>
+  <p>Outstanding Principal: {{ outstandingPrincipal }}</p>
+  <p>Next EMI Date: {{ NextEmiDate }}</p><br><br>
 
-    <select
-      id="loanAccount"
-      name="loanAccountId"
-      class="form-select"
-      [(ngModel)]="loanAccountId"
-      (change)="onLoanChange()">
+  
+<label>Select Foreclosure Type</label>
 
-      <option [ngValue]="null">-- Select Loan Account --</option>
+<div>
+  <input type="radio" id="Partial" name="ForeClosureType" value="Partial" [(ngModel)]="ForeClosureType">
 
-      <option
-        *ngFor="let loan of loans"
-        [ngValue]="loan.loanAccountId">
-        {{ loan.loanAccountNo }}
-      </option>
-    </select>
-  </div>
+  <label for="Partial">Partial Foreclosure</label>
+</div>
 
-  <!-- Loan Summary Cards -->
-  <div class="row g-3 mb-4" *ngIf="summary">
+<div>
+  <input type="radio" id="Full" name="ForeClosureType" value="Full" [(ngModel)]="ForeClosureType">
 
-    <div class="col-md-4">
-      <div class="card h-100 shadow-sm">
-        <div class="card-body">
-          <h6 class="text-secondary">Loan Account Number</h6>
-          <h5 class="mb-0">{{ summary.loanAccountNo }}</h5>
-        </div>
-      </div>
-    </div>
+  <label for="Full">Full Foreclosure</label>
+</div>
 
-    <div class="col-md-4">
-      <div class="card h-100 shadow-sm">
-        <div class="card-body">
-          <h6 class="text-secondary">Outstanding Principal</h6>
-          <h5 class="mb-0">
-            {{ summary.outstandingPrincipal | currency:'INR':'symbol':'1.2-2' }}
-          </h5>
-        </div>
-      </div>
-    </div>
 
-    <div class="col-md-4">
-      <div class="card h-100 shadow-sm">
-        <div class="card-body">
-          <h6 class="text-secondary">Next EMI Date</h6>
-          <h5 class="mb-0">
-            {{ summary.nextEmiDate ? (summary.nextEmiDate | date:'dd MMM yyyy') : 'No Pending EMI' }}
-          </h5>
-        </div>
-      </div>
-    </div>
+ 
+  <div *ngIf="ForeClosureType == 'Partial'">
+    <label for="PartialAmount">Partial Amount </label>
+    <input type="number" id="PartialAmount"  name="PartialAmount" class="form-control" [(ngModel)]="PartialAmount"><br><br>
 
   </div>
 
-  <!-- Foreclosure Form -->
-  <div class="card shadow-sm mb-4">
-    <div class="card-header bg-white">
-      <h5 class="mb-0">Submit Foreclosure Request</h5>
-    </div>
+  <label for="ExpectedClosureDate">Expected Closure Date</label>
+  <input type="date" id="ExpectedClosureDate" name="ExpectedClosureDate" class="form-control" [(ngModel)]="ExpectedClosureDate"><br><br>
 
-    <div class="card-body">
-      <form (ngSubmit)="submitRequest()" #foreclosureForm="ngForm">
+  <label for="Reason">Reason</label>
+  <textarea id="Reason" name="Reason" class="form-control" [(ngModel)]="Reason"></textarea><br><br>
 
-        <!-- Foreclosure Type -->
-        <div class="mb-3">
-          <label class="form-label d-block">Foreclosure Type</label>
+  <button type="button" class="btn btn-primary" (click)="SaveForeClosure()"> Submit Request</button>
 
-          <div class="form-check form-check-inline">
-            <input
-              class="form-check-input"
-              type="radio"
-              id="full"
-              name="foreclosureType"
-              [(ngModel)]="foreclosureType"
-              value="Full">
-            <label class="form-check-label" for="full">
-              Full Foreclosure
-            </label>
-          </div>
+  
+</div>
 
-          <div class="form-check form-check-inline">
-            <input
-              class="form-check-input"
-              type="radio"
-              id="partial"
-              name="foreclosureType"
-              [(ngModel)]="foreclosureType"
-              value="Partial">
-            <label class="form-check-label" for="partial">
-              Partial Foreclosure
-            </label>
-          </div>
-        </div>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">LoanAccount</th>
+      <th scope="col">Amount</th>
+      <th scope="col">Type</th>
+      <th scope="col">Reason</th>
+      <th scope="col">Status</th>
+            <th scope="col">Action</th>
 
-        <!-- Partial Amount -->
-        <div class="mb-3" *ngIf="foreclosureType === 'Partial'">
-          <label for="partialAmount" class="form-label">
-            Partial Amount (₹)
-          </label>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let r of allrequests">
+      <th scope="row">{{r.loanAccountNo}}</th>
+      <td>{{r.amount}}</td>
+      <td>{{r.foreClosureType}}</td>
+      <td>{{r.reason}}</td>
+      <td>{{r.status}}</td>
+      <td>
+<button
+  type="button"
+  class="btn btn-sm"
+  [ngClass]="r.status === 'Approved' ? 'btn-primary' : 'btn-secondary'"
+  [disabled]="r.status !== 'Approved' || payingRequestId !== null"
+  (click)="payForeClosure(r)">
+  {{ payingRequestId === r.requestId ? 'Processing...' : 'Pay' }}
+</button>      </td>
+    </tr>
 
-          <input
-            type="number"
-            id="partialAmount"
-            name="partialAmount"
-            class="form-control"
-            [(ngModel)]="partialAmount"
-            min="1"
-            [max]="summary?.outstandingPrincipal"
-            placeholder="Enter partial amount"
-            required>
-        </div>
-
-        <!-- Expected Closure Date -->
-        <div class="mb-3">
-          <label for="closureDate" class="form-label">
-            Expected Closure Date
-          </label>
-
-          <input
-            type="date"
-            id="closureDate"
-            name="expectedClosureDate"
-            class="form-control"
-            [(ngModel)]="expectedClosureDate"
-            [min]="expectedClosureDate"
-            required>
-        </div>
-
-        <!-- Reason -->
-        <div class="mb-3">
-          <label for="reason" class="form-label">
-            Reason / Notes (Optional)
-          </label>
-
-          <textarea
-            id="reason"
-            name="reason"
-            class="form-control"
-            [(ngModel)]="reason"
-            rows="3"
-            placeholder="Enter foreclosure reason">
-          </textarea>
-        </div>
-
-        <button
-          type="submit"
-          class="btn btn-primary"
-          [disabled]="!loanAccountId">
-          Submit Request
-        </button>
-
-      </form>
+  </tbody>
+</table>
     </div>
   </div>
-
-  <!-- My Foreclosure Requests -->
-  <div class="card shadow-sm">
-    <div class="card-header bg-white">
-      <h5 class="mb-0">My Foreclosure Requests</h5>
-    </div>
-
-    <div class="card-body">
-      <div class="table-responsive">
-        <table class="table table-bordered table-hover align-middle mb-0">
-          <thead class="table-light">
-            <tr>
-              <th>Loan Account</th>
-              <th>Amount</th>
-              <th>Type</th>
-              <th>Reason</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            <tr *ngFor="let request of requests">
-              <td>{{ request.loanAccountNo }}</td>
-              <td>
-                {{ request.amount | currency:'INR':'symbol':'1.2-2' }}
-              </td>
-              <td>{{ request.foreClosureType }}</td>
-              <td>{{ request.reason || 'Nil' }}</td>
-              <td>
-                <span class="badge text-bg-secondary">
-                  {{ request.status }}
-                </span>
-              </td>
-            </tr>
-
-            <tr *ngIf="requests.length === 0">
-              <td colspan="5" class="text-center text-secondary py-3">
-                No foreclosure requests found.
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-
 </div>
