@@ -24,8 +24,8 @@ export class SanctionService {
   }
 
   sanctiongridurl = 'https://localhost:7277/api/SanctionLetter/grid'
-  GetSanctionGrid(filters: any) {
-    return this.http.get<any>(this.sanctiongridurl, { params: filters });
+  GetSanctionGrid(filters?: any) {
+    return this.http.get<any>(this.sanctiongridurl, { params: filters || {} });
   }
 
   prefildisburseurl = "https://localhost:7277/api/SanctionLetter/fetchDisburse"

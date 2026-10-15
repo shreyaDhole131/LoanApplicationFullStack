@@ -12,7 +12,7 @@ declare var $:any;
     standalone: true,
   imports: [CommonModule, ReactiveFormsModule, FormsModule],
   templateUrl: './foreclosure-request.html',
-  styleUrl: './foreclosure-request.css'
+  styleUrl: './foreclosure-request.scss'
 })
 export class foreclosure_request{
   constructor(private service:customer_loans, private cd:ChangeDetectorRef){
