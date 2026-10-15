@@ -1,0 +1,62 @@
+<p>customer-profile-details works!</p>
+
+<h3>Customer Profile</h3>
+
+@if (custprofile) {
+<table class="table">
+  <tbody>
+    <tr>
+      <th>Customer Name</th>
+      <td>{{ custprofile.customerName }}</td>
+    </tr>
+    <tr>
+      <th>Mobile No</th>
+      <td>{{ custprofile.mobileNo }}</td>
+    </tr>
+    <tr>
+      <th>PAN</th>
+      <td>{{ custprofile.pan }}</td>
+    </tr>
+    <tr>
+      <th>Aadhaar No</th>
+      <td>{{ custprofile.aadhaarNo }}</td>
+    </tr>
+    <tr>
+      <th>Monthly Income</th>
+      <td>{{ custprofile.monthlyIncome }}</td>
+    </tr>
+    <tr>
+      <th>CIBIL Score</th>
+      <td>{{ custprofile.cibilScore }}</td>
+    </tr>
+    <tr>
+      <th>Loan Type</th>
+      <td>{{ custprofile.loanType }}</td>
+    </tr>
+    <tr>
+      <th>Loan Amount</th>
+      <td>{{ custprofile.loanAmount }}</td>
+    </tr>
+    <tr>
+      <th>Interest Rate</th>
+      <td>{{ custprofile.interestRate }}%</td>
+    </tr>
+    <tr>
+      <th>Tenure</th>
+      <td>{{ custprofile.tenureMonths }} months</td>
+    </tr>
+    <tr>
+      <th>EMI Amount</th>
+      <td>{{ custprofile.emiAmount }}</td>
+    </tr>
+    <button class="btn btn-success me-2" (click)="reviewDeals(custprofile.dealId, 'Approved')">
+      Approve
+    </button>
+    <button class="btn btn-danger" (click)="reviewDeals(custprofile.dealId, 'Rejected')">
+      Reject
+    </button>
+  </tbody>
+</table>
+} @else {
+<p>Loading profile...</p>
+}

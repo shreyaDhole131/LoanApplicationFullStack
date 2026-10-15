@@ -1,0 +1,27 @@
+<p>pending-loans works!</p>
+<p>pending-loans works!</p>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Customer Name</th>
+      <th scope="col">Loan Type</th>
+      <th scope="col">Loan Amount</th>
+      <th scope="col">Status</th>
+      <th scope="col">Applied Date</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let e of pendingdeals">
+      <th scope="row">{{e.customerName}}</th>
+      <td>{{e.loanType}}</td>
+      <td>{{e.loanAmount}}</td>
+      <td>{{e.status}}</td>
+      <td>{{e.appliedDate}}</td>
+      <td><button type="button" class="btn btn-primary" [routerLink]="['/customer-profile',e.dealId]">View
+          Loans</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
