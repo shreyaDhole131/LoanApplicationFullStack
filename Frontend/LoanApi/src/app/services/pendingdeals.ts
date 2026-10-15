@@ -8,8 +8,8 @@ export class Pendingdeals {
   http = inject(HttpClient);
 
   url = "https://localhost:7277/api/PendingDeals/SortingPending"
-  fetchPendingDeals() {
-    return this.http.get<any>(this.url);
+  fetchPendingDeals(filters?: any) {
+    return this.http.get<any>(this.url, { params: filters || {} });
   }
 
   fetchCusturl = "https://localhost:7277/api/PendingDeals/FetchCustomerProfile"
