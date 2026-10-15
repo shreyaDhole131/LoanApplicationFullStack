@@ -7,7 +7,7 @@ import { CustomerLoansService } from '../services/customer-loans';
   selector: 'app-foreclosure-request',
   imports: [CommonModule, FormsModule],
   templateUrl: './foreclosure-request.html',
-  styleUrl: './foreclosure-request.css'
+  styleUrl: './foreclosure-request.scss'
 })
 export class ForeclosureRequest implements OnInit {
 

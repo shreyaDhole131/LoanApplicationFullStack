@@ -1,0 +1,70 @@
+.apply-loan-page {
+  background: #f4f6fb;
+  padding: 1.5rem 2rem;
+  min-height: 100vh;
+}
+
+.page-title {
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: #0b2545;
+  margin-bottom: 1.5rem;
+}
+
+form {
+  max-width: 640px;
+  /* ← ADD THIS */
+}
+
+.form-group {
+  margin-bottom: 1.25rem;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #334155;
+  margin-bottom: 0.4rem;
+}
+
+.form-control {
+  height: 44px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  padding: 0.5rem 0.85rem;
+  background-color: #ffffff;
+  color: #1e293b;
+  box-shadow: none;
+}
+
+.form-control:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 0.15rem rgba(37, 99, 235, 0.15);
+  outline: none;
+}
+
+.form-control[readonly] {
+  background-color: #f8fafc;
+  color: #64748b;
+}
+
+.btn-apply {
+  margin-top: 0.5rem;
+  padding: 0.55rem 1.75rem;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.btn-primary {
+  background-color: #2563eb;
+  border-color: #2563eb;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+  background-color: #1d4ed8;
+  border-color: #1d4ed8;
+}
