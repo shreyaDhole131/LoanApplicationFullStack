@@ -29,13 +29,13 @@ getForeClosureRequests(){
   return this.http.get<any>(this.url4);
 }
 
-url5="https://localhost:7277/api/customer/foreclosure/payment/create-order"
+url5="https://localhost:7277/api/customer/foreclosure/payment/create-order";
 createPaymentOrder(requestId:number){
   return this.http.post<any>(`${this.url5}/${requestId}`,{});
 }
 
 
-url6="https://localhost:7277/api/customer/foreclosure/payment"
+url6="https://localhost:7277/api/customer/foreclosure/payment";
 verifyPayment(
   data: {
     requestId: number;
@@ -48,4 +48,17 @@ verifyPayment(
       data
     );
   }
+
+  // for payment history page
+url7 = "https://localhost:7277/api/customer/payment-history";
+
+getPaymentHistory(loanAccountId: number | null, months: number) {
+  let url8 = `${this.url7}?months=${months}`;
+
+  if (loanAccountId !== null) {
+    url8 += `&loanAccountId=${loanAccountId}`;
+  }
+
+  return this.http.get<any>(url8);
+}
 }

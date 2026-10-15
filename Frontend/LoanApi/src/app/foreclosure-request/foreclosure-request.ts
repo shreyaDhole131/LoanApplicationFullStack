@@ -3,6 +3,7 @@ import { ChangeDetectorRef, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { customer_loans } from '../services/customer-loans';
+import { nextTick } from 'process';
 
 declare const Razorpay: any;
 declare var $:any;
@@ -17,6 +18,8 @@ export class foreclosure_request{
   constructor(private service:customer_loans, private cd:ChangeDetectorRef){
     this.getLoanAccounts();
     this.getForeClosureRequests();
+
+    //this.getPaymentHistory()
   }
 
   allrequests:any;
@@ -209,5 +212,9 @@ if (!this.ExpectedClosureDate) {
       alert(err.error?.message || 'Unable to create payment order.');
     }
   });
+  
 }
+
+
+
 }
