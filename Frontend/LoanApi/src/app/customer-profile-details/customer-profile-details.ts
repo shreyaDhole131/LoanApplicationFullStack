@@ -8,7 +8,7 @@ import { CommonModule } from '@angular/common';
   selector: 'app-customer-profile-details',
   imports: [CommonModule],
   templateUrl: './customer-profile-details.html',
-  styleUrl: './customer-profile-details.scss',
+  styleUrl: './customer-profile-details.css',
 })
 export class CustomerProfileDetails {
 

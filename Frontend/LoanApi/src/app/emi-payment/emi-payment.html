@@ -1,0 +1,53 @@
+
+<div class="container mt-4">
+
+  <h3>EMI Payment</h3>
+
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    {{ errorMessage }}
+  </div>
+
+  <div *ngIf="info" class="card mt-3">
+    <div class="card-body">
+
+      <p>
+        <strong>Installment ID:</strong>
+        {{ info.installmentNo }}
+      </p>
+
+      <p>
+        <strong>Due Date:</strong>
+        {{ info.dueDate | date:'dd-MM-yyyy' }}
+      </p>
+
+      <p>
+        <strong>EMI Pay:</strong>
+        ₹{{ info.emi }}
+      </p>
+
+      <p>
+        <strong>Penalty:</strong>
+        ₹{{ info.penalty }}
+      </p>
+
+      <p>
+        <strong>Total Amount:</strong>
+        ₹{{ info.totalAmount }}
+      </p>
+
+      <button class="btn btn-secondary me-2" (click)="viewBreakup()">
+        View Breakup
+      </button>
+
+      <button class="btn btn-success" (click)="payNow()">
+        Pay Now
+      </button>
+
+      <button class="btn btn-outline-secondary ms-2" (click)="goBack()">
+        Back
+      </button>
+
+    </div>
+  </div>
+
+</div>

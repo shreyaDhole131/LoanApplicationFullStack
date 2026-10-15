@@ -9,7 +9,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
   selector: 'app-pending-loans',
   imports: [CommonModule, RouterLink, FormsModule],
   templateUrl: './pending-loans.html',
-  styleUrl: './pending-loans.scss',
+  styleUrl: './pending-loans.css',
 })
 export class PendingLoans {
   constructor(private service: Pendingdeals, private cdr: ChangeDetectorRef) {
