@@ -1,8 +1,11 @@
 
 import { HttpClient } from '@angular/common/http';
-import { Service, inject } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
-@Service()
+@Injectable({
+  providedIn: 'root'
+})
+
 export class customer_loans{
   http=inject(HttpClient);
 
@@ -60,5 +63,23 @@ getPaymentHistory(loanAccountId: number | null, months: number) {
   }
 
   return this.http.get<any>(url8);
+}
+
+
+//for officer page 
+  url8 = "https://localhost:7277/api/officer/foreclosure";
+getAllForeClosureRequests(){
+  return this.http.get<any>(this.url8);
+}
+
+getForeClosureRequestById(requestId:number){
+  return this.http.get<any>(`${this.url8}/${requestId}`);
+}
+
+changeForeClosureStatus(requestId: number, status: string) {
+  return this.http.put<any>(
+    `${this.url8}/${requestId}`,
+    { status: status }
+  );
 }
 }
