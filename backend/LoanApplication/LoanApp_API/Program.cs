@@ -5,6 +5,7 @@ using LoanApp_API.Application.Mapper;
 using LoanApp_API.Infrastructure.Data;
 using LoanApp_API.Infrastructure.Email;
 using LoanApp_API.Infrastructure.Repositories;
+using LoanApp_API.Infrastructure.Services;
 using LoanApp_API.Middleware;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.RateLimiting;
@@ -42,7 +43,7 @@ builder.Services.AddScoped<IPendingDeals, PendingDealsService>();
 builder.Services.AddScoped<ICibilService, CibilService>();
 builder.Services.AddScoped<IScoreCardService, ScoreCardService>();
 builder.Services.AddScoped<IEligibilityService, EligibilityService>();
-
+builder.Services.AddScoped<ITotpService, TotpService>();
 // Controllers and memory cache
 builder.Services.AddControllers();
 builder.Services.AddMemoryCache();
@@ -149,16 +150,20 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
 
 // Uncomment if you want to enable the exception middleware
 // app.UseMiddleware<ExceptionMiddleware>();
 app.UseCors("MyApp");
 
 app.UseRateLimiter();
+app.UseStaticFiles();
+
+app.UseHttpsRedirection();
 
 app.UseAuthentication();
+
 app.UseAuthorization();
+
 app.MapControllers();
 
 // Hangfire dashboard

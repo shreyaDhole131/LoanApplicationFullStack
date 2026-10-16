@@ -1,0 +1,37 @@
+
+<div class="otp-page">
+  <div class="otp-card">
+
+    <h2>Email OTP Verification</h2>
+
+    <form (ngSubmit)="verifyOtp()">
+
+      <label>Email</label>
+      <input
+        type="email"
+        [(ngModel)]="model.email"
+        name="email"
+        readonly
+        required
+      >
+
+      <br><br>
+
+      <label>Enter OTP</label>
+      <input
+        type="text"
+        [(ngModel)]="model.otp"
+        name="otp"
+        placeholder="Enter OTP"
+        maxlength="6"
+        required
+      >
+
+      <button type="submit" class="otp-btn">
+        Verify OTP
+      </button>
+
+    </form>
+
+  </div>
+</div>

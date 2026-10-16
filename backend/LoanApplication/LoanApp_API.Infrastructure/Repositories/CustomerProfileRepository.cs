@@ -1,4 +1,6 @@
-﻿using LoanApp_API.Application.DTO;
+﻿using AutoMapper;
+using LoanApp_API.Application.DTO;
+using LoanApp_API.Application.DTO.ScoreCard;
 using LoanApp_API.Application.Interfaces;
 using LoanApp_API.Infrastructure.Data;
 
@@ -7,11 +9,14 @@ namespace LoanApp_API.Infrastructure.Repositories
     public class CustomerProfileRepository : ICustomerProfileRepository
     {
         private readonly AppDbContext _db;
+        private readonly IMapper _mapper;
 
-        public CustomerProfileRepository(AppDbContext db)
+        public CustomerProfileRepository(AppDbContext db, IMapper mapper)
         {
             _db = db;
+            _mapper = mapper;
         }
+
         public CustomerProfileDTO? GetCustomerProfile(int userId)
         {
             var user = _db.Users
@@ -26,6 +31,18 @@ namespace LoanApp_API.Infrastructure.Repositories
             if (customer == null)
                 return null;
 
+            var loanAccounts = _db.LoanAccounts
+                .Where(x => x.CustomerId == customer.CustomerId)
+                .ToList();
+
+            var kycDocuments = _db.KycDocuments
+                .Where(x => x.CustomerId == customer.CustomerId)
+                .ToList();
+
+            var scoreCards = _db.ScoreCards
+                .Where(x => x.CustomerId == customer.CustomerId)
+                .ToList();
+
             return new CustomerProfileDTO
             {
                 CustomerId = customer.CustomerId,
@@ -37,14 +54,19 @@ namespace LoanApp_API.Infrastructure.Repositories
                 Pan = customer.Pan,
                 AadhaarNo = customer.AadhaarNo,
                 EmploymentType = customer.EmploymentType,
-                MonthlyIncome = customer.MonthlyIncome
+                MonthlyIncome = customer.MonthlyIncome,
+
+                LoanAccounts = _mapper.Map<List<LoanAccountDto>>(loanAccounts),
+
+                KycDocuments = _mapper.Map<List<KycDocumentDTO>>(kycDocuments),
+
+                ScoreCards = _mapper.Map<List<ScoreCardProfileDto>>(scoreCards)
             };
-        
-    }
+        }
 
         public CustomerProfileDTO? UpdateCustomerProfile(
-      int userId,
-      UpdateCustomerProfileDTO model)
+            int userId,
+            UpdateCustomerProfileDTO model)
         {
             var user = _db.Users
                 .FirstOrDefault(x => x.UserId == userId);
@@ -71,6 +93,18 @@ namespace LoanApp_API.Infrastructure.Repositories
 
             _db.SaveChanges();
 
+            var loanAccounts = _db.LoanAccounts
+                .Where(x => x.CustomerId == customer.CustomerId)
+                .ToList();
+
+            var kycDocuments = _db.KycDocuments
+                .Where(x => x.CustomerId == customer.CustomerId)
+                .ToList();
+
+            var scoreCards = _db.ScoreCards
+                .Where(x => x.CustomerId == customer.CustomerId)
+                .ToList();
+
             return new CustomerProfileDTO
             {
                 CustomerId = customer.CustomerId,
@@ -82,7 +116,13 @@ namespace LoanApp_API.Infrastructure.Repositories
                 Pan = customer.Pan,
                 AadhaarNo = customer.AadhaarNo,
                 EmploymentType = customer.EmploymentType,
-                MonthlyIncome = customer.MonthlyIncome
+                MonthlyIncome = customer.MonthlyIncome,
+
+                LoanAccounts = _mapper.Map<List<LoanAccountDto>>(loanAccounts),
+
+                KycDocuments = _mapper.Map<List<KycDocumentDTO>>(kycDocuments),
+
+                ScoreCards = _mapper.Map<List<ScoreCardProfileDto>>(scoreCards)
             };
         }
     }
