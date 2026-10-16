@@ -1,0 +1,93 @@
+
+/* OTP Page */
+.otp-page {
+  min-height: 100vh;
+  background: linear-gradient(115deg, #1268f5, #062653);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+/* OTP Card */
+.otp-card {
+  width: 420px;
+  max-width: 100%;
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 30px;
+  box-sizing: border-box;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.18);
+}
+
+/* Heading */
+.otp-card h2 {
+  text-align: center;
+  color: #1268f5;
+  font-size: 25px;
+  margin: 0 0 25px;
+}
+
+/* Labels */
+.otp-card label {
+  display: block;
+  font-size: 14px;
+  font-weight: bold;
+  color: #222;
+  margin-bottom: 8px;
+}
+
+/* Inputs */
+.otp-card input {
+  width: 100%;
+  height: 42px;
+  padding: 10px;
+  box-sizing: border-box;
+  border: 1px solid #d5dbe3;
+  border-radius: 5px;
+  font-size: 14px;
+  background-color: #fff;
+  color: #222;
+}
+
+.otp-card input:focus {
+  outline: none;
+  border-color: #1268f5;
+  box-shadow: 0 0 4px rgba(18, 104, 245, 0.3);
+}
+
+.otp-card input[readonly] {
+  background-color: #f1f4f8;
+  cursor: not-allowed;
+}
+
+/* Verify Button */
+.otp-btn {
+  width: 100%;
+  padding: 12px;
+  margin-top: 22px;
+  border: none;
+  border-radius: 5px;
+  background-color: #1268f5;
+  color: white;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.otp-btn:hover {
+  background-color: #0755d4;
+}
+
+/* Mobile Responsive */
+@media (max-width: 480px) {
+  .otp-card {
+    padding: 22px;
+  }
+
+  .otp-card h2 {
+    font-size: 22px;
+  }
+}

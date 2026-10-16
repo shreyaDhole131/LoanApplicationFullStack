@@ -1,0 +1,117 @@
+<div class="sidebar">
+
+  <div class="sidebar-header">
+    <div class="logo-icon">🏦</div>
+    <h2>Loan Officer</h2>
+  </div>
+
+  <a routerLink="/officer-dashboard" class="menu-item">
+    <span>📊</span>
+    <span>Dashboard</span>
+  </a>
+
+
+  <!-- CUSTOMER MANAGEMENT -->
+
+  <div class="menu-title" (click)="toggleCustomer()">
+    <span>👥 Customer Management</span>
+    <span>{{ customerOpen ? '⌃' : '⌄' }}</span>
+  </div>
+
+  @if (customerOpen) {
+
+    <div class="submenu">
+
+      <a routerLink="/officer/customers">
+        👤 <span>Customers</span>
+      </a>
+
+      <a routerLink="/officer/kyc-verification">
+        🪪 <span>KYC Verification</span>
+      </a>
+
+      <a routerLink="/officer/eligibility">
+        ✅ <span>Eligibility Check</span>
+      </a>
+
+      <a routerLink="/officer/score-cards">
+        📈 <span>Score Cards</span>
+      </a>
+
+    </div>
+
+  }
+
+
+  <!-- LOAN PROCESSING -->
+
+  <div class="menu-title" (click)="toggleLoan()">
+    <span>🏦 Loan Processing</span>
+    <span>{{ loanOpen ? '⌃' : '⌄' }}</span>
+  </div>
+
+  @if (loanOpen) {
+
+    <div class="submenu">
+
+      <a routerLink="/officer/loan-applications">
+        📝 <span>Loan Applications</span>
+      </a>
+
+      <a routerLink="/officer/sanction-letters">
+        📄 <span>Sanction Letters</span>
+      </a>
+
+      <a routerLink="/officer/loan-accounts">
+        🏦 <span>Loan Accounts</span>
+      </a>
+
+    </div>
+
+  }
+
+
+  <!-- REQUESTS & COLLECTIONS -->
+
+  <div class="menu-title" (click)="toggleRequest()">
+    <span>📄 Requests & Collections</span>
+    <span>{{ requestOpen ? '⌃' : '⌄' }}</span>
+  </div>
+
+  @if (requestOpen) {
+
+    <div class="submenu">
+
+      <a routerLink="/officer/closure-requests">
+        📑 <span>Closure Requests</span>
+      </a>
+
+      <a routerLink="/officer/penalty-charges">
+        ⚠️ <span>Penalty Charges</span>
+      </a>
+
+    </div>
+
+  }
+
+
+  <!-- SUPPORT -->
+
+  <a routerLink="/officer/support-tickets" class="menu-item">
+    <span>🎫</span>
+    <span>Support Tickets</span>
+  </a>
+
+
+  <!-- LOGOUT -->
+
+  <div class="bottom-menu">
+
+    <a routerLink="/login" class="menu-item">
+      <span>🚪</span>
+      <span>Logout</span>
+    </a>
+
+  </div>
+
+</div>

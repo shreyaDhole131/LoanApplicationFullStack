@@ -1,0 +1,398 @@
+<div class="kyc-layout">
+
+  <!-- SIDEBAR -->
+
+  <app-officer-sidebar></app-officer-sidebar>
+
+
+  <!-- MAIN CONTENT -->
+
+  <div class="kyc-main">
+
+
+    <!-- ================================================= -->
+    <!-- CUSTOMER LIST -->
+    <!-- ================================================= -->
+
+    @if (!selectedCustomer) {
+
+      <h2>KYC Verification</h2>
+
+      <p class="subtitle">
+        View and verify customer KYC documents
+      </p>
+
+
+      @if (customers.length === 0) {
+
+        <div class="no-data">
+
+          <p>
+            No customers have uploaded KYC documents.
+          </p>
+
+        </div>
+
+      }
+      @else {
+
+        <div class="table-container">
+
+          <table class="table table-bordered">
+
+            <thead>
+
+              <tr>
+
+                <th>Customer ID</th>
+
+                <th>Customer Name</th>
+
+                <th>Email</th>
+
+                <th>Mobile</th>
+
+                <th>Action</th>
+
+              </tr>
+
+            </thead>
+
+
+            <tbody>
+
+              @for (
+                customer of customers;
+                track customer.customerId
+              ) {
+
+                <tr>
+
+                  <td>
+                    {{ customer.customerId }}
+                  </td>
+
+
+                  <td>
+                    {{ customer.customerName }}
+                  </td>
+
+
+                  <td>
+                    {{ customer.email }}
+                  </td>
+
+
+                  <td>
+                    {{ customer.mobile }}
+                  </td>
+
+
+                  <td>
+
+                    <button
+                      type="button"
+                      class="btn btn-primary btn-sm"
+                      (click)="viewKyc(customer.customerId)">
+
+                      View KYC
+
+                    </button>
+
+                  </td>
+
+                </tr>
+
+              }
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      }
+
+    }
+
+
+    <!-- ================================================= -->
+    <!-- CUSTOMER KYC DETAILS -->
+    <!-- ================================================= -->
+
+    @else {
+
+
+      <!-- BACK BUTTON -->
+
+      <button
+        type="button"
+        class="btn btn-secondary mb-3"
+        (click)="backToCustomers()">
+
+        ← Back to Customers
+
+      </button>
+
+
+      <h2>KYC Details</h2>
+
+
+      <!-- CUSTOMER INFORMATION -->
+
+      <div class="customer-info">
+
+        <h4>Customer Details</h4>
+
+
+        <div class="info-row">
+
+          <div>
+
+            <strong>Customer ID</strong>
+
+            <span>
+              {{ selectedCustomer.customerId }}
+            </span>
+
+          </div>
+
+
+          <div>
+
+            <strong>Name</strong>
+
+            <span>
+              {{ selectedCustomer.customerName }}
+            </span>
+
+          </div>
+
+
+          <div>
+
+            <strong>Email</strong>
+
+            <span>
+              {{ selectedCustomer.email }}
+            </span>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- KYC DOCUMENTS -->
+
+      <div class="documents-section">
+
+        <div class="documents-header">
+
+          <h4>KYC Documents</h4>
+
+          <span class="selected-count">
+
+            Selected:
+            {{ selectedDocuments.length }}
+
+          </span>
+
+        </div>
+
+
+        @if (selectedCustomer.documents.length === 0) {
+
+          <div class="no-data">
+
+            <p>
+              No KYC documents found.
+            </p>
+
+          </div>
+
+        }
+        @else {
+
+          <div class="table-container">
+
+            <table class="table table-bordered">
+
+              <thead>
+
+                <tr>
+
+                  <th>Select</th>
+
+                  <th>Document ID</th>
+
+                  <th>Document Type</th>
+
+                  <th>Document</th>
+
+                  <th>Status</th>
+
+                </tr>
+
+              </thead>
+
+
+              <tbody>
+
+                @for (
+                  document of selectedCustomer.documents;
+                  track document.documentId
+                ) {
+
+                  <tr>
+
+
+                    <!-- SELECT -->
+
+                    <td>
+
+                      <input
+                        type="checkbox"
+                        class="document-checkbox"
+                        [checked]="
+                          selectedDocuments.includes(
+                            document.documentId
+                          )
+                        "
+                        (change)="
+                          selectDocument(
+                            document.documentId,
+                            $event
+                          )
+                        "
+                      >
+
+                    </td>
+
+
+                    <!-- DOCUMENT ID -->
+
+                    <td>
+
+                      {{ document.documentId }}
+
+                    </td>
+
+
+                    <!-- DOCUMENT TYPE -->
+
+                    <td>
+
+                      {{ document.documentType }}
+
+                    </td>
+
+
+                    <!-- VIEW DOCUMENT -->
+
+                    <td>
+
+                      <button
+                        type="button"
+                        class="btn btn-info btn-sm"
+                        (click)="
+                          viewDocument(
+                            document.documentId
+                          )
+                        ">
+
+                        View Document
+
+                      </button>
+
+                    </td>
+
+
+                    <!-- STATUS -->
+
+                    <td>
+
+                      @if (
+                        document.verificationStatus === 'Approved'
+                      ) {
+
+                        <span class="status approved">
+
+                          Approved
+
+                        </span>
+
+                      }
+                      @else if (
+                        document.verificationStatus === 'Rejected'
+                      ) {
+
+                        <span class="status rejected">
+
+                          Rejected
+
+                        </span>
+
+                      }
+                      @else {
+
+                        <span class="status pending">
+
+                          Pending
+
+                        </span>
+
+                      }
+
+                    </td>
+
+                  </tr>
+
+                }
+
+              </tbody>
+
+            </table>
+
+          </div>
+
+
+          <!-- APPROVE / REJECT BUTTONS -->
+
+          <div class="kyc-buttons">
+
+
+            <button
+              type="button"
+              class="btn btn-success mr-2"
+              [disabled]="selectedDocuments.length === 0"
+              (click)="approve()">
+
+              Approve Selected
+
+            </button>
+
+
+            <button
+              type="button"
+              class="btn btn-danger"
+              [disabled]="selectedDocuments.length === 0"
+              (click)="reject()">
+
+              Reject Selected
+
+            </button>
+
+
+          </div>
+
+        }
+
+      </div>
+
+    }
+
+  </div>
+
+</div>

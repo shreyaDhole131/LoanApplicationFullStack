@@ -1,0 +1,226 @@
+<div class="dashboard-layout">
+
+  <!-- Sidebar -->
+  <app-officer-sidebar></app-officer-sidebar>
+
+  <!-- Main Dashboard -->
+  <main class="dashboard-main">
+
+    <!-- Header: No Refresh Button -->
+    <header class="dashboard-header">
+      <div>
+        <h1>Officer Dashboard</h1>
+        <p>Overview of loan applications and collections</p>
+      </div>
+    </header>
+
+    <!-- Dashboard Content -->
+    <section class="dashboard-content">
+
+      <!-- Loading -->
+      <div
+        class="status-message"
+        *ngIf="loading && !dashboardData">
+        Loading dashboard data...
+      </div>
+
+      <!-- Error -->
+      <div
+        class="error-message"
+        *ngIf="errorMessage">
+        {{ errorMessage }}
+      </div>
+
+      <!-- Dashboard Data -->
+      <ng-container *ngIf="dashboardData as data">
+
+        <!-- Application Summary -->
+        <section class="dashboard-section">
+          <h2 class="section-title">Application Summary</h2>
+
+          <div class="summary-grid">
+
+            <div class="summary-card blue">
+              <div class="card-icon">▤</div>
+              <p>Total Applications</p>
+              <h2>
+                {{ data.applicationSummary?.totalApplications ?? 0 | number }}
+              </h2>
+            </div>
+
+            <div class="summary-card green">
+              <div class="card-icon">✓</div>
+              <p>Approved Applications</p>
+              <h2>
+                {{ data.applicationSummary?.approvedApplications ?? 0 | number }}
+              </h2>
+            </div>
+
+            <div class="summary-card red">
+              <div class="card-icon">✕</div>
+              <p>Rejected Applications</p>
+              <h2>
+                {{ data.applicationSummary?.rejectedApplications ?? 0 | number }}
+              </h2>
+            </div>
+
+            <div class="summary-card orange">
+              <div class="card-icon">◷</div>
+              <p>Pending Applications</p>
+              <h2>
+                {{ data.applicationSummary?.pendingApplications ?? 0 | number }}
+              </h2>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- Loan Summary -->
+        <section class="dashboard-section">
+          <h2 class="section-title">Loan Summary</h2>
+
+          <div class="summary-grid loan-grid">
+
+            <div class="summary-card purple">
+              <div class="card-icon">₹</div>
+              <p>Total Loans</p>
+              <h2>
+                {{ data.loanSummary?.totalLoans ?? 0 | number }}
+              </h2>
+            </div>
+
+            <div class="summary-card teal">
+              <div class="card-icon">↗</div>
+              <p>Active Loans</p>
+              <h2>
+                {{ data.loanSummary?.activeLoans ?? 0 | number }}
+              </h2>
+            </div>
+
+            <div class="summary-card gray">
+              <div class="card-icon">✓</div>
+              <p>Closed Loans</p>
+              <h2>
+                {{ data.loanSummary?.closedLoans ?? 0 | number }}
+              </h2>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- Charts -->
+        <div class="charts-grid">
+
+          <!-- Application Funnel -->
+          <section class="panel">
+            <div class="panel-heading">
+              <div>
+                <h2>Application Funnel</h2>
+                <p>Applications by stage</p>
+              </div>
+            </div>
+
+            <div
+              class="funnel-chart"
+              *ngIf="funnelItems.length > 0; else noFunnelData">
+
+              <div
+                class="funnel-stage"
+                *ngFor="let item of funnelItems; let i = index"
+                [style.width.%]="getFunnelWidth(i)"
+                [style.background]="[
+                  '#4B9DE8',
+                  '#397FD0',
+                  '#36A6A0',
+                  '#20A779',
+                  '#168B68'
+                ][i % 5]">
+
+                <div class="funnel-stage-content">
+                  <span>{{ item.stage }}</span>
+                  <strong>{{ item.count | number }}</strong>
+                </div>
+
+              </div>
+            </div>
+
+            <ng-template #noFunnelData>
+              <div class="empty-state">
+                No application funnel data available.
+              </div>
+            </ng-template>
+          </section>
+
+          <!-- Loan Portfolio -->
+          <section class="panel">
+            <div class="panel-heading">
+              <div>
+                <h2>Loan Portfolio</h2>
+                <p>Total loan amount by loan type</p>
+              </div>
+            </div>
+
+            <div
+              class="chart-container"
+              *ngIf="data.loanPortfolio?.length > 0; else noPortfolioData">
+
+              <canvas #portfolioChart></canvas>
+            </div>
+
+            <ng-template #noPortfolioData>
+              <div class="empty-state">
+                No loan portfolio data available.
+              </div>
+            </ng-template>
+          </section>
+
+          <!-- Collection Efficiency -->
+          <section class="panel collection-panel">
+            <div class="panel-heading">
+              <div>
+                <h2>Collection Efficiency</h2>
+                <p>Expected amount compared with collected amount</p>
+              </div>
+            </div>
+
+            <div class="collection-stat">
+              <span>Collection Efficiency</span>
+              <strong>
+                {{ data.collectionEfficiency?.collectionEfficiencyPercentage ?? 0 }}%
+              </strong>
+            </div>
+
+            <div class="chart-container collection-chart">
+              <canvas #collectionChart></canvas>
+            </div>
+
+            <div class="collection-details">
+
+              <div>
+                <span class="detail-dot expected-dot"></span>
+                <span>Expected Amount</span>
+                <strong>
+                  {{ data.collectionEfficiency?.expectedAmount ?? 0 | currency:'INR':'symbol':'1.0-0' }}
+                </strong>
+              </div>
+
+              <div>
+                <span class="detail-dot collected-dot"></span>
+                <span>Collected Amount</span>
+                <strong>
+                  {{ data.collectionEfficiency?.collectedAmount ?? 0 | currency:'INR':'symbol':'1.0-0' }}
+                </strong>
+              </div>
+
+            </div>
+          </section>
+
+        </div>
+
+      </ng-container>
+
+    </section>
+
+  </main>
+
+</div>

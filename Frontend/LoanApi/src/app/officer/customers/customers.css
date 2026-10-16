@@ -1,0 +1,14 @@
+.customers-layout {
+  display: flex;
+  min-height: 100vh;
+  background: #f4f6fb;
+}
+
+.customers-main {
+  flex: 1;
+  padding: 30px;
+}
+
+.customers-main h2 {
+  margin-bottom: 20px;
+}
