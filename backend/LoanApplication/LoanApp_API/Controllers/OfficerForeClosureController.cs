@@ -1,45 +1,60 @@
-﻿using LoanApp_API.Application.Interfaces;
+﻿
+using LoanApp_API.Application.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LoanApp_API.Controllers
 {
-
     [ApiController]
     [Route("api/officer/foreclosure")]
+    [Authorize]
     public class OfficerForeClosureController : ControllerBase
     {
-        private readonly IForeClosureRepository _repo;
+        private readonly IForeClosureRepository _foreClosureRepository;
 
-        public OfficerForeClosureController(IForeClosureRepository repo)
+        public OfficerForeClosureController(
+            IForeClosureRepository foreClosureRepository)
         {
-            _repo = repo;
+            _foreClosureRepository = foreClosureRepository;
         }
 
-        // Dashboard table
+        // GET: api/officer/foreclosure
         [HttpGet]
-        public async Task<IActionResult> GetAll()
-            => Ok(await _repo.GetAllRequests());
-
-        // View page
-        [HttpGet("{id:int}")]
-        public async Task<IActionResult> GetDetails(int id)
+        public async Task<IActionResult> GetAllRequests()
         {
-            var data = await _repo.GetRequestById(id);
-            return data == null ? NotFound(new { message = "Request not found" }) : Ok(data);
+            var requests =
+                await _foreClosureRepository.GetAllRequests();
+
+            return Ok(requests);
         }
 
-        [HttpPut("{id:int}/approve")]
-        public async Task<IActionResult> Approve(int id)
+        // GET: api/officer/foreclosure/5
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetRequestById(int id)
         {
-            var (success, message) = await _repo.Approve(id);
-            return success ? Ok(new { message }) : BadRequest(new { message });
+            var request =
+                await _foreClosureRepository.GetRequestById(id);
+
+            if (request == null)
+                return NotFound(new { message = "Foreclosure request not found." });
+
+            return Ok(request);
         }
 
-        [HttpPut("{id:int}/reject")]
-        public async Task<IActionResult> Reject(int id)
+        // PUT: api/officer/foreclosure/5
+        // Request body: "Approved" or "Rejected"
+        [HttpPut("{id}")]
+        public async Task<IActionResult> ChangeStatus(
+            int id,
+            [FromBody] string status)
         {
-            var (success, message) = await _repo.Reject(id);
-            return success ? Ok(new { message }) : BadRequest(new { message });
+            var (success, message) =
+                await _foreClosureRepository.ChangeStatus(id, status);
+
+            if (!success)
+                return BadRequest(new { message });
+
+            return Ok(new { message });
         }
     }
 }

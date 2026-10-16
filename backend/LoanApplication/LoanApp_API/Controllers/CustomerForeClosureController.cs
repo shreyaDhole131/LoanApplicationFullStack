@@ -1,45 +1,144 @@
-﻿using LoanApp_API.Application.DTO.ForeClosure;
+﻿
+using LoanApp_API.Application.DTO.ForeClosure;
 using LoanApp_API.Application.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
-namespace LoanApp_API.Controllers {
-
+namespace LoanApp_API.Controllers
+{
     [ApiController]
     [Route("api/customer/foreclosure")]
+    [Authorize]
     public class CustomerForeClosureController : ControllerBase
     {
-        private readonly IForeClosureRepository _repo;
+        private readonly IForeClosureRepository _foreClosureRepository;
 
-        public CustomerForeClosureController(IForeClosureRepository repo)
+        public CustomerForeClosureController(
+            IForeClosureRepository foreClosureRepository)
         {
-            _repo = repo;
+            _foreClosureRepository = foreClosureRepository;
         }
 
-       
-        [HttpGet("loans/{customerId:int}")]
-        public async Task<IActionResult> GetLoans(int customerId)
-            => Ok(await _repo.GetCustomerLoans(customerId));
+        private int? GetCustomerId()
+        {
+            string? customerId =
+                User.FindFirst("CustomerId")?.Value ??
+                User.FindFirst("customerId")?.Value ??
+                User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-        [HttpGet("summary/{loanAccountId:int}")]
+            return int.TryParse(customerId, out int id) ? id : null;
+        }
+
+        // GET: api/customer/foreclosure/loans
+        [HttpGet("loans")]
+        public async Task<IActionResult> GetCustomerLoans()
+        {
+            var customerId = GetCustomerId();
+
+            if (customerId == null)
+                return Unauthorized(new { message = "Customer ID not found in token." });
+
+            var loans = await _foreClosureRepository.GetCustomerLoans(customerId.Value);
+
+            return Ok(loans);
+        }
+
+        // GET: api/customer/foreclosure/summary/5
+        [HttpGet("summary/{loanAccountId}")]
         public async Task<IActionResult> GetSummary(int loanAccountId)
         {
-            var data = await _repo.GetSummary(loanAccountId);
-            return data == null ? NotFound(new { message = "Loan not found" }) : Ok(data);
+            var customerId = GetCustomerId();
+
+            if (customerId == null)
+                return Unauthorized(new { message = "Customer ID not found in token." });
+
+            // Ensure the loan belongs to the logged-in customer
+            var loans = await _foreClosureRepository.GetCustomerLoans(customerId.Value);
+
+            if (!loans.Any(x => x.LoanAccountId == loanAccountId))
+                return NotFound(new { message = "Loan not found." });
+
+            var summary = await _foreClosureRepository.GetSummary(loanAccountId);
+
+            if (summary == null)
+                return NotFound(new { message = "Loan summary not found." });
+
+            return Ok(summary);
         }
 
-        //---- Submit Request button
+        // POST: api/customer/foreclosure
         [HttpPost]
-        public async Task<IActionResult> Submit(ForeClosureDto dto)
+        public async Task<IActionResult> SubmitRequest(
+            [FromBody] ForeClosureDto dto)
         {
-            var (success, message) = await _repo.SubmitRequest(dto);
-            return success ? Ok(new { message }) : BadRequest(new { message });
+            var customerId = GetCustomerId();
+
+            if (customerId == null)
+                return Unauthorized(new { message = "Customer ID not found in token." });
+
+            // Take the customer ID from the token, not the request body
+            dto.CustomerId = customerId.Value;
+
+            var (success, message) =
+                await _foreClosureRepository.SubmitRequest(dto);
+
+            if (!success)
+                return BadRequest(new { message });
+
+            return Ok(new { message });
         }
 
-        //  Foreclosure Requests table for customer
-        [HttpGet("requests/{customerId:int}")]
-        public async Task<IActionResult> GetMyRequests(int customerId)
-            => Ok(await _repo.GetMyRequests(customerId));
-        
+        // GET: api/customer/foreclosure/requests
+        [HttpGet("requests")]
+        public async Task<IActionResult> GetMyRequests()
+        {
+            var customerId = GetCustomerId();
+
+            if (customerId == null)
+                return Unauthorized(new { message = "Customer ID not found in token." });
+
+            var requests =
+                await _foreClosureRepository.GetMyRequests(customerId.Value);
+
+            return Ok(requests);
+        }
+
+        // POST: api/customer/foreclosure/payment/create-order/5
+        [HttpPost("payment/create-order/{requestId}")]
+        public async Task<IActionResult> CreatePaymentOrder(int requestId)
+        {
+            var customerId = GetCustomerId();
+
+            if (customerId == null)
+                return Unauthorized(new { message = "Customer ID not found in token." });
+
+            var (success, message, data) =
+                await _foreClosureRepository.CreatePaymentOrder(requestId, customerId.Value);
+
+            if (!success)
+                return BadRequest(new { message });
+
+            return Ok(data);
+        }
+
+        // POST: api/customer/foreclosure/payment/verify
+        [HttpPost("payment/verify")]
+        public async Task<IActionResult> VerifyPayment(
+            [FromBody] VerifyForeClosurePaymentDto dto)
+        {
+            var customerId = GetCustomerId();
+
+            if (customerId == null)
+                return Unauthorized(new { message = "Customer ID not found in token." });
+
+            var (success, message) =
+                await _foreClosureRepository.VerifyPayment(dto, customerId.Value);
+
+            if (!success)
+                return BadRequest(new { message });
+
+            return Ok(new { message });
+        }
     }
 }
-
