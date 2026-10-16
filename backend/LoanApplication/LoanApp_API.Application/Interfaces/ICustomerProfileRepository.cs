@@ -8,8 +8,9 @@ namespace LoanApp_API.Application.Interfaces
     public interface ICustomerProfileRepository
     {
         CustomerProfileDTO? GetCustomerProfile(int userId);
+
         CustomerProfileDTO? UpdateCustomerProfile(
-           int userId,
-           UpdateCustomerProfileDTO model);
+            int userId,
+            UpdateCustomerProfileDTO model);
     }
 }

@@ -1,0 +1,277 @@
+
+<div class="container-fluid mt-4">
+
+  <h3>Foreclosure / Closure Requests</h3>
+  <p class="text-muted">Manage customer foreclosure and closure requests</p>
+
+  <!-- Tabs -->
+  <ul class="nav nav-tabs mb-3">
+    <li class="nav-item">
+      <a class="nav-link active" href="javascript:void(0)">
+        Foreclosure Requests
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="javascript:void(0)">
+        Closure Requests
+      </a>
+    </li>
+  </ul>
+
+  <!-- Loading -->
+  <div *ngIf="loading" class="alert alert-info">
+    Loading requests...
+  </div>
+
+  <!-- Error -->
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Requests Table -->
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover align-middle">
+
+      <thead class="table-light">
+        <tr>
+          <th>Request ID</th>
+          <th>Loan Account</th>
+          <th>Customer Name</th>
+          <th>Type</th>
+          <th>Request Date</th>
+          <th>Outstanding Principal</th>
+          <th>Foreclosure Amount</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let request of allrequests">
+
+          <td>{{ request.requestNo }}</td>
+          <td>{{ request.loanAccountNo }}</td>
+          <td>{{ request.customerName }}</td>
+          <td>{{ request.foreClosureType }}</td>
+
+          <td>
+            {{ request.requestDate | date:'dd MMM yyyy, hh:mm a' }}
+          </td>
+
+          <td>
+            {{ request.outstandingPrincipal | currency:'INR':'symbol':'1.2-2' }}
+          </td>
+
+          <td>
+            {{ request.foreClosureAmount | currency:'INR':'symbol':'1.2-2' }}
+          </td>
+
+          <td>
+            <span class="badge"
+              [ngClass]="{
+                'text-bg-success': request.status === 'Approved',
+                'text-bg-danger': request.status === 'Rejected',
+                'text-bg-warning': request.status === 'Pending'
+              }">
+              {{ request.status }}
+            </span>
+          </td>
+
+          <td>
+            <button
+              type="button"
+              class="btn btn-primary btn-sm"
+              data-bs-toggle="modal"
+              data-bs-target="#requestModal"
+              (click)="viewRequest(request.requestId)">
+              View
+            </button>
+          </td>
+
+        </tr>
+
+        <tr *ngIf="!loading && allrequests.length === 0">
+          <td colspan="9" class="text-center">
+            No foreclosure requests found.
+          </td>
+        </tr>
+      </tbody>
+
+    </table>
+  </div>
+
+</div>
+
+
+<!-- Request Details Modal -->
+<div class="modal fade"
+     id="requestModal"
+     tabindex="-1"
+     aria-labelledby="requestModalLabel"
+     aria-hidden="true">
+
+  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h5 class="modal-title" id="requestModalLabel">
+          Foreclosure Request Details
+        </h5>
+
+        <button type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close">
+        </button>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="modal-body">
+
+        <div *ngIf="!selectedRequest" class="text-center p-3">
+          Loading request details...
+        </div>
+
+        <div *ngIf="selectedRequest">
+
+          <!-- Loan and Customer Details -->
+          <h6 class="mb-3">Loan & Customer Details</h6>
+
+          <div class="row mb-3">
+
+            <div class="col-md-6 mb-2">
+              <strong>Loan Account No:</strong>
+              <div>{{ selectedRequest.loanAccountNo }}</div>
+            </div>
+
+            <div class="col-md-6 mb-2">
+              <strong>Customer Name:</strong>
+              <div>{{ selectedRequest.customerName }}</div>
+            </div>
+
+            <div class="col-md-6 mb-2">
+              <strong>Loan Amount:</strong>
+              <div>
+                {{ selectedRequest.loanAmount | currency:'INR':'symbol':'1.2-2' }}
+              </div>
+            </div>
+
+            <div class="col-md-6 mb-2">
+              <strong>Interest Rate:</strong>
+              <div>{{ selectedRequest.interestRate }}%</div>
+            </div>
+
+            <div class="col-md-6 mb-2">
+              <strong>Disbursed On:</strong>
+              <div>
+                {{ selectedRequest.disbursedOn | date:'dd MMM yyyy' }}
+              </div>
+            </div>
+
+            <div class="col-md-6 mb-2">
+              <strong>Outstanding Principal:</strong>
+              <div>
+                {{ selectedRequest.outstandingPrincipal | currency:'INR':'symbol':'1.2-2' }}
+              </div>
+            </div>
+
+          </div>
+
+          <hr>
+
+          <!-- Foreclosure Details -->
+          <h6 class="mb-3">Foreclosure Details</h6>
+
+          <div class="row mb-3">
+
+            <div class="col-md-6 mb-2">
+              <strong>Request ID:</strong>
+              <div>{{ selectedRequest.requestNo }}</div>
+            </div>
+
+            <div class="col-md-6 mb-2">
+              <strong>Request Date:</strong>
+              <div>
+                {{ selectedRequest.requestDate | date:'dd MMM yyyy, hh:mm a' }}
+              </div>
+            </div>
+
+            <div class="col-md-6 mb-2">
+              <strong>Foreclosure Type:</strong>
+              <div>{{ selectedRequest.foreClosureType }}</div>
+            </div>
+
+            <div class="col-md-6 mb-2">
+              <strong>Total Amount:</strong>
+              <div>
+                {{ selectedRequest.foreClosureAmount | currency:'INR':'symbol':'1.2-2' }}
+              </div>
+            </div>
+
+            <div class="col-md-6 mb-2">
+              <strong>Expected Closure Date:</strong>
+              <div>
+                {{ selectedRequest.expectedClosureDate | date:'dd MMM yyyy' }}
+              </div>
+            </div>
+
+            <div class="col-md-6 mb-2">
+              <strong>Status:</strong>
+              <div>
+                <span class="badge"
+                  [ngClass]="{
+                    'text-bg-success': selectedRequest.status === 'Approved',
+                    'text-bg-danger': selectedRequest.status === 'Rejected',
+                    'text-bg-warning': selectedRequest.status === 'Pending'
+                  }">
+                  {{ selectedRequest.status }}
+                </span>
+              </div>
+            </div>
+
+          </div>
+
+          <hr>
+
+          <!-- Customer Note -->
+          <h6>Customer Note</h6>
+          <p class="mb-0">
+            {{ selectedRequest.customerNote || 'Nil' }}
+          </p>
+
+        </div>
+
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="modal-footer">
+
+        <ng-container *ngIf="selectedRequest?.status === 'Pending'">
+
+          <button type="button"
+                  class="btn btn-success"
+                  (click)="changeStatus('Approved')">
+            Accept
+          </button>
+
+          <button type="button"
+                  class="btn btn-danger"
+                  (click)="changeStatus('Rejected')">
+            Reject
+          </button>
+
+        </ng-container>
+
+        <button type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal">
+          Close
+        </button>
+
+      </div>
+
+    </div>
+  </div>
+</div>

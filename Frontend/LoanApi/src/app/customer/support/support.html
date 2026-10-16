@@ -1,0 +1,281 @@
+<div class="layout">
+
+  <app-sidebar></app-sidebar>
+
+  <div class="content">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2>Support Tickets</h2>
+
+      <button
+        type="button"
+        class="btn btn-primary"
+        (click)="openAddModal()">
+
+        Add Support Ticket
+
+      </button>
+    </div>
+
+    <div class="card shadow-sm">
+
+      <div class="card-header">
+        <h4 class="mb-0">My Support Tickets</h4>
+      </div>
+
+      <div class="card-body">
+
+        @if (tickets.length > 0) {
+
+          <table class="table table-bordered table-hover">
+
+            <thead class="thead-dark">
+
+              <tr>
+                <th>Ticket ID</th>
+                <th>Loan Account</th>
+                <th>Subject</th>
+                <th>Description</th>
+                <th>Attachment</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Officer Response</th>
+                <th>Action</th>
+              </tr>
+
+            </thead>
+
+            <tbody>
+
+              @for (ticket of tickets; track ticket.ticketId) {
+
+                <tr>
+
+                  <td>{{ ticket.ticketId }}</td>
+
+                  <td>{{ ticket.loanAccountId }}</td>
+
+                  <td>{{ ticket.subject }}</td>
+
+                  <td>{{ ticket.description }}</td>
+
+                  <td>
+
+                    @if (ticket.attachmentPath) {
+
+                      <button
+                        type="button"
+                        class="btn btn-primary btn-sm"
+                        (click)="viewTicket(ticket.ticketId)">
+
+                        View
+
+                      </button>
+
+                    }
+                    @else {
+
+                      <span>No File</span>
+
+                    }
+
+                  </td>
+
+                  <td>
+                    {{ ticket.createdDate | date:'dd-MM-yyyy' }}
+                  </td>
+
+                  <td>
+                    {{ ticket.status }}
+                  </td>
+
+                  <td>
+                    {{ ticket.officerResponse || 'No response yet' }}
+                  </td>
+
+                  <td>
+
+                    <button
+                      type="button"
+                      class="btn btn-warning btn-sm mr-2"
+                      (click)="openEditModal(ticket)">
+
+                      Edit
+
+                    </button>
+
+                    <button
+                      type="button"
+                      class="btn btn-danger btn-sm"
+                      (click)="deleteTicket(ticket.ticketId)">
+
+                      Delete
+
+                    </button>
+
+                  </td>
+
+                </tr>
+
+              }
+
+            </tbody>
+
+          </table>
+
+        }
+
+        @else {
+
+          <div class="alert alert-info">
+            No support tickets found.
+          </div>
+
+        }
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+@if (modalOpen) {
+
+  <div class="modal-backdrop fade show"></div>
+
+  <div
+    class="modal fade show d-block"
+    tabindex="-1">
+
+    <div class="modal-dialog">
+
+      <div class="modal-content">
+
+        <div class="modal-header">
+
+          <h5 class="modal-title">
+
+            @if (editMode) {
+              Edit Support Ticket
+            }
+            @else {
+              Add Support Ticket
+            }
+
+          </h5>
+
+          <button
+            type="button"
+            class="close"
+            (click)="closeModal()">
+
+            <span>&times;</span>
+
+          </button>
+
+        </div>
+
+        <div class="modal-body">
+
+          <div class="form-group">
+
+            <label>Loan Account ID</label>
+
+            <input
+              type="number"
+              class="form-control"
+              [(ngModel)]="model.loanAccountId"
+              name="loanAccountId"
+              placeholder="Enter loan account ID">
+
+          </div>
+
+          <div class="form-group">
+
+            <label>Subject</label>
+
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="model.subject"
+              name="subject"
+              placeholder="Enter subject">
+
+          </div>
+
+          <div class="form-group">
+
+            <label>Description</label>
+
+            <textarea
+              class="form-control"
+              rows="4"
+              [(ngModel)]="model.description"
+              name="description"
+              placeholder="Enter your issue">
+            </textarea>
+
+          </div>
+
+          <div class="form-group">
+
+            <label>Attachment</label>
+
+            <input
+              type="file"
+              class="form-control-file"
+              accept=".jpg,.jpeg,.png,.pdf"
+              (change)="onFileSelected($event)">
+
+          </div>
+
+        </div>
+
+        <div class="modal-footer">
+
+          <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="closeModal()">
+
+            Cancel
+
+          </button>
+
+          @if (editMode) {
+
+            <button
+              type="button"
+              class="btn btn-success"
+              (click)="updateTicket()">
+
+              Update Ticket
+
+            </button>
+
+          }
+          @else {
+
+            <button
+              type="button"
+              class="btn btn-primary"
+              (click)="createTicket()">
+
+              Create Ticket
+
+            </button>
+
+          }
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+}

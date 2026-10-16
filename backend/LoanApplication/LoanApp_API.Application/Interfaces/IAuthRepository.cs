@@ -7,21 +7,25 @@ namespace LoanApp_API.Application.Interfaces
     public interface IAuthRepository
     {
         User? GetUserByEmail(string email);
-
+        User? GetUserById(int userId);
         Customers? GetCustomerByEmail(string email);
 
         User CreateUser(User user);
-
         User CreateOfficer(User user);
-
         Customers CreateCustomer(Customers customer);
+        Customers Register(CustomerRegistrationDTO model);
 
         Customers Register(CustomerRegistrationDTO model);
 
         User? Login(string email, string password);
 
         bool VerifyEmailOtp(string email, string otp);
-
         bool MarkEmailVerified(string email);
+<<<<<<< HEAD
+=======
+
+        bool SavePendingAuthenticatorSecret(int userId, string secret);
+        bool EnableTwoFactor(int userId, string secret);
+>>>>>>> 34a31db8a70434337dfb86b94b0052d3efa91f9e
     }
 }

@@ -5,6 +5,10 @@ namespace LoanApp_API.Application.DTO
 {
     public class CustomerDashboardVM
     {
+        public int CustomerId { get; set; }
+
+        public string CustomerName { get; set; } = string.Empty;
+
         public int TotalApplications { get; set; }
 
         public int TotalActiveLoanAccounts { get; set; }
@@ -24,10 +28,12 @@ namespace LoanApp_API.Application.DTO
         public List<CustomerKycVM> KycDocuments { get; set; } = new();
     }
 
+
     public class CustomerLoanDropdownVM
     {
         public string LoanAccountNo { get; set; } = string.Empty;
     }
+
 
     public class CustomerLoanDetailsVM
     {
@@ -60,6 +66,7 @@ namespace LoanApp_API.Application.DTO
         public int RemainingEmis { get; set; }
     }
 
+
     public class CustomerApplicationVM
     {
         public int DealId { get; set; }
@@ -74,6 +81,7 @@ namespace LoanApp_API.Application.DTO
 
         public DateTime AppliedDate { get; set; }
     }
+
 
     public class CustomerEmiSummaryVM
     {
@@ -90,6 +98,7 @@ namespace LoanApp_API.Application.DTO
         public decimal? NextEmiAmount { get; set; }
     }
 
+
     public class CustomerEmiPaymentVM
     {
         public int InstallmentNo { get; set; }
@@ -102,6 +111,7 @@ namespace LoanApp_API.Application.DTO
 
         public DateTime? PaidDate { get; set; }
     }
+
 
     public class CustomerKycVM
     {

@@ -26,6 +26,11 @@ namespace LoanApp_API.Domain.Entities
 
         public List<DealReviews>? DealReviews { get; set; }
 
+        public bool IsTwoFactorEnabled { get; set; } = false;
+
+        public string? AuthenticatorSecret { get; set; }
+
+        public string? PendingAuthenticatorSecret { get; set; }
     }
 
 }

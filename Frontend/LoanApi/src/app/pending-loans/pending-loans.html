@@ -1,0 +1,155 @@
+<div class="container mt-4">
+
+  <!-- Welcome bar -->
+  <div class="card shadow-sm mb-3">
+    <div class="card-body d-flex justify-content-between align-items-center">
+      <h4 class="mb-0 text-primary">Welcome,</h4>
+      <button class="btn btn-primary rounded-pill px-4">Loan Officer Panel</button>
+    </div>
+  </div>
+
+  <!-- Main panel -->
+  <div class="card shadow-sm">
+    <div class="card-body p-4">
+
+      <h2 class="mb-4">Pending Deals</h2>
+
+      <!-- ===== Filter row ===== -->
+      <div class="row g-3 mb-4">
+        <div class="col-md-2">
+          <select class="form-control" [(ngModel)]="loanType" name="loanType" (ngModelChange)="applyFilters()">
+            <option value="">All Loan Types</option>
+            <option>Home Loan</option>
+            <option>Personal Loan</option>
+            <option>Education Loan</option>
+          </select>
+        </div>
+
+        <div class="col-md-2">
+          <input type="number" class="form-control" placeholder="Min Amount" [(ngModel)]="minAmount" name="minAmount"
+            (ngModelChange)="applyFilters()">
+        </div>
+
+        <div class="col-md-2">
+          <input type="number" class="form-control" placeholder="Max Amount" [(ngModel)]="maxAmount" name="maxAmount"
+            (ngModelChange)="applyFilters()">
+        </div>
+
+        <div class="col-md-2">
+          <select class="form-control" [(ngModel)]="dateFilter" name="dateFilter" (ngModelChange)="applyFilters()">
+            <option value="">Date Filter</option>
+            <option>Last 7 Days</option>
+            <option>Last 30 Days</option>
+            <option>Ascending</option>
+            <option>Descending</option>
+          </select>
+        </div>
+
+        <div class="col-md-2">
+          <input type="date" class="form-control" [(ngModel)]="fromDate" name="fromDate"
+            (ngModelChange)="applyFilters()">
+        </div>
+
+        <div class="col-md-2">
+          <input type="date" class="form-control" [(ngModel)]="toDate" name="toDate" (ngModelChange)="applyFilters()">
+        </div>
+      </div>
+
+      <!-- ===== Entries per page + Search ===== -->
+      <div class="d-flex justify-content-between align-items-center mb-3">
+
+        <div class="d-flex align-items-center">
+          <select class="form-select" style="width: 80px;" [(ngModel)]="pageSize" name="pageSize"
+            (ngModelChange)="onPageSizeChange()">
+            <option [ngValue]="10">10</option>
+            <option [ngValue]="25">25</option>
+            <option [ngValue]="50">50</option>
+            <option [ngValue]="100">100</option>
+          </select>
+          <span class="ms-2">entries per page</span>
+        </div>
+
+        <div class="d-flex align-items-center">
+          <label class="me-2 mb-0">Search:</label>
+          <input type="text" class="form-control" [(ngModel)]="search" name="search" (ngModelChange)="applyFilters()"
+            style="width: 250px;">
+        </div>
+      </div>
+
+      <!-- ===== Table ===== -->
+      <div class="table-responsive">
+        <table class="table table-bordered align-middle mb-0">
+          <thead class="table-light">
+            <tr>
+              <th scope="col">Customer Name</th>
+              <th scope="col">Loan Type</th>
+              <th scope="col">Loan Amount</th>
+              <th scope="col">Status</th>
+              <th scope="col">Applied Date</th>
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let e of pagedDeals">
+              <td>{{ e.customerName }}</td>
+              <td>{{ e.loanType }}</td>
+              <td>{{ e.loanAmount | number:'1.2-2' }}</td>
+              <td>{{ e.status }}</td>
+              <td>{{ e.appliedDate | date:'yyyy-MM-dd' }}</td>
+              <td>
+                <button type="button" class="btn btn-info text-white" [routerLink]="['/customer-profile', e.dealId]">
+                  View Profile
+                </button>
+              </td>
+            </tr>
+
+            <tr *ngIf="totalCount === 0">
+              <td colspan="6" class="text-center text-muted py-3">
+                No pending deals found
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ===== Footer: Showing X to Y + Pagination ===== -->
+      <div class="d-flex justify-content-between align-items-center mt-3">
+        <div>
+          Showing
+          {{ totalCount === 0 ? 0 : (page - 1) * pageSize + 1 }}
+          to
+          {{ totalCount < page * pageSize ? totalCount : page * pageSize }} of {{ totalCount }} entries </div>
+
+            <nav>
+              <ul class="pagination mb-0">
+                <!-- First -->
+                <li class="page-item" [class.disabled]="page === 1">
+                  <a class="page-link" (click)="goToPage(1)" style="cursor: pointer;">&laquo;</a>
+                </li>
+
+                <!-- Prev -->
+                <li class="page-item" [class.disabled]="page === 1">
+                  <a class="page-link" (click)="goToPage(page - 1)" style="cursor: pointer;">&lsaquo;</a>
+                </li>
+
+                <!-- Page numbers -->
+                <li class="page-item" *ngFor="let p of pagesArray" [class.active]="page === p">
+                  <a class="page-link" (click)="goToPage(p)" style="cursor: pointer;">{{ p }}</a>
+                </li>
+
+                <!-- Next -->
+                <li class="page-item" [class.disabled]="page === totalPages">
+                  <a class="page-link" (click)="goToPage(page + 1)" style="cursor: pointer;">&rsaquo;</a>
+                </li>
+
+                <!-- Last -->
+                <li class="page-item" [class.disabled]="page === totalPages">
+                  <a class="page-link" (click)="goToPage(totalPages)" style="cursor: pointer;">&raquo;</a>
+                </li>
+              </ul>
+            </nav>
+        </div>
+
+      </div>
+    </div>
+  </div>
