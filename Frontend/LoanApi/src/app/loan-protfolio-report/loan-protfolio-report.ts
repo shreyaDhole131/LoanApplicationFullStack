@@ -6,7 +6,7 @@ import { FormsModule } from '@angular/forms';
 @Component({
   imports: [CommonModule, FormsModule],
   selector: 'app-loan-protfolio-report',
-  styleUrl: './loan-protfolio-report.scss',
+  styleUrl: './loan-protfolio-report.css',
   templateUrl: './loan-protfolio-report.html',
 })
 export class LoanProtfolioReport {
