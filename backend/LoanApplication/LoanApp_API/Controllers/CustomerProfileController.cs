@@ -31,12 +31,10 @@ namespace LoanApp_API.Controllers
             var profile = _repo.GetCustomerProfile(userId);
 
             if (profile == null)
-            {
                 return NotFound(new
                 {
                     message = "Customer profile not found"
                 });
-            }
 
             return Ok(profile);
         }
@@ -54,12 +52,10 @@ namespace LoanApp_API.Controllers
             var profile = _repo.UpdateCustomerProfile(userId, model);
 
             if (profile == null)
-            {
                 return NotFound(new
                 {
                     message = "Customer profile not found"
                 });
-            }
 
             return Ok(new
             {
