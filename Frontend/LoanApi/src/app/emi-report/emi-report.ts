@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
 @Component({
   imports: [FormsModule, CommonModule],
   selector: 'app-emi-report',
-  styleUrl: './emi-report.scss',
+  styleUrl: './emi-report.css',
   templateUrl: './emi-report.html',
 })
 export class EmiReport {

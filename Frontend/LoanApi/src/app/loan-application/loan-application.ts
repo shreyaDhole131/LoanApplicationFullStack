@@ -7,7 +7,7 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
   selector: 'app-loan-application',
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './loan-application.html',
-  styleUrl: './loan-application.scss',
+  styleUrl: './loan-application.css',
 })
 export class LoanApplication {
   constructor(private service: Applyloan) {

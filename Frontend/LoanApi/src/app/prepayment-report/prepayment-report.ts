@@ -6,12 +6,12 @@ import { FormsModule } from '@angular/forms';
 @Component({
   imports: [CommonModule, FormsModule],
   selector: 'app-prepayment-report',
-  styleUrl: './prepayment-report.scss',
+  styleUrl: './prepayment-report.css',
   templateUrl: './prepayment-report.html',
 })
 export class PrepaymentReport {
   constructor(private service: PrepaymentService, private cdr: ChangeDetectorRef) {
-
+    this.fetchPrepaymentReport();
   }
 
 

@@ -9,7 +9,7 @@ declare var $: any;
   selector: 'app-generate-sanction',
   imports: [CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './generate-sanction.html',
-  styleUrl: './generate-sanction.scss',
+  styleUrl: './generate-sanction.css',
 })
 export class GenerateSanction {
   constructor(private service: SanctionService, private cd: ChangeDetectorRef) {

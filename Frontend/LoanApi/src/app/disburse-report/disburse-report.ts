@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
 @Component({
   imports: [FormsModule, CommonModule],
   selector: 'app-disburse-report',
-  styleUrl: './disburse-report.scss',
+  styleUrl: './disburse-report.css',
   templateUrl: './disburse-report.html',
 })
 export class DisburseReport {
