@@ -9,6 +9,7 @@ import { ScoreReport } from './score-report/score-report';
 import { ProductReport } from './product-report/product-report';
 import { LoanProtfolioReport } from './loan-protfolio-report/loan-protfolio-report';
 import { EmiReport } from './emi-report/emi-report';
+import { DisburseReport } from './disburse-report/disburse-report';
 
 export const routes: Routes = [{
 
@@ -25,7 +26,8 @@ export const routes: Routes = [{
 { path: 'score-report', component: ScoreReport },
 { path: 'product-report', component: ProductReport },
 { path: 'loan-protfolio', component: LoanProtfolioReport },
-{ path: 'emi-report', component: EmiReport }
+{ path: 'emi-report', component: EmiReport },
+{ path: 'disburse-report', component: DisburseReport }
 
 
 
