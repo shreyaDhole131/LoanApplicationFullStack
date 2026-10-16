@@ -17,7 +17,7 @@ export const routes: Routes = [
   { path: 'closure-requests', component: ClosureRequests },
   { path: 'emi-payment/:emiScheduleId', component: EmiPayment },
 
-  { path: '', redirectTo: '/applyLoan', pathMatch: 'full' },
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'applyLoan', component: LoanApplication },
   { path: 'pendingLoans', component: PendingLoans },
   { path: 'customer-profile/:dealId', component: CustomerProfileDetails },
