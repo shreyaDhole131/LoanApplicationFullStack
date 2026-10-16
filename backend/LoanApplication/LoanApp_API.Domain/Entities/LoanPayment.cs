@@ -33,5 +33,9 @@ namespace LoanApp_API.Domain.Entities
         public string PaymentStatus { get; set; }
 
         public LoanAccount? LoanAccount { get; set; }
+
+        public int? EmiScheduleId { get; set; }
+
+        public EmiSchedule? EmiSchedule { get; set; }
     }
 }

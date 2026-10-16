@@ -17,6 +17,7 @@ using System.Threading.RateLimiting;
 var builder = WebApplication.CreateBuilder(args);
 
 // Repository and service registrations
+builder.Services.AddScoped<IEmiPaymentRepository, EmiPaymentRepository>();
 builder.Services.AddScoped<IForeClosureRepository, ForeClosureRepository>();
 builder.Services.AddScoped<IPaymentHistoryRepository, PaymentHistoryRepository>();
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
