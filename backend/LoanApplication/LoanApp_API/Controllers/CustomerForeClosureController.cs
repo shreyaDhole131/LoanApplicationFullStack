@@ -9,7 +9,7 @@ namespace LoanApp_API.Controllers
 {
     [ApiController]
     [Route("api/customer/foreclosure")]
-    [Authorize]
+   // [Authorize]
     public class CustomerForeClosureController : ControllerBase
     {
         private readonly IForeClosureRepository _foreClosureRepository;

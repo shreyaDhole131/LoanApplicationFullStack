@@ -12,30 +12,43 @@ namespace LoanApp_API.Controllers
     {
         private readonly ICustomerDashboardRepository _repo;
 
-        public CustomerDashboardController(ICustomerDashboardRepository repo)
+        public CustomerDashboardController(
+            ICustomerDashboardRepository repo)
         {
             _repo = repo;
         }
 
+
         [HttpGet]
         public IActionResult GetDashboard()
         {
-            var userIdClaim =User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var userIdClaim =
+                User.FindFirst(
+                    ClaimTypes.NameIdentifier
+                )?.Value;
+
 
             if (userIdClaim == null)
                 return Unauthorized();
 
-            int userId = int.Parse(userIdClaim);
 
-            var dashboard =_repo.GetCustomerDashboard(userId);
+            int userId =
+                int.Parse(userIdClaim);
+
+
+            var dashboard =
+                _repo.GetCustomerDashboard(userId);
+
 
             if (dashboard == null)
             {
                 return NotFound(new
                 {
-                    message = "Customer dashboard not found"
+                    message =
+                        "Customer dashboard not found"
                 });
             }
+
 
             return Ok(dashboard);
         }

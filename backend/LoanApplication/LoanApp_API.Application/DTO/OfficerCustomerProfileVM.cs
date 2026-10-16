@@ -17,23 +17,27 @@ namespace LoanApp_API.Application.DTO
         public string Employment { get; set; } = string.Empty;
         public int Age { get; set; }
 
-        // CIBIL Details
+        // CIBIL
         public int CibilScore { get; set; }
 
-        // Score Card Details
+        // Score Card
         public string RiskCategory { get; set; } = string.Empty;
         public decimal EligibleLoanAmount { get; set; }
 
-        // Loan Details
+        // Loans
         public List<OfficerLoanDetailsVM> Loans { get; set; } = new();
     }
 
     public class OfficerLoanDetailsVM
     {
         public string LoanAccountNo { get; set; } = string.Empty;
+
         public decimal LoanAmount { get; set; }
+
         public decimal EmiAmount { get; set; }
+
         public decimal InterestRate { get; set; }
+
         public string LoanStatus { get; set; } = string.Empty;
 
         public List<OfficerEmiHistoryVM> EmiHistory { get; set; } = new();
@@ -42,9 +46,13 @@ namespace LoanApp_API.Application.DTO
     public class OfficerEmiHistoryVM
     {
         public int InstallmentNo { get; set; }
+
         public DateTime DueDate { get; set; }
+
         public decimal Emi { get; set; }
+
         public string PaymentStatus { get; set; } = string.Empty;
+
         public DateTime? PaidDate { get; set; }
     }
 }

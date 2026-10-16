@@ -1,10 +1,13 @@
-﻿using Google.Apis.Auth;
+﻿
+using Google.Apis.Auth;
 using LoanApp_API.Application.DTO;
 using LoanApp_API.Application.DTO.User;
 using LoanApp_API.Application.Interfaces;
 using LoanApp_API.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using QRCoder;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -18,115 +21,121 @@ namespace LoanApp_API.Controllers
         private readonly IAuthRepository _repo;
         private readonly IEmailSender _emailSender;
         private readonly IConfiguration _configuration;
+        private readonly ITotpService _totpService;
 
-        public AuthController(IAuthRepository repo,IEmailSender emailSender,IConfiguration configuration)
+        public AuthController(
+            IAuthRepository repo,
+            IEmailSender emailSender,
+<<<<<<< HEAD
+            IConfiguration configuration)
+=======
+            IConfiguration configuration,
+            ITotpService totpService)
+>>>>>>> 34a31db8a70434337dfb86b94b0052d3efa91f9e
         {
             _repo = repo;
             _emailSender = emailSender;
             _configuration = configuration;
+            _totpService = totpService;
         }
 
+        // 1. CUSTOMER REGISTRATION
         [HttpPost("register")]
-        public async Task<IActionResult> Register(CustomerRegistrationDTO model)
+        [AllowAnonymous]
+        public async Task<IActionResult> Register(
+            [FromBody] CustomerRegistrationDTO model)
         {
-            var existingUser =_repo.GetUserByEmail(model.Email);
-
-            var existingCustomer =_repo.GetCustomerByEmail(model.Email);
-
-            if (existingUser != null || existingCustomer != null)
+            try
             {
-                if (existingCustomer != null &&
-                    existingCustomer.IsEmailVerified == 0)
+                var customer = _repo.Register(model);
+
+<<<<<<< HEAD
+                await _emailSender.SendOtpAsync(
+                    customer.Email,
+                    customer.EmailOtp!
+                );
+
+                return Ok(new
                 {
-                    var newOtp =
-                        Random.Shared.Next(100000, 1000000)
-                            .ToString();
-
-                    existingCustomer.EmailOtp = newOtp;
-                    existingCustomer.OtpExpiry =
-                        DateTime.UtcNow.AddMinutes(5);
-
-                    await _emailSender.SendOtpAsync(
-                        existingCustomer.Email,
-                        newOtp
-                    );
-
-                    return Ok(new
+                    message = "Registration successful. OTP sent to your email.",
+                    email = customer.Email
+                });
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message == "Email already registered")
+                {
+                    return BadRequest(new
                     {
-                        message =
-                            "Email already registered but not verified. New OTP sent.",
-                        email = existingCustomer.Email
+                        message = "Email already registered"
                     });
                 }
 
-                return BadRequest(new
+                return StatusCode(500, new
                 {
-                    message = "Email already registered"
+                    message = "Registration failed"
                 });
             }
+=======
+                if (string.IsNullOrWhiteSpace(customer.EmailOtp))
+                {
+                    return StatusCode(500, new
+                    {
+                        message = "Registration OTP was not generated"
+                    });
+                }
 
-            var otp =
-                Random.Shared.Next(100000, 1000000)
-                    .ToString();
+                await _emailSender.SendOtpAsync(
+                    customer.Email,
+                    customer.EmailOtp);
 
-            var customer = new Customers
+                return Ok(new
+                {
+                    message = "Registration successful. OTP sent to your email.",
+                    email = customer.Email
+                });
+            }
+            catch (Exception ex)
             {
-                FirstName = model.FirstName,
-                LastName = model.LastName,
-                Age = model.Age,
-                Email = model.Email,
-                Password = model.Password,
-                MobileNo = model.MobileNo,
-                Pan = model.Pan,
-                AadhaarNo = model.AadhaarNo,
-                EmploymentType = model.EmploymentType,
-                MonthlyIncome = model.MonthlyIncome,
+                Console.WriteLine(ex);
 
-                IsEmailVerified = 0,
+                if (ex.Message == "Email already registered")
+                {
+                    return BadRequest(new
+                    {
+                        message = "Email already registered"
+                    });
+                }
 
-                EmailOtp = otp,
-
-                OtpExpiry =
-                    DateTime.UtcNow.AddMinutes(5)
-            };
-
-            _repo.CreateCustomer(customer);
-
-            await _emailSender.SendOtpAsync(
-                customer.Email,
-                otp
-            );
-
-            return Ok(new
-            {
-                message =
-                    "Registration successful. OTP sent to your email.",
-                email = customer.Email
-            });
+                return StatusCode(500, new
+                {
+                    message = "Registration failed",
+                    error = ex.Message,
+                    innerError = ex.InnerException?.Message
+                });
+            }
+>>>>>>> 34a31db8a70434337dfb86b94b0052d3efa91f9e
         }
 
+        // 2. VERIFY REGISTRATION EMAIL OTP
         [HttpPost("verify-otp")]
-        public IActionResult VerifyOtp(
-            VerifyOtpDTO model)
+<<<<<<< HEAD
+        public IActionResult VerifyOtp(VerifyOtpDTO model)
+=======
+        [AllowAnonymous]
+        public IActionResult VerifyOtp([FromBody] VerifyOtpDTO model)
+>>>>>>> 34a31db8a70434337dfb86b94b0052d3efa91f9e
         {
-            if (string.IsNullOrWhiteSpace(model.Email))
+            if (string.IsNullOrWhiteSpace(model.Email) ||
+                string.IsNullOrWhiteSpace(model.Otp))
             {
                 return BadRequest(new
                 {
-                    message = "Email is required"
+                    message = "Email and OTP are required"
                 });
             }
 
-            if (string.IsNullOrWhiteSpace(model.Otp))
-            {
-                return BadRequest(new
-                {
-                    message = "OTP is required"
-                });
-            }
-
-            var customer =
-                _repo.GetCustomerByEmail(model.Email);
+            var customer = _repo.GetCustomerByEmail(model.Email);
 
             if (customer == null)
             {
@@ -144,7 +153,8 @@ namespace LoanApp_API.Controllers
                 });
             }
 
-            if (customer.OtpExpiry == null ||DateTime.UtcNow > customer.OtpExpiry)
+            if (customer.OtpExpiry == null ||
+                DateTime.UtcNow > customer.OtpExpiry)
             {
                 return BadRequest(new
                 {
@@ -160,10 +170,16 @@ namespace LoanApp_API.Controllers
                 });
             }
 
+<<<<<<< HEAD
             bool verified =
-                _repo.VerifyEmailOtp(model.Email,model.Otp);
+                _repo.VerifyEmailOtp(
+                    model.Email,
+                    model.Otp);
 
             if (!verified)
+=======
+            if (!_repo.VerifyEmailOtp(model.Email, model.Otp))
+>>>>>>> 34a31db8a70434337dfb86b94b0052d3efa91f9e
             {
                 return BadRequest(new
                 {
@@ -173,31 +189,35 @@ namespace LoanApp_API.Controllers
 
             return Ok(new
             {
-                message = "Email verified successfully"
+                message = "Email verified successfully. You can now log in."
             });
         }
 
+        // 3. PASSWORD LOGIN
         [HttpPost("login")]
-        public IActionResult Login(LoginDTO model)
+        [AllowAnonymous]
+        public IActionResult Login([FromBody] LoginDTO model)
         {
-            var customer =
-                _repo.GetCustomerByEmail(model.Email);
-
-            if (customer != null &&
-                customer.IsEmailVerified == 0)
+            if (string.IsNullOrWhiteSpace(model.Email) ||
+                string.IsNullOrWhiteSpace(model.Password))
             {
-                return Unauthorized(new
+                return BadRequest(new
                 {
-                    message =
-                        "Please verify your email before login"
+                    message = "Email and password are required"
                 });
             }
 
-            var user =
-                _repo.Login(
-                    model.Email,
-                    model.Password
-                );
+            var customer = _repo.GetCustomerByEmail(model.Email);
+
+            if (customer != null && customer.IsEmailVerified != 1)
+            {
+                return Unauthorized(new
+                {
+                    message = "Please verify your email before login"
+                });
+            }
+
+            var user = _repo.Login(model.Email, model.Password);
 
             if (user == null)
             {
@@ -207,12 +227,253 @@ namespace LoanApp_API.Controllers
                 });
             }
 
+            if (user.IsTwoFactorEnabled &&
+                !string.IsNullOrWhiteSpace(user.AuthenticatorSecret))
+            {
+                return Ok(new
+                {
+                    message = "Enter your authenticator OTP",
+                    nextStep = "verify-login-otp",
+                    challengeToken = CreateStageToken(user, "login")
+                });
+            }
+
+            return Ok(new
+            {
+                message = "Set up your authenticator app to continue",
+                nextStep = "setup-2fa",
+                challengeToken = CreateStageToken(user, "setup")
+            });
+        }
+
+        // 4. GENERATE AUTHENTICATOR QR CODE
+        [Authorize]
+        [HttpPost("setup-2fa")]
+        public IActionResult SetupTwoFactor()
+        {
+            if (!TryGetStageUser("setup", out var user))
+            {
+                return Unauthorized(new
+                {
+                    message = "A valid 2FA setup token is required"
+                });
+            }
+
+            if (user.IsTwoFactorEnabled)
+            {
+                return BadRequest(new
+                {
+                    message = "Two-factor authentication is already enabled"
+                });
+            }
+
+            var secret = _totpService.GenerateSecret();
+
+            var saved = _repo.SavePendingAuthenticatorSecret(
+                user.UserId, secret);
+
+            if (!saved)
+            {
+                return StatusCode(500, new
+                {
+                    message = "Could not save authenticator setup"
+                });
+            }
+
+            var uri = _totpService.GenerateOtpUri(
+                user.Email, secret);
+
+            var imageBytes = GenerateQrImage(uri);
+
+            return Ok(new
+            {
+                message = "Scan this QR code with your authenticator app",
+
+                secret = secret,
+
+                qrCodeDataUrl =
+                    "data:image/png;base64," +
+                    Convert.ToBase64String(imageBytes),
+
+                qrCodeHtml =
+                    "<img src=\"data:image/png;base64," +
+                    Convert.ToBase64String(imageBytes) +
+                    "\" width=\"250\" height=\"250\" />",
+
+                qrImageEndpoint = "/api/auth/setup-2fa/qr",
+
+                nextStep = "verify-2fa-setup"
+            });
+        }
+
+        // 5. RETURN QR CODE AS AN IMAGE
+        // Authorize this endpoint with the same setup challenge token.
+        [Authorize]
+        [HttpGet("setup-2fa/qr")]
+        [Produces("image/png")]
+        public IActionResult GetTwoFactorQr()
+        {
+            if (!TryGetStageUser("setup", out var user))
+            {
+                return Unauthorized(new
+                {
+                    message = "A valid 2FA setup token is required"
+                });
+            }
+
+            if (user.IsTwoFactorEnabled)
+            {
+                return BadRequest(new
+                {
+                    message = "Two-factor authentication is already enabled"
+                });
+            }
+
+            if (string.IsNullOrWhiteSpace(
+                user.PendingAuthenticatorSecret))
+            {
+                return BadRequest(new
+                {
+                    message = "Generate the authenticator QR code first"
+                });
+            }
+
+            var uri = _totpService.GenerateOtpUri(
+                user.Email,
+                user.PendingAuthenticatorSecret);
+
+            var imageBytes = GenerateQrImage(uri);
+
+            return File(imageBytes, "image/png");
+        }
+
+        // Shared QR image generation method
+        private static byte[] GenerateQrImage(string uri)
+        {
+            using var generator = new QRCodeGenerator();
+
+            using var data = generator.CreateQrCode(
+                uri,
+                QRCodeGenerator.ECCLevel.Q);
+
+            var qrCode = new PngByteQRCode(data);
+
+            return qrCode.GetGraphic(10);
+        }
+
+        // 6. VERIFY INITIAL AUTHENTICATOR OTP AND ENABLE 2FA
+        [Authorize]
+        [HttpPost("verify-2fa-setup")]
+        public IActionResult VerifyTwoFactorSetup(
+            [FromBody] VerifyAuthenticatorOtpDTO model)
+        {
+            if (string.IsNullOrWhiteSpace(model.Otp))
+            {
+                return BadRequest(new
+                {
+                    message = "Authenticator OTP is required"
+                });
+            }
+
+            if (!TryGetStageUser("setup", out var user))
+            {
+                return Unauthorized(new
+                {
+                    message = "A valid setup token is required"
+                });
+            }
+
+            if (string.IsNullOrWhiteSpace(
+                user.PendingAuthenticatorSecret))
+            {
+                return BadRequest(new
+                {
+                    message = "Generate the authenticator QR code first"
+                });
+            }
+
+            if (!_totpService.VerifyOtp(
+                user.PendingAuthenticatorSecret, model.Otp))
+            {
+                return BadRequest(new
+                {
+                    message = "Invalid authenticator OTP"
+                });
+            }
+
+            var enabled = _repo.EnableTwoFactor(
+                user.UserId,
+                user.PendingAuthenticatorSecret);
+
+            if (!enabled)
+            {
+                return StatusCode(500, new
+                {
+                    message = "Could not enable two-factor authentication"
+                });
+            }
+
+            var updatedUser = _repo.GetUserById(user.UserId);
+
+            if (updatedUser == null)
+            {
+                return StatusCode(500, new
+                {
+                    message = "User could not be loaded"
+                });
+            }
+
+            return CreateJwtResponse(updatedUser);
+        }
+
+        // 7. VERIFY LOGIN AUTHENTICATOR OTP
+        [Authorize]
+        [HttpPost("verify-login-otp")]
+        public IActionResult VerifyLoginOtp(
+            [FromBody] VerifyAuthenticatorOtpDTO model)
+        {
+            if (string.IsNullOrWhiteSpace(model.Otp))
+            {
+                return BadRequest(new
+                {
+                    message = "Authenticator OTP is required"
+                });
+            }
+
+            if (!TryGetStageUser("login", out var user))
+            {
+                return Unauthorized(new
+                {
+                    message = "A valid login challenge token is required"
+                });
+            }
+
+            if (!user.IsTwoFactorEnabled ||
+                string.IsNullOrWhiteSpace(user.AuthenticatorSecret))
+            {
+                return Unauthorized(new
+                {
+                    message = "Authenticator verification is not available"
+                });
+            }
+
+            if (!_totpService.VerifyOtp(
+                user.AuthenticatorSecret, model.Otp))
+            {
+                return Unauthorized(new
+                {
+                    message = "Invalid authenticator OTP"
+                });
+            }
+
             return CreateJwtResponse(user);
         }
 
+        // 8. GOOGLE LOGIN
         [HttpPost("google")]
+        [AllowAnonymous]
         public async Task<IActionResult> GoogleLogin(
-            GoogleLoginDTO model)
+            [FromBody] GoogleLoginDTO model)
         {
             if (string.IsNullOrWhiteSpace(model.IdToken))
             {
@@ -226,32 +487,37 @@ namespace LoanApp_API.Controllers
 
             try
             {
-                var googleClientId =
-                    _configuration[
-                        "Authentication:Google:ClientId"
-                    ];
+                var clientId =
+                    _configuration["Authentication:Google:ClientId"];
 
-                if (string.IsNullOrWhiteSpace(googleClientId))
+                if (string.IsNullOrWhiteSpace(clientId))
                 {
                     return StatusCode(500, new
                     {
-                        message =
-                            "Google ClientId is not configured"
+                        message = "Google ClientId is not configured"
                     });
                 }
 
+<<<<<<< HEAD
                 payload =
                     await GoogleJsonWebSignature.ValidateAsync(
                         model.IdToken,
                         new GoogleJsonWebSignature.ValidationSettings
                         {
-                            Audience =
-                                new[]
-                                {
-                                    googleClientId
-                                }
+                            Audience = new[]
+                            {
+                                googleClientId
+                            }
                         }
                     );
+=======
+                payload = await GoogleJsonWebSignature.ValidateAsync(
+                    model.IdToken,
+                    new GoogleJsonWebSignature.ValidationSettings
+                    {
+                        Audience = new[] { clientId }
+                    });
+>>>>>>> 34a31db8a70434337dfb86b94b0052d3efa91f9e
             }
             catch
             {
@@ -261,192 +527,213 @@ namespace LoanApp_API.Controllers
                 });
             }
 
-            if (!payload.EmailVerified)
+            if (!payload.EmailVerified ||
+                string.IsNullOrWhiteSpace(payload.Email))
             {
                 return Unauthorized(new
                 {
-                    message =
-                        "Google email is not verified"
+                    message = "A verified Google email is required"
                 });
             }
 
             var email = payload.Email;
+            var user = _repo.GetUserByEmail(email);
 
-            if (string.IsNullOrWhiteSpace(email))
+            if (user != null)
             {
-                return BadRequest(new
-                {
-                    message =
-                        "Google account email not available"
-                });
-            }
-
-            var existingUser =
-                _repo.GetUserByEmail(email);
-
-            if (existingUser != null)
-            {
-                if (existingUser.RoleId != 1)
+                if (user.RoleId != 1)
                 {
                     return BadRequest(new
                     {
-                        message =
-                            "This Google account is not registered as a customer"
+                        message = "This Google account is not registered as a customer"
                     });
                 }
 
                 _repo.MarkEmailVerified(email);
-
-                return CreateJwtResponse(existingUser);
             }
-
-            var firstName =
-                payload.GivenName ?? "Google";
-
-            var lastName =
-                payload.FamilyName ?? "User";
-
-            var customer = new Customers
+            else
             {
-                FirstName = firstName,
-                LastName = lastName,
-                Age = 0,
-                Email = email,
+                var customer = new Customers
+                {
+                    FirstName = payload.GivenName ?? "Google",
+                    LastName = payload.FamilyName ?? "User",
+                    Age = 0,
+                    Email = email,
+                    Password = Guid.NewGuid().ToString(),
+                    MobileNo = string.Empty,
+                    Pan = string.Empty,
+                    AadhaarNo = string.Empty,
+                    EmploymentType = string.Empty,
+                    MonthlyIncome = string.Empty,
+                    IsEmailVerified = 1,
+                    EmailOtp = null,
+                    OtpExpiry = null
+                };
 
-                Password =
-                    Guid.NewGuid().ToString(),
-
-                MobileNo = string.Empty,
-
-                Pan = string.Empty,
-
-                AadhaarNo = string.Empty,
-
-                EmploymentType =
-                    string.Empty,
-
-                MonthlyIncome =
-                    string.Empty,
-
-                IsEmailVerified = 1,
-
-                EmailOtp = null,
-
-                OtpExpiry = null
-            };
-
-            _repo.CreateCustomer(customer);
-
-            var user =
-                _repo.GetUserByEmail(email);
+                _repo.CreateCustomer(customer);
+                user = _repo.GetUserByEmail(email);
+            }
 
             if (user == null)
             {
-                return StatusCode(
-                    500,
-                    new
-                    {
-                        message =
-                            "Google user creation failed"
-                    }
-                );
+                return StatusCode(500, new
+                {
+                    message = "Google user creation failed"
+                });
             }
 
-            return CreateJwtResponse(user);
-        }
-
-        [HttpPost("create-officer")]
-        public IActionResult CreateOfficer()
-        {
-            var officer =
-                new User
+            if (user.IsTwoFactorEnabled &&
+                !string.IsNullOrWhiteSpace(user.AuthenticatorSecret))
+            {
+                return Ok(new
                 {
-                    FirstName = "Test",
-                    LastName = "Officer",
-                    Email = "officer@test.com",
-                    Mobile = "9999999999",
-                    Password = "Officer@123",
-                    RoleId = 2,
-                    CustomerId = null
-                };
-
-            _repo.CreateOfficer(officer);
+                    message = "Enter your authenticator OTP",
+                    nextStep = "verify-login-otp",
+                    challengeToken = CreateStageToken(user, "login")
+                });
+            }
 
             return Ok(new
             {
-                message = "Officer created successfully",
-                email = officer.Email
+                message = "Set up your authenticator app to continue",
+                nextStep = "setup-2fa",
+                challengeToken = CreateStageToken(user, "setup")
             });
         }
 
-        private IActionResult CreateJwtResponse(
-            User user)
+<<<<<<< HEAD
+        private IActionResult CreateJwtResponse(User user)
+=======
+        // 9. SHORT-LIVED TOKEN FOR AN AUTHENTICATION STAGE
+        private string CreateStageToken(User user, string stage)
+>>>>>>> 34a31db8a70434337dfb86b94b0052d3efa91f9e
         {
-            var claims =
-                new[]
-                {
-                    new Claim(
-                        ClaimTypes.NameIdentifier,
-                        user.UserId.ToString()
-                    ),
+            var claims = new[]
+            {
+                new Claim(
+                    ClaimTypes.NameIdentifier,
+                    user.UserId.ToString()),
 
-                    new Claim(
-                        ClaimTypes.Email,
-                        user.Email
-                    ),
+                new Claim(ClaimTypes.Email, user.Email),
 
-                    new Claim(
-                        ClaimTypes.Role,
-                        user.RoleId.ToString()
-                    )
-                };
+                new Claim(
+                    ClaimTypes.Role,
+                    user.RoleId.ToString()),
 
-            var key =
-                new SymmetricSecurityKey(
-                    Encoding.UTF8.GetBytes(
-                        _configuration["Jwt:Key"]!
-                    )
-                );
+                new Claim("auth_stage", stage)
+            };
 
-            var credentials =
-                new SigningCredentials(
-                    key,
-                    SecurityAlgorithms.HmacSha256
-                );
+            return CreateToken(
+                claims,
+                DateTime.UtcNow.AddMinutes(5));
+        }
 
-            var token =
-                new JwtSecurityToken(
-                    issuer:
-                        _configuration["Jwt:Issuer"],
+        private bool TryGetStageUser(
+            string requiredStage,
+            out User user)
+        {
+            user = null!;
 
-                    audience:
-                        _configuration["Jwt:Audience"],
+            if (User.Identity?.IsAuthenticated != true)
+            {
+                return false;
+            }
 
-                    claims: claims,
+            var stage = User.FindFirst("auth_stage")?.Value;
 
-                    expires:
-                        DateTime.UtcNow.AddHours(2),
+            if (stage != requiredStage)
+            {
+                return false;
+            }
 
-                    signingCredentials:
-                        credentials
-                );
+            var userIdValue =
+                User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-            var jwtToken =
-                new JwtSecurityTokenHandler()
-                    .WriteToken(token);
+            if (!int.TryParse(userIdValue, out var userId))
+            {
+                return false;
+            }
+
+            var foundUser = _repo.GetUserById(userId);
+
+            if (foundUser == null)
+            {
+                return false;
+            }
+
+            user = foundUser;
+            return true;
+        }
+
+        // 10. FINAL JWT RESPONSE
+        private IActionResult CreateJwtResponse(User user)
+        {
+            var claims = new[]
+            {
+                new Claim(
+                    ClaimTypes.NameIdentifier,
+                    user.UserId.ToString()),
+
+                new Claim(ClaimTypes.Email, user.Email),
+
+                new Claim(
+                    ClaimTypes.Role,
+                    user.RoleId.ToString())
+            };
+
+            var token = CreateToken(
+                claims,
+                DateTime.UtcNow.AddHours(2));
 
             return Ok(new
             {
                 message = "Login successful",
-
-                token = jwtToken,
-
+                token = token,
                 userId = user.UserId,
-
                 roleId = user.RoleId,
-
                 customerId = user.CustomerId
             });
+        }
+
+        // 11. CREATE JWT
+        private string CreateToken(
+            IEnumerable<Claim> claims,
+            DateTime expiry)
+        {
+            var keyValue = _configuration["Jwt:Key"];
+
+            if (string.IsNullOrWhiteSpace(keyValue))
+            {
+                throw new InvalidOperationException(
+                    "JWT signing key is not configured");
+            }
+
+            var issuer = _configuration["Jwt:Issuer"];
+            var audience = _configuration["Jwt:Audience"];
+
+            if (string.IsNullOrWhiteSpace(issuer) ||
+                string.IsNullOrWhiteSpace(audience))
+            {
+                throw new InvalidOperationException(
+                    "JWT issuer or audience is not configured");
+            }
+
+            var key = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(keyValue));
+
+            var credentials = new SigningCredentials(
+                key,
+                SecurityAlgorithms.HmacSha256);
+
+            var token = new JwtSecurityToken(
+                issuer: issuer,
+                audience: audience,
+                claims: claims,
+                expires: expiry,
+                signingCredentials: credentials);
+
+            return new JwtSecurityTokenHandler()
+                .WriteToken(token);
         }
     }
 }

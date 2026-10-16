@@ -6,7 +6,8 @@ namespace LoanApp_API.Application.Interfaces
     {
         List<OfficerSupportTicketVM> GetAllTickets();
 
-        OfficerSupportTicketVM? GetTicketById(int ticketId);
+        OfficerSupportTicketVM? GetTicketById(
+            int ticketId);
 
         bool UpdateTicket(
             int ticketId,

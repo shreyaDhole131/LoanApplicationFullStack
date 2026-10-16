@@ -218,7 +218,7 @@ namespace LoanApp_API.Infrastructure.Repositories
             if (request.Status != "Approved")
                 return (false, "Only approved requests can be paid", null);
 
-            if (_razorpayKeyId == "" || _razorpayKeySecret == "")
+            if (string.IsNullOrWhiteSpace(_razorpayKeyId) || string.IsNullOrWhiteSpace(_razorpayKeySecret))
                 return (false, "Razorpay keys are not configured", null);
 
             decimal amount = GetPayableAmount(request);

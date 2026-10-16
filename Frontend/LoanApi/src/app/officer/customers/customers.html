@@ -1,0 +1,90 @@
+<div class="customers-layout">
+
+  <app-officer-sidebar></app-officer-sidebar>
+
+  <div class="customers-main">
+
+    @if (!selectedCustomer) {
+
+      <h2>Customers</h2>
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>KYC</th>
+            <th>CIBIL</th>
+            <th>Loan Amount</th>
+            <th>Loan Status</th>
+            <th>Date</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          @for (customer of customers; track customer.customerId) {
+            <tr>
+              <td>{{ customer.customerId }}</td>
+              <td>{{ customer.name }}</td>
+              <td>{{ customer.kycStatus }}</td>
+              <td>{{ customer.cibilScore }}</td>
+              <td>{{ customer.loanAmount }}</td>
+              <td>{{ customer.loanStatus }}</td>
+              <td>{{ customer.date }}</td>
+              <td>
+                <button
+                  type="button"
+                  class="btn btn-primary btn-sm"
+                  (click)="viewProfile(customer.customerId)">
+                  View Profile
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+
+    } @else {
+
+      <button
+        type="button"
+        class="btn btn-secondary mb-3"
+        (click)="backToCustomers()">
+        ← Back to Customers
+      </button>
+
+      <h2>Customer Profile</h2>
+
+      <h4>Customer Details</h4>
+
+      <p><strong>Name:</strong> {{ selectedCustomer.name }}</p>
+      <p><strong>Email:</strong> {{ selectedCustomer.email }}</p>
+      <p><strong>Mobile:</strong> {{ selectedCustomer.mobile }}</p>
+      <p><strong>PAN:</strong> {{ selectedCustomer.pan }}</p>
+      <p><strong>Aadhaar:</strong> {{ selectedCustomer.aadhaar }}</p>
+      <p><strong>Salary:</strong> {{ selectedCustomer.salary }}</p>
+      <p><strong>Employment:</strong> {{ selectedCustomer.employment }}</p>
+      <p><strong>Age:</strong> {{ selectedCustomer.age }}</p>
+      <p><strong>CIBIL Score:</strong> {{ selectedCustomer.cibilScore }}</p>
+
+      <h4>Score Card</h4>
+
+      <p><strong>Risk Category:</strong> {{ selectedCustomer.riskCategory }}</p>
+      <p><strong>Eligible Loan Amount:</strong> ₹ {{ selectedCustomer.eligibleLoanAmount }}</p>
+
+      <h4>Loan Details</h4>
+
+      @for (loan of selectedCustomer.loans; track loan.loanAccountNo) {
+        <p><strong>Loan Account:</strong> {{ loan.loanAccountNo }}</p>
+        <p><strong>Loan Amount:</strong> ₹ {{ loan.loanAmount }}</p>
+        <p><strong>EMI:</strong> ₹ {{ loan.emiAmount }}</p>
+        <p><strong>Interest Rate:</strong> {{ loan.interestRate }}%</p>
+        <p><strong>Status:</strong> {{ loan.loanStatus }}</p>
+      }
+
+    }
+
+  </div>
+
+</div>

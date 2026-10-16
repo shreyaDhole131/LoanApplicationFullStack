@@ -15,7 +15,6 @@ namespace LoanApp_API.Application.DTO
         public int CustomerId { get; set; }
         public string CustomerName { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
-
         public List<OfficerKycDocumentVM> Documents { get; set; } = new();
     }
 
