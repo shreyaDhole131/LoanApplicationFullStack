@@ -1,4 +1,3 @@
-
 using AutoMapper;
 using LoanApp_API.Application.DTO.User;
 using LoanApp_API.Application.Interfaces;
@@ -60,6 +59,7 @@ namespace LoanApp_API.Infrastructure.Repositories
                         "Email already registered");
                 }
 
+                // Generate a new OTP for an unverified customer.
                 existingCustomer.EmailOtp =
                     Random.Shared.Next(100000, 1000000).ToString();
 
@@ -86,11 +86,14 @@ namespace LoanApp_API.Infrastructure.Repositories
                 BCrypt.Net.BCrypt.HashPassword(model.Password);
 
             customer.IsEmailVerified = 0;
+
             customer.EmailOtp =
                 Random.Shared.Next(100000, 1000000).ToString();
+
             customer.OtpExpiry = DateTime.UtcNow.AddMinutes(5);
 
-            using var transaction = _db.Database.BeginTransaction();
+            using var transaction =
+                _db.Database.BeginTransaction();
 
             try
             {
@@ -137,7 +140,8 @@ namespace LoanApp_API.Infrastructure.Repositories
             customer.Password =
                 BCrypt.Net.BCrypt.HashPassword(customer.Password);
 
-            using var transaction = _db.Database.BeginTransaction();
+            using var transaction =
+                _db.Database.BeginTransaction();
 
             try
             {
@@ -368,7 +372,8 @@ namespace LoanApp_API.Infrastructure.Repositories
 
             if (user == null ||
                 user.IsTwoFactorEnabled ||
-                string.IsNullOrWhiteSpace(user.PendingAuthenticatorSecret) ||
+                string.IsNullOrWhiteSpace(
+                    user.PendingAuthenticatorSecret) ||
                 user.PendingAuthenticatorSecret != secret)
             {
                 return false;
@@ -381,6 +386,46 @@ namespace LoanApp_API.Infrastructure.Repositories
             _db.SaveChanges();
 
             return true;
+        }
+
+        // =========================================================
+        // ADDED SEED METHOD FOR HARDCODED OFFICER
+        // =========================================================
+        public void SeedOfficer()
+        {
+            // 1. Define the hardcoded officer details
+            var officerEmail = "officer@loanapp.com";
+            var officerPassword = "Officer@123";
+            var officerFirstName = "Default";
+            var officerLastName = "Officer";
+
+            // 2. Check if the officer already exists
+            var existingOfficer = GetUserByEmail(officerEmail);
+
+            if (existingOfficer == null)
+            {
+                // 3. Create the new officer
+                var officer = new User
+                {
+                    FirstName = officerFirstName,
+                    LastName = officerLastName,
+                    Email = officerEmail,
+                    Mobile = "0000000000",
+                    Password = BCrypt.Net.BCrypt.HashPassword(officerPassword),
+                    RoleId = 2,
+                    CustomerId = null,
+                    IsTwoFactorEnabled = false
+                };
+
+                _db.Users.Add(officer);
+                _db.SaveChanges();
+
+                Console.WriteLine($"✅ Hardcoded Officer Created: {officerEmail} / {officerPassword}");
+            }
+            else
+            {
+                Console.WriteLine($"ℹ️ Officer already exists: {officerEmail}");
+            }
         }
     }
 }
