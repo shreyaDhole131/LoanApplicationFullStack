@@ -1,0 +1,207 @@
+<div class="emi-container">
+
+  <h1>EMI Schedule</h1>
+
+
+  <div class="navbar-notifications">
+    <app-notification></app-notification>
+  </div>
+
+
+
+  <div class="loan-selection">
+
+    <label for="loanAccount">
+      Select Loan Account
+    </label>
+
+    <select
+      id="loanAccount"
+      [(ngModel)]="selectedLoanAccountId"
+      (ngModelChange)="onLoanAccountChange($event)"
+    >
+
+      <option [ngValue]="null">
+        
+      </option>
+
+
+      <option
+        *ngFor="let loan of loanAccounts"
+        [ngValue]="loan.loanAccountId"
+      >
+        {{ loan.loanAccountNo }}
+      </option>
+
+    </select>
+
+  </div>
+
+
+  <!-- Summary Cards -->
+  <div class="summary-container">
+
+    <!-- Paid EMIs -->
+    <div class="summary-card paid">
+
+      <h3>Paid EMIs</h3>
+
+      <p>
+        Count :
+        <strong>
+          {{ paidEmiCount }}
+        </strong>
+      </p>
+
+      <p>
+        Amount :
+        <strong>
+          ₹{{ paidEmiAmount | number:'1.0-0' }}
+        </strong>
+      </p>
+
+    </div>
+
+
+    <!-- Pending EMIs -->
+    <div class="summary-card pending">
+
+      <h3>Pending EMIs</h3>
+
+      <p>
+        Count :
+        <strong>
+          {{ pendingEmiCount }}
+        </strong>
+      </p>
+
+      <p>
+        Amount :
+        <strong>
+          ₹{{ pendingEmiAmount | number:'1.0-0' }}
+        </strong>
+      </p>
+
+    </div>
+
+
+    <!-- Remaining Balance -->
+    <div class="summary-card remaining">
+
+      <h3>Remaining Balance</h3>
+
+      <p>
+        EMIs Left :
+        <strong>
+          {{ remainingEmiCount }}
+        </strong>
+      </p>
+
+      <p>
+        Balance :
+        <strong>
+          ₹{{ remainingBalance | number:'1.0-0' }}
+        </strong>
+      </p>
+
+    </div>
+
+  </div>
+
+
+
+  <table>
+
+    <thead>
+
+      <tr>
+        <th>Installment</th>
+        <th>Due Date</th>
+        <th>EMI</th>
+        <th>Principal</th>
+        <th>Interest</th>
+        <th>Opening</th>
+        <th>Closing</th>
+        <th>Status</th>
+        <th>Action</th>
+      </tr>
+
+    </thead>
+
+
+    <tbody>
+
+  
+      <tr
+        *ngFor="let emi of allEmi; let i = index"
+      >
+
+        <td>
+          {{ emi.installmentNo }}
+        </td>
+
+        <td>
+          {{ emi.dueDate | date:'dd-MMM-yyyy' }}
+        </td>
+
+        <td>
+          ₹{{ emi.emi | number:'1.0-0' }}
+        </td>
+
+        <td>
+          ₹{{ emi.principalAmount | number:'1.0-0' }}
+        </td>
+
+        <td>
+          ₹{{ emi.interestAmount | number:'1.0-0' }}
+        </td>
+
+        <td>
+          ₹{{ emi.openingBalance | number:'1.0-0' }}
+        </td>
+
+        <td>
+          ₹{{ emi.closingBalance | number:'1.0-0' }}
+        </td>
+
+        <td
+          [class.paid-status]="emi.paymentStatus === 'Paid'"
+          [class.pending-status]="emi.paymentStatus === 'Pending'"
+        >
+          {{ emi.paymentStatus }}
+        </td>
+
+        <td>
+
+          <button
+            type="button"
+            class="btn btn-success btn-sm"
+            [disabled]="!canPay(i)"
+            (click)="payEmi(emi)"
+          >
+            Pay
+          </button>
+
+        </td>
+
+      </tr>
+
+
+      <tr *ngIf="allEmi.length === 0">
+
+        <td
+          colspan="9"
+          class="no-data"
+        >
+
+          No EMI schedule found.
+
+        </td>
+
+      </tr>
+
+    </tbody>
+
+  </table>
+
+</div>

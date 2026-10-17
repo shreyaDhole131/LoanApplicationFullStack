@@ -1,0 +1,240 @@
+/* =========================================
+   Notification Container
+   ========================================= */
+
+.notification-container {
+  position: fixed !important;
+
+  top: 25px;
+  right: 30px;
+
+  width: 50px;
+  height: 50px;
+
+  z-index: 10000;
+}
+
+
+/* =========================================
+   Bell Button
+   ========================================= */
+
+.bell-button {
+  position: relative;
+
+  width: 50px;
+  height: 50px;
+
+  padding: 0;
+  margin: 0;
+
+  border: none !important;
+  outline: none;
+
+  background: transparent !important;
+
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  box-sizing: border-box;
+}
+
+
+/* Bell icon */
+
+.bell-icon {
+  display: block;
+
+  font-size: 32px;
+  line-height: 1;
+
+  pointer-events: none;
+}
+
+
+/* =========================================
+   Notification Count
+   ========================================= */
+
+.badge {
+  position: absolute;
+
+  top: -4px;
+  right: -5px;
+
+  min-width: 25px;
+  height: 25px;
+
+  padding: 0 6px;
+
+  border-radius: 50%;
+
+  background: #f44336;
+  color: white;
+
+  font-size: 14px;
+  font-weight: bold;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  box-sizing: border-box;
+
+  z-index: 10001;
+}
+
+
+/* =========================================
+   Notification Dropdown
+   ========================================= */
+
+.notification-dropdown {
+  position: absolute !important;
+
+  top: 60px;
+  right: 0;
+
+  width: 440px;
+
+  max-height: 400px;
+
+  overflow-y: auto;
+
+  background: white;
+
+  border: 1px solid #d5d5d5;
+  border-radius: 8px;
+
+  box-shadow:
+    0 5px 20px rgba(0, 0, 0, 0.20);
+
+  z-index: 10002;
+
+  box-sizing: border-box;
+}
+
+
+/* =========================================
+   Dropdown Title
+   ========================================= */
+
+.dropdown-title {
+  padding: 18px 22px;
+
+  font-size: 20px;
+  font-weight: 500;
+
+  color: #555;
+
+  background: white;
+
+  border-bottom: 1px solid #eeeeee;
+
+  box-sizing: border-box;
+}
+
+
+/* =========================================
+   Notification Item
+   ========================================= */
+
+.notification-item {
+  display: flex;
+
+  align-items: flex-start;
+
+  gap: 10px;
+
+  width: 100%;
+
+  padding: 15px 20px;
+
+  font-size: 18px;
+
+  line-height: 1.4;
+
+  cursor: pointer;
+
+  background: white;
+
+  box-sizing: border-box;
+
+  transition: background-color 0.2s;
+}
+
+
+.notification-item:hover {
+  background-color: #f5f7fa;
+}
+
+
+/* =========================================
+   Calendar Icon
+   ========================================= */
+
+.calendar-icon {
+  flex-shrink: 0;
+
+  font-size: 22px;
+
+  line-height: 1.4;
+}
+
+
+/* =========================================
+   Notification Message
+   ========================================= */
+
+.notification-item span:last-child {
+  flex: 1;
+}
+
+
+/* =========================================
+   Empty Message
+   ========================================= */
+
+.empty-message {
+  padding: 20px;
+
+  text-align: center;
+
+  color: #777;
+
+  font-size: 16px;
+
+  background: white;
+}
+
+
+/* =========================================
+   Unread Notification
+   ========================================= */
+
+.notification-item.unread {
+  font-weight: 500;
+}
+
+
+/* =========================================
+   Mobile
+   ========================================= */
+
+@media (max-width: 600px) {
+
+  .notification-container {
+    top: 15px;
+    right: 15px;
+  }
+
+  .notification-dropdown {
+    width: 90vw;
+
+    right: -10px;
+  }
+
+}

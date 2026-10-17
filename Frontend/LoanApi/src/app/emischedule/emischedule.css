@@ -1,0 +1,238 @@
+/* Main container */
+.emi-container {
+  padding: 22px;
+  background: #f5f7fb;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+
+/* Heading */
+.emi-container h1 {
+  font-size: 30px;
+  font-weight: 500;
+  margin: 5px 0 35px 0;
+}
+
+
+/* Notifications */
+.navbar-notifications {
+  position: absolute;
+  top: 25px;
+  right: 35px;
+  z-index: 1000;
+}
+
+
+/* Loan Account Selection */
+.loan-selection {
+  width: 445px;
+  margin-bottom: 15px;
+}
+
+.loan-selection label {
+  display: block;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.loan-selection select {
+  width: 100%;
+  height: 35px;
+  padding: 5px 10px;
+  border: 1px solid #d5dbe5;
+  border-radius: 5px;
+  background: #fff;
+  font-size: 14px;
+  outline: none;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.loan-selection select:focus {
+  border-color: #999;
+}
+
+
+/* Summary cards */
+.summary-container {
+  display: flex;
+  gap: 22px;
+  margin-top: 15px;
+  margin-bottom: 22px;
+  align-items: stretch;
+}
+
+.summary-card {
+  width: 330px;
+  min-height: 108px;
+  padding: 14px 15px;
+  border-radius: 5px;
+  background: #fff;
+  border: 1px solid;
+  box-sizing: border-box;
+}
+
+.summary-card h3 {
+  margin: 0 0 10px 0;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.summary-card p {
+  margin: 7px 0;
+  font-size: 15px;
+}
+
+.summary-card strong {
+  font-weight: 700;
+}
+
+
+/* Paid */
+.summary-card.paid {
+  border-color: #16a34a;
+}
+
+.summary-card.paid h3 {
+  color: #008f4c;
+}
+
+
+/* Pending */
+.summary-card.pending {
+  border-color: #ef233c;
+}
+
+.summary-card.pending h3 {
+  color: #ef233c;
+}
+
+
+/* Remaining */
+.summary-card.remaining {
+  border-color: #0066ff;
+}
+
+.summary-card.remaining h3 {
+  color: #0066ff;
+}
+
+
+/* EMI Table */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  table-layout: auto;
+  font-size: 15px;
+}
+
+thead {
+  background: #fff;
+}
+
+th,
+td {
+  border: 1px solid #d9dee7;
+  padding: 9px 8px;
+  text-align: left;
+  white-space: nowrap;
+}
+
+th {
+  font-size: 15px;
+  font-weight: 700;
+  color: #111;
+  height: 38px;
+}
+
+td {
+  height: 38px;
+  box-sizing: border-box;
+}
+
+
+/* Status */
+.paid-status {
+  color: #008f4c;
+  font-weight: 400;
+}
+
+.pending-status {
+  color: #ef233c;
+  font-weight: 400;
+}
+
+
+/* Pay button */
+.btn-success {
+  padding: 5px 14px;
+  font-size: 13px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-success:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+
+/* No data */
+.no-data {
+  text-align: center;
+  padding: 20px;
+  font-size: 15px;
+}
+
+
+/* Responsive */
+@media (max-width: 1000px) {
+
+  .summary-container {
+    flex-wrap: wrap;
+  }
+
+  .summary-card {
+    width: 30%;
+    min-width: 250px;
+  }
+
+  table {
+    display: block;
+    overflow-x: auto;
+  }
+}
+
+
+@media (max-width: 700px) {
+
+  .emi-container {
+    padding: 15px;
+  }
+
+  .emi-container h1 {
+    font-size: 26px;
+    margin-bottom: 25px;
+  }
+
+  .loan-selection {
+    width: 100%;
+  }
+
+  .summary-container {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .summary-card {
+    width: 100%;
+  }
+
+  .navbar-notifications {
+    position: static;
+    margin-bottom: 15px;
+  }
+}
