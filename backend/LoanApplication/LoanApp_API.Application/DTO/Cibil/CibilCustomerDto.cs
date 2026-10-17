@@ -13,6 +13,7 @@ namespace LoanApp_API.Application.DTO.Cibil
         public string Email { get; set; } = string.Empty;
 
         public string MonthlyIncome { get; set; } = string.Empty;
-    }
 
+        public string MaskedPan { get; set; } = string.Empty;
+    }
 }

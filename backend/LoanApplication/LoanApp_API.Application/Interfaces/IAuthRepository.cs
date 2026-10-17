@@ -7,7 +7,7 @@ namespace LoanApp_API.Application.Interfaces
         User? GetUserByEmail(string email);
 
         Customers? GetCustomerByEmail(string email);
-
+        
         User CreateUser(User user);
 
         User CreateOfficer(User user);
