@@ -8,9 +8,7 @@ declare var $: any;
 @Component({
   selector: 'app-generate-sanction',
   imports: [CommonModule, FormsModule, ReactiveFormsModule],
-  templateUrl: './generate-sanction.html',
-  styleUrl: './generate-sanction.css',
-})
+  templateUrl: './generate-sanction.html'})
 export class GenerateSanction {
   constructor(private service: SanctionService, private cd: ChangeDetectorRef) {
     this.fetchpendingcusts();

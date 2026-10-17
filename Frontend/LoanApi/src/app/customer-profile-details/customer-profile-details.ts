@@ -7,9 +7,7 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-customer-profile-details',
   imports: [CommonModule],
-  templateUrl: './customer-profile-details.html',
-  styleUrl: './customer-profile-details.css',
-})
+  templateUrl: './customer-profile-details.html'})
 export class CustomerProfileDetails {
 
   constructor(private service: Pendingdeals, private cdr: ChangeDetectorRef, private route: ActivatedRoute) {
