@@ -1,0 +1,40 @@
+<div class="login-page">
+
+  <div class="login-box">
+
+    <div class="login-header">
+      <span class="login-icon">🏦</span>
+      <h2>Loan Application</h2>
+      <p>Login</p>
+    </div>
+
+    <form (ngSubmit)="login()" autocomplete="off">
+
+      <input
+        type="email"
+        placeholder="Email"
+        [(ngModel)]="model.email"
+        name="email"
+      >
+
+      <input
+        type="password"
+        placeholder="Password"
+        [(ngModel)]="model.password"
+        name="password"
+      >
+
+      <button type="submit">Login</button>
+
+      <button
+        type="button"
+        class="register-btn"
+        (click)="register()">
+        Register
+      </button>
+
+    </form>
+
+  </div>
+
+</div>

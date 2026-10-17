@@ -1,0 +1,41 @@
+<div class="setup-container">
+  <div class="setup-card">
+    <h2>Set Up Two-Factor Authentication</h2>
+    <p class="description">
+      Scan the QR code using Google Authenticator or another authenticator app.
+    </p>
+
+    @if (loading && !qrImageUrl) {
+      <div class="loading">Loading QR code...</div>
+    }
+
+    @if (errorMessage) {
+      <div class="error">{{ errorMessage }}</div>
+    }
+
+    @if (qrImageUrl) {
+      <div class="qr-section">
+        <p>Scan this QR code with your authenticator app.</p>
+        <!-- Notice we are using [src] here -->
+        <img [src]="qrImageUrl" alt="Authenticator QR Code" width="250" height="250" />
+      </div>
+
+      <div class="otp-section">
+        <label for="otp">Enter the 6-digit code from your authenticator app</label>
+        <input id="otp" type="text" inputmode="numeric" maxlength="6" autocomplete="one-time-code" [(ngModel)]="otp" placeholder="Enter 6-digit OTP" />
+        
+        <button type="button" (click)="verifySetup()" [disabled]="loading">
+          @if (!loading) {
+            <span>Verify & Enable 2FA</span>
+          } @else {
+            <span>Verifying...</span>
+          }
+        </button>
+      </div>
+    }
+
+    @if (successMessage) {
+      <div class="success">{{ successMessage }}</div>
+    }
+  </div>
+</div>

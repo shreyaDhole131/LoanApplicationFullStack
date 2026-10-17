@@ -17,18 +17,28 @@ namespace LoanApp_API.Infrastructure.Email
 
         public async Task SendOtpAsync(string email, string otp)
         {
+            var senderName = _configuration["Email:SenderName"];
+            var senderEmail = _configuration["Email:SenderEmail"];
+            var appPassword = _configuration["Email:AppPassword"];
+            var smtpHost = _configuration["Email:SmtpHost"];
+            var smtpPort = _configuration["Email:SmtpPort"];
+
+            if (string.IsNullOrWhiteSpace(senderName) ||
+                string.IsNullOrWhiteSpace(senderEmail) ||
+                string.IsNullOrWhiteSpace(appPassword) ||
+                string.IsNullOrWhiteSpace(smtpHost) ||
+                !int.TryParse(smtpPort, out var port))
+            {
+                throw new InvalidOperationException(
+                    "Email configuration is missing or invalid.");
+            }
+
             var message = new MimeMessage();
 
             message.From.Add(
-                new MailboxAddress(
-                    _configuration["Email:SenderName"],
-                    _configuration["Email:SenderEmail"]
-                )
-            );
+                new MailboxAddress(senderName, senderEmail));
 
-            message.To.Add(
-                MailboxAddress.Parse(email)
-            );
+            message.To.Add(MailboxAddress.Parse(email));
 
             message.Subject = "LoanApp - Email Verification OTP";
 
@@ -37,24 +47,21 @@ namespace LoanApp_API.Infrastructure.Email
                 Text =
                     $"Hello,\n\n" +
                     $"Your LoanApp verification OTP is: {otp}\n\n" +
-                    $"This OTP is valid for 5 minutes.\n\n" +
-                    $"Please do not share this OTP with anyone.\n\n" +
-                    $"Thank you,\n" +
-                    $"LoanApp Team"
+                    "This OTP is valid for 5 minutes.\n\n" +
+                    "Please do not share this OTP with anyone.\n\n" +
+                    "Thank you,\nLoanApp Team"
             };
 
             using var smtp = new SmtpClient();
 
             await smtp.ConnectAsync(
-                _configuration["Email:SmtpHost"],
-                int.Parse(_configuration["Email:SmtpPort"]!),
-                SecureSocketOptions.StartTls
-            );
+                smtpHost,
+                port,
+                SecureSocketOptions.StartTls);
 
             await smtp.AuthenticateAsync(
-                _configuration["Email:SenderEmail"],
-                _configuration["Email:AppPassword"]
-            );
+                senderEmail,
+                appPassword);
 
             await smtp.SendAsync(message);
 

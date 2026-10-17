@@ -1,4 +1,6 @@
-﻿namespace LoanApp_API.Application.DTO
+﻿using LoanApp_API.Application.DTO.ScoreCard;
+
+namespace LoanApp_API.Application.DTO
 {
     public class CustomerProfileDTO
     {
@@ -16,5 +18,9 @@
 
         public string EmploymentType { get; set; } = string.Empty;
         public string MonthlyIncome { get; set; } = string.Empty;
+        public List<KycDocumentDTO> KycDocuments { get; set; } = new();
+
+        public List<LoanAccountDto> LoanAccounts { get; set; } = new();
+        public List<ScoreCardProfileDto> ScoreCards { get; set; } = new();
     }
 }
