@@ -1,0 +1,92 @@
+.customer-profile-page {
+  background: #f4f6fb;
+  padding: 1.5rem 2rem;
+  min-height: 100vh;
+}
+
+
+.section-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #0b2545;
+  margin-bottom: 0.75rem;
+}
+
+
+.customer-name {
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 1rem;
+}
+
+
+.detail-list {
+  margin-bottom: 0.5rem;
+}
+
+.detail-row {
+  display: block;
+  margin-bottom: 0.75rem;
+  font-size: 1rem;
+  color: #1e293b;
+}
+
+.detail-label {
+  font-weight: 500;
+  color: #334155;
+  margin-right: 4px;
+}
+
+.detail-value {
+  color: #0f172a;
+}
+
+
+.section-divider {
+  border: 0;
+  border-top: 1px solid #e2e8f0;
+  margin: 1.5rem 0;
+}
+
+
+.action-block {
+  margin-top: 1rem;
+}
+
+
+.btn-approve {
+  display: block;
+  width: 100%;
+  background-color: #1e7a3c;
+  border: none;
+  color: #ffffff;
+  font-weight: 500;
+  padding: 0.65rem 1rem;
+  border-radius: 6px;
+  font-size: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.btn-approve:hover,
+.btn-approve:focus {
+  background-color: #16632f;
+  color: #ffffff;
+}
+
+
+.btn-reject {
+  background-color: #d9363e;
+  border: none;
+  color: #ffffff;
+  font-weight: 500;
+  padding: 0.4rem 1rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+
+.btn-reject:hover,
+.btn-reject:focus {
+  background-color: #b52a32;
+  color: #ffffff;
+}

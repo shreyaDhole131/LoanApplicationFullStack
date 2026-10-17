@@ -1,0 +1,137 @@
+/* Page background to separate from TL's sidebar */
+.sanction-page {
+  background: #f4f6fb;
+  padding: 1.5rem;
+  min-height: 100vh;
+}
+
+/* Titles */
+.page-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #0b2545;
+}
+
+/* Cards */
+.filter-card,
+.table-card {
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
+}
+
+/* Filter labels */
+.form-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #334155;
+  margin-bottom: 0.35rem;
+}
+
+/* Inputs */
+.form-control {
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  height: 42px;
+}
+
+.form-control:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 0.15rem rgba(37, 99, 235, 0.15);
+}
+
+/* Primary button matches TL's sidebar blue */
+.btn-primary {
+  background-color: #2563eb;
+  border-color: #2563eb;
+  font-weight: 500;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+  background-color: #1d4ed8;
+  border-color: #1d4ed8;
+}
+
+/* Generate button */
+.btn-generate {
+  padding: 0.5rem 1.1rem;
+  border-radius: 6px;
+  font-weight: 500;
+}
+
+/* Table */
+.sl-table {
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.sl-table thead th {
+  background-color: #0b2545;
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-transform: none;
+  border-color: #0b2545;
+  padding: 0.85rem 1rem;
+  white-space: nowrap;
+}
+
+.sl-table tbody td {
+  padding: 0.85rem 1rem;
+  border-color: #eef2f7;
+  font-size: 0.9rem;
+  color: #1e293b;
+}
+
+.sl-table tbody tr:hover {
+  background-color: #f8fafc;
+}
+
+.fw-500 {
+  font-weight: 500;
+}
+
+/* Loan type badge */
+.loan-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border: 1px solid #2563eb;
+  border-radius: 4px;
+  color: #2563eb;
+  font-size: 0.78rem;
+  font-weight: 500;
+  background: #ffffff;
+  white-space: nowrap;
+}
+
+/* Small buttons in table */
+.sl-table .btn-sm {
+  padding: 0.3rem 0.7rem;
+  font-size: 0.78rem;
+  border-radius: 5px;
+}
+
+/* Pagination */
+.pagination .page-link {
+  color: #2563eb;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  margin: 0 2px;
+  padding: 0.4rem 0.75rem;
+  font-size: 0.85rem;
+}
+
+.pagination .page-item.active .page-link {
+  background-color: #2563eb;
+  border-color: #2563eb;
+  color: #ffffff;
+}
+
+.pagination .page-item.disabled .page-link {
+  color: #cbd5e1;
+  background-color: #f8fafc;
+  border-color: #e2e8f0;
+}

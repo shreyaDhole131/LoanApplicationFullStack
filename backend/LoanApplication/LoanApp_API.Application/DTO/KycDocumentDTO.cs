@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Microsoft.AspNetCore.Http;
 
 namespace LoanApp_API.Application.DTO
 {
@@ -10,6 +8,8 @@ namespace LoanApp_API.Application.DTO
 
         public string DocumentType { get; set; } = string.Empty;
 
-        public string FilePath { get; set; } = string.Empty;
+        public string? FilePath { get; set; }
+
+        public IFormFile? File { get; set; }
     }
 }

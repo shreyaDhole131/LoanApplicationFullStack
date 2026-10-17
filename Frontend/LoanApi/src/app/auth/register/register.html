@@ -1,0 +1,154 @@
+
+<div class="register-container">
+  <div class="register-card">
+    <h2>Create Account</h2>
+    <p class="subtitle">Register for your Loan Application account</p>
+
+    <form #registerForm="ngForm" (ngSubmit)="register()">
+
+      <div class="form-group">
+        <label for="firstName">First Name</label>
+        <input
+          id="firstName"
+          type="text"
+          name="firstName"
+          [(ngModel)]="model.firstName"
+          placeholder="Enter first name"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="lastName">Last Name</label>
+        <input
+          id="lastName"
+          type="text"
+          name="lastName"
+          [(ngModel)]="model.lastName"
+          placeholder="Enter last name"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="age">Age</label>
+        <input
+          id="age"
+          type="number"
+          name="age"
+          [(ngModel)]="model.age"
+          placeholder="Enter age"
+          min="18"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          id="email"
+          type="email"
+          name="email"
+          [(ngModel)]="model.email"
+          placeholder="Enter email address"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input
+          id="password"
+          type="password"
+          name="password"
+          [(ngModel)]="model.password"
+          placeholder="Create password"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="mobileNo">Mobile Number</label>
+        <input
+          id="mobileNo"
+          type="tel"
+          name="mobileNo"
+          [(ngModel)]="model.mobileNo"
+          placeholder="Enter mobile number"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="pan">PAN Number</label>
+        <input
+          id="pan"
+          type="text"
+          name="pan"
+          [(ngModel)]="model.pan"
+          placeholder="Enter PAN number"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="aadhaarNo">Aadhaar Number</label>
+        <input
+          id="aadhaarNo"
+          type="text"
+          name="aadhaarNo"
+          [(ngModel)]="model.aadhaarNo"
+          placeholder="Enter Aadhaar number"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="employmentType">Employment Type</label>
+        <select
+          id="employmentType"
+          name="employmentType"
+          [(ngModel)]="model.employmentType"
+          required
+        >
+          <option value="" disabled>Select employment type</option>
+          <option value="Salaried">Salaried</option>
+          <option value="Self-Employed">Self-Employed</option>
+          <option value="Business">Business</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="monthlyIncome">Monthly Income</label>
+        <input
+          id="monthlyIncome"
+          type="text"
+          name="monthlyIncome"
+          [(ngModel)]="model.monthlyIncome"
+          placeholder="Enter monthly income"
+          required
+        />
+      </div>
+
+      <button
+        type="submit"
+        [disabled]="registerForm.invalid"
+      >
+        Register
+      </button>
+
+      <button
+        type="button"
+        class="back-button"
+        (click)="goBack()"
+      >
+        Back
+      </button>
+
+    </form>
+<p class="login-link">
+  Already have an account?
+  <a [routerLink]="['/login']">Login</a>
+</p>
+  </div>
+</div>

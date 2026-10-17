@@ -47,6 +47,11 @@ public class AppDbContext : DbContext
         {
             relationship.DeleteBehavior = DeleteBehavior.NoAction;
         }
+        modelBuilder.Entity<LoanPayment>()
+    .HasOne(x => x.EmiSchedule)
+    .WithMany()
+    .HasForeignKey(x => x.EmiScheduleId)
+    .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.Entity<ForeClosureRequest>(entity =>
         {

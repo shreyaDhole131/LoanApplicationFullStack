@@ -1,4 +1,5 @@
-﻿using LoanApp_API.Application.Interfaces;
+﻿
+using LoanApp_API.Application.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

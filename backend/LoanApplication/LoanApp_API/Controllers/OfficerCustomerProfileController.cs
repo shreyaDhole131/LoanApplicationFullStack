@@ -11,10 +11,16 @@ namespace LoanApp_API.Controllers
     {
         private readonly IOfficerCustomerProfileRepository _repo;
 
-        public OfficerCustomerProfileController(
-            IOfficerCustomerProfileRepository repo)
+        public OfficerCustomerProfileController(IOfficerCustomerProfileRepository repo)
         {
             _repo = repo;
+        }
+
+        [HttpGet]
+        public IActionResult GetAllCustomers()
+        {
+            var customers = _repo.GetAllCustomers();
+            return Ok(customers);
         }
 
         [HttpGet("{customerId}")]
@@ -24,10 +30,7 @@ namespace LoanApp_API.Controllers
 
             if (profile == null)
             {
-                return NotFound(new
-                {
-                    message = "Customer not found"
-                });
+                return NotFound(new { message = "Customer not found" });
             }
 
             return Ok(profile);

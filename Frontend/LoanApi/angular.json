@@ -9,7 +9,11 @@
   "projects": {
     "LoanApi": {
       "projectType": "application",
-      "schematics": {},
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "css"
+        }
+      },
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
@@ -41,10 +45,10 @@
             "production": {
               "budgets": [
                 {
-                  "type": "initial",
-                  "maximumWarning": "500kB",
-                  "maximumError": "1MB"
-                },
+  "type": "initial",
+  "maximumWarning": "1100kB",
+  "maximumError": "1200kB"
+},
                 {
                   "type": "anyComponentStyle",
                   "maximumWarning": "4kB",

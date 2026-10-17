@@ -11,13 +11,17 @@ namespace LoanApp_API.Controllers
     public class OfficerKycController : ControllerBase
     {
         private readonly IOfficerKycRepository _repo;
+        private readonly IWebHostEnvironment _environment;
 
-        public OfficerKycController(IOfficerKycRepository repo)
+        public OfficerKycController(
+            IOfficerKycRepository repo,
+            IWebHostEnvironment environment)
         {
             _repo = repo;
+            _environment = environment;
         }
 
-        // 1. Get all customers having KYC documents
+        // Get all customers who have uploaded KYC
         [HttpGet]
         public IActionResult GetKycCustomers()
         {
@@ -26,7 +30,7 @@ namespace LoanApp_API.Controllers
             return Ok(customers);
         }
 
-        // 2. Get KYC details of a particular customer
+        // Get one customer's KYC documents
         [HttpGet("{customerId}")]
         public IActionResult GetCustomerKyc(int customerId)
         {
@@ -43,11 +47,61 @@ namespace LoanApp_API.Controllers
             return Ok(customer);
         }
 
-        // 3. Approve selected KYC documents
+        // View actual uploaded KYC document
+        [HttpGet("document/{documentId}/view")]
+        public IActionResult ViewDocument(int documentId)
+        {
+            var document = _repo.GetDocumentById(documentId);
+
+            if (document == null)
+            {
+                return NotFound(new
+                {
+                    message = "KYC document not found"
+                });
+            }
+
+            var folderPath = Path.Combine(
+                _environment.WebRootPath ?? "wwwroot",
+                "KycDocuments"
+            );
+
+            var filePath = Path.Combine(
+                folderPath,
+                document.FilePath
+            );
+
+            if (!System.IO.File.Exists(filePath))
+            {
+                return NotFound(new
+                {
+                    message = "File not found"
+                });
+            }
+
+            var extension = Path.GetExtension(filePath).ToLower();
+
+            var contentType = extension switch
+            {
+                ".pdf" => "application/pdf",
+                ".png" => "image/png",
+                ".jpg" => "image/jpeg",
+                ".jpeg" => "image/jpeg",
+                _ => "application/octet-stream"
+            };
+
+            return PhysicalFile(
+                filePath,
+                contentType
+            );
+        }
+
+        // Approve KYC documents
         [HttpPut("approve")]
         public IActionResult ApproveKyc(OfficerKycStatusDTO model)
         {
-            if (model.DocumentIds == null || model.DocumentIds.Count == 0)
+            if (model.DocumentIds == null ||
+                model.DocumentIds.Count == 0)
             {
                 return BadRequest(new
                 {
@@ -74,11 +128,12 @@ namespace LoanApp_API.Controllers
             });
         }
 
-        // 4. Reject selected KYC documents
+        // Reject KYC documents
         [HttpPut("reject")]
         public IActionResult RejectKyc(OfficerKycStatusDTO model)
         {
-            if (model.DocumentIds == null || model.DocumentIds.Count == 0)
+            if (model.DocumentIds == null ||
+                model.DocumentIds.Count == 0)
             {
                 return BadRequest(new
                 {

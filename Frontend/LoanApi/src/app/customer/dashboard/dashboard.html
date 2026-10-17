@@ -1,0 +1,610 @@
+<div class="layout">
+
+  <!-- EXISTING CUSTOMER SIDEBAR -->
+  <app-sidebar></app-sidebar>
+
+  <div class="content">
+
+    <!-- HEADER -->
+    <div class="page-header">
+
+      <div>
+        <h1>Customer Dashboard</h1>
+        <p>
+          Welcome back,
+          <strong>{{ data?.customerName }}</strong>
+        </p>
+      </div>
+
+      <div class="customer-id">
+        <span>Customer ID</span>
+        <strong>#{{ data?.customerId }}</strong>
+      </div>
+
+    </div>
+
+
+    <!-- LOADING -->
+    <div class="loading" *ngIf="loading">
+      Loading dashboard...
+    </div>
+
+
+    <!-- ERROR -->
+    <div class="error" *ngIf="errorMessage">
+      {{ errorMessage }}
+    </div>
+
+
+    <!-- DASHBOARD -->
+    <div
+      class="dashboard-container"
+      *ngIf="data && !loading">
+
+
+      <!-- ==========================================
+           TOP 4 SUMMARY CARDS
+      =========================================== -->
+
+      <div class="summary-grid">
+
+        <div class="summary-card">
+
+          <div class="summary-icon blue">
+            ▣
+          </div>
+
+          <div>
+            <span>Total Applications</span>
+            <strong>
+              {{ data.totalApplications }}
+            </strong>
+            <small>Loan applications</small>
+          </div>
+
+        </div>
+
+
+        <div class="summary-card">
+
+          <div class="summary-icon green">
+            ₹
+          </div>
+
+          <div>
+            <span>Active Loans</span>
+            <strong>
+              {{ data.totalActiveLoanAccounts }}
+            </strong>
+            <small>Active loan accounts</small>
+          </div>
+
+        </div>
+
+
+        <div class="summary-card">
+
+          <div class="summary-icon orange">
+            ₹
+          </div>
+
+          <div>
+            <span>Total Paid</span>
+            <strong>
+              {{ formatAmount(data.emiSummary?.totalPaidAmount) }}
+            </strong>
+            <small>Total payments</small>
+          </div>
+
+        </div>
+
+
+        <div class="summary-card">
+
+          <div class="summary-icon purple">
+            ◷
+          </div>
+
+          <div>
+            <span>Remaining EMIs</span>
+            <strong>
+              {{ data.emiSummary?.remainingEmis || 0 }}
+            </strong>
+            <small>EMIs remaining</small>
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- ==========================================
+           ROW 2
+           PROGRESS + ACTIVE LOAN
+      =========================================== -->
+
+      <div class="top-two-grid">
+
+
+        <!-- LOAN APPLICATION PROGRESS -->
+
+        <div class="dashboard-card progress-card">
+
+          <div class="card-header">
+
+            <div>
+              <h2>Loan Application Progress</h2>
+              <p>Track your application journey</p>
+            </div>
+
+            <strong class="progress-percent">
+              {{ getApplicationProgress() }}%
+            </strong>
+
+          </div>
+
+
+          <div class="progress-bar">
+
+            <div
+              class="progress-fill"
+              [style.width.%]="getApplicationProgress()">
+            </div>
+
+          </div>
+
+
+          <div class="progress-steps">
+
+            <div
+              class="progress-step"
+              [class.completed]="isStepCompleted('submitted')">
+
+              <div class="step-circle">
+                ✓
+              </div>
+
+              <span>Submitted</span>
+
+            </div>
+
+
+            <div
+              class="progress-step"
+              [class.completed]="isStepCompleted('approved')">
+
+              <div class="step-circle">
+                ✓
+              </div>
+
+              <span>Approved</span>
+
+            </div>
+
+
+            <div
+              class="progress-step"
+              [class.completed]="isStepCompleted('disbursed')">
+
+              <div class="step-circle">
+                ✓
+              </div>
+
+              <span>Disbursed</span>
+
+            </div>
+
+
+            <div
+              class="progress-step"
+              [class.completed]="isStepCompleted('active')">
+
+              <div class="step-circle">
+                ✓
+              </div>
+
+              <span>Active</span>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- ACTIVE LOAN OVERVIEW -->
+
+        <div class="dashboard-card loan-card">
+
+          <div class="card-header">
+
+            <div>
+              <h2>Active Loan Overview</h2>
+              <p>Current loan account details</p>
+            </div>
+
+            <span class="status-badge">
+              {{ data.selectedLoanDetails?.loanStatus || 'N/A' }}
+            </span>
+
+          </div>
+
+
+          <div
+            class="loan-account"
+            *ngIf="data.selectedLoanDetails">
+
+            <span>Loan Account</span>
+
+            <strong>
+              {{ data.selectedLoanDetails.loanAccountNo }}
+            </strong>
+
+          </div>
+
+
+          <div
+            class="loan-details"
+            *ngIf="data.selectedLoanDetails">
+
+            <div>
+              <span>Loan Type</span>
+              <strong>
+                {{ data.selectedLoanDetails.loanType }}
+              </strong>
+            </div>
+
+            <div>
+              <span>Loan Amount</span>
+              <strong>
+                {{ formatAmount(data.selectedLoanDetails.loanAmount) }}
+              </strong>
+            </div>
+
+            <div>
+              <span>Outstanding</span>
+              <strong>
+                {{ formatAmount(data.selectedLoanDetails.outstandingPrincipal) }}
+              </strong>
+            </div>
+
+            <div>
+              <span>Interest Rate</span>
+              <strong>
+                {{ data.selectedLoanDetails.interestRate }}%
+              </strong>
+            </div>
+
+            <div>
+              <span>Tenure</span>
+              <strong>
+                {{ data.selectedLoanDetails.tenureMonths }}
+                Months
+              </strong>
+            </div>
+
+            <div>
+              <span>Monthly EMI</span>
+              <strong>
+                {{ formatAmount(data.selectedLoanDetails.emiAmount) }}
+              </strong>
+            </div>
+
+          </div>
+
+
+          <div
+            class="empty-data"
+            *ngIf="!data.selectedLoanDetails">
+
+            No active loan found.
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- ==========================================
+           BOTTOM AREA
+           
+           LEFT:
+           EMI SUMMARY
+           RECENT PAYMENTS
+
+           RIGHT:
+           KYC DOCUMENTS
+      =========================================== -->
+
+      <div class="bottom-layout">
+
+
+        <!-- LEFT COLUMN -->
+
+        <div class="left-column">
+
+
+          <!-- EMI SUMMARY -->
+
+          <div class="dashboard-card emi-card">
+
+            <div class="card-header">
+
+              <div>
+                <h2>EMI Summary</h2>
+                <p>Your repayment progress</p>
+              </div>
+
+            </div>
+
+
+            <div class="emi-content">
+
+
+              <!-- DONUT -->
+
+              <div
+                class="donut"
+                [style.background]="
+                  'conic-gradient(#5146e5 ' +
+                  getEmiPercentage() +
+                  '%, #e7e9ef 0)'
+                ">
+
+                <div class="donut-inner">
+
+                  <strong>
+                    {{ getEmiPercentage() }}%
+                  </strong>
+
+                  <span>Paid</span>
+
+                </div>
+
+              </div>
+
+
+              <!-- EMI STATS -->
+
+              <div class="emi-stats">
+
+                <div class="emi-stat">
+
+                  <span class="dot paid-dot"></span>
+
+                  <div>
+                    <strong>
+                      {{ data.emiSummary?.paidEmis || 0 }}
+                    </strong>
+
+                    <small>
+                      Paid EMIs
+                    </small>
+                  </div>
+
+                </div>
+
+
+                <div class="emi-stat">
+
+                  <span class="dot remaining-dot"></span>
+
+                  <div>
+                    <strong>
+                      {{ data.emiSummary?.remainingEmis || 0 }}
+                    </strong>
+
+                    <small>
+                      Remaining EMIs
+                    </small>
+                  </div>
+
+                </div>
+
+
+                <div class="emi-stat">
+
+                  <span class="dot total-dot"></span>
+
+                  <div>
+                    <strong>
+                      {{ data.emiSummary?.totalEmis || 0 }}
+                    </strong>
+
+                    <small>
+                      Total EMIs
+                    </small>
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <!-- NEXT EMI -->
+
+            <div class="next-emi">
+
+              <div>
+
+                <span>Next EMI</span>
+
+                <strong>
+                  {{
+                    formatAmount(
+                      data.emiSummary?.nextEmiAmount
+                    )
+                  }}
+                </strong>
+
+              </div>
+
+
+              <div>
+
+                <span>Due Date</span>
+
+                <strong>
+                  {{
+                    formatDate(
+                      data.emiSummary?.nextEmiDate
+                    )
+                  }}
+                </strong>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+
+          <!-- RECENT PAYMENTS -->
+
+          <div class="dashboard-card payments-card">
+
+            <div class="card-header">
+
+              <div>
+                <h2>Recent Payments</h2>
+                <p>Latest EMI payments</p>
+              </div>
+
+            </div>
+
+
+            <div
+              class="payment-list"
+              *ngIf="data.recentPayments?.length">
+
+
+              <div
+                class="payment-row"
+                *ngFor="
+                  let payment of data.recentPayments
+                ">
+
+                <div>
+
+                  <strong>
+                    EMI #{{ payment.installmentNo }}
+                  </strong>
+
+                  <small>
+                    {{ formatDate(payment.paidDate) }}
+                  </small>
+
+                </div>
+
+
+                <div>
+
+                  <strong>
+                    {{ formatAmount(payment.emi) }}
+                  </strong>
+
+                  <span class="paid-status">
+                    {{ payment.paymentStatus }}
+                  </span>
+
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <div
+              class="empty-data"
+              *ngIf="!data.recentPayments?.length">
+
+              No payments yet.
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- RIGHT COLUMN -->
+
+        <div class="dashboard-card kyc-card">
+
+          <div class="card-header">
+
+            <div>
+              <h2>KYC Documents</h2>
+              <p>Your verification status</p>
+            </div>
+
+            <span class="count-badge">
+              {{ data.kycDocuments?.length || 0 }}
+            </span>
+
+          </div>
+
+
+          <div class="kyc-list">
+
+            <div
+              class="kyc-row"
+              *ngFor="
+                let document of data.kycDocuments
+              ">
+
+              <div class="kyc-info">
+
+                <strong>
+                  {{ document.documentType }}
+                </strong>
+
+                <small>
+                  Document #{{ document.documentId }}
+                </small>
+
+              </div>
+
+
+              <span
+                class="kyc-status"
+                [ngClass]="
+                  getStatusClass(
+                    document.verificationStatus
+                  )
+                ">
+
+                {{ document.verificationStatus }}
+
+              </span>
+
+            </div>
+
+
+            <div
+              class="empty-data"
+              *ngIf="!data.kycDocuments?.length">
+
+              No KYC documents found.
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

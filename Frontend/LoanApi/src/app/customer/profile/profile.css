@@ -1,0 +1,139 @@
+.profile-layout {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f4f6fb;
+}
+
+.profile-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.top-header {
+  height: 52px;
+  background-color: #06459a;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 0 25px;
+  color: white;
+  font-size: 20px;
+}
+
+.profile-content {
+  padding: 25px;
+}
+
+.profile-content h1 {
+  margin: 0 0 18px;
+  font-size: 28px;
+  font-weight: 500;
+  color: #151515;
+}
+
+.edit-btn {
+  background-color: #ffc107;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 5px;
+  margin-bottom: 14px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.edit-btn:hover {
+  background-color: #e0a800;
+}
+
+.profile-card {
+  background-color: white;
+  border: 1px solid #d7d7d7;
+  border-radius: 5px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
+}
+
+.profile-card h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 500;
+  color: #292929;
+}
+
+.profile-card hr {
+  border: 0;
+  border-top: 1px solid #d2d2d2;
+  margin: 18px 0 10px;
+}
+
+.details-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+}
+
+.details-grid p {
+  margin: 0 0 15px;
+  font-size: 14px;
+  color: #333;
+}
+
+.details-grid strong {
+  font-weight: 700;
+}
+
+.profile-card > p {
+  font-size: 14px;
+  color: #444;
+}
+
+.loan-details p,
+.score-details p {
+  margin: 0 0 15px;
+  font-size: 14px;
+  color: #333;
+}
+
+.loan-details strong,
+.score-details strong {
+  font-weight: 700;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+table th {
+  background-color: #24282c;
+  color: white;
+  text-align: left;
+  padding: 9px;
+}
+
+table td {
+  padding: 9px;
+  border: 1px solid #ddd;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+@media (max-width: 768px) {
+  .details-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-content {
+    padding: 15px;
+  }
+}
