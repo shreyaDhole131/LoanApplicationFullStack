@@ -19,7 +19,10 @@ namespace LoanApp_API.Controllers
         private readonly IEmailSender _emailSender;
         private readonly IConfiguration _configuration;
 
-        public AuthController(IAuthRepository repo,IEmailSender emailSender,IConfiguration configuration)
+        public AuthController(
+            IAuthRepository repo,
+            IEmailSender emailSender,
+            IConfiguration configuration)
         {
             _repo = repo;
             _emailSender = emailSender;
@@ -29,85 +32,40 @@ namespace LoanApp_API.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register(CustomerRegistrationDTO model)
         {
-            var existingUser =_repo.GetUserByEmail(model.Email);
-
-            var existingCustomer =_repo.GetCustomerByEmail(model.Email);
-
-            if (existingUser != null || existingCustomer != null)
+            try
             {
-                if (existingCustomer != null &&
-                    existingCustomer.IsEmailVerified == 0)
+                var customer = _repo.Register(model);
+
+                await _emailSender.SendOtpAsync(
+                    customer.Email,
+                    customer.EmailOtp!
+                );
+
+                return Ok(new
                 {
-                    var newOtp =
-                        Random.Shared.Next(100000, 1000000)
-                            .ToString();
-
-                    existingCustomer.EmailOtp = newOtp;
-                    existingCustomer.OtpExpiry =
-                        DateTime.UtcNow.AddMinutes(5);
-
-                    await _emailSender.SendOtpAsync(
-                        existingCustomer.Email,
-                        newOtp
-                    );
-
-                    return Ok(new
+                    message = "Registration successful. OTP sent to your email.",
+                    email = customer.Email
+                });
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message == "Email already registered")
+                {
+                    return BadRequest(new
                     {
-                        message =
-                            "Email already registered but not verified. New OTP sent.",
-                        email = existingCustomer.Email
+                        message = "Email already registered"
                     });
                 }
 
-                return BadRequest(new
+                return StatusCode(500, new
                 {
-                    message = "Email already registered"
+                    message = "Registration failed"
                 });
             }
-
-            var otp =
-                Random.Shared.Next(100000, 1000000)
-                    .ToString();
-
-            var customer = new Customers
-            {
-                FirstName = model.FirstName,
-                LastName = model.LastName,
-                Age = model.Age,
-                Email = model.Email,
-                Password = model.Password,
-                MobileNo = model.MobileNo,
-                Pan = model.Pan,
-                AadhaarNo = model.AadhaarNo,
-                EmploymentType = model.EmploymentType,
-                MonthlyIncome = model.MonthlyIncome,
-
-                IsEmailVerified = 0,
-
-                EmailOtp = otp,
-
-                OtpExpiry =
-                    DateTime.UtcNow.AddMinutes(5)
-            };
-
-            _repo.CreateCustomer(customer);
-
-            await _emailSender.SendOtpAsync(
-                customer.Email,
-                otp
-            );
-
-            return Ok(new
-            {
-                message =
-                    "Registration successful. OTP sent to your email.",
-                email = customer.Email
-            });
         }
 
         [HttpPost("verify-otp")]
-        public IActionResult VerifyOtp(
-            VerifyOtpDTO model)
+        public IActionResult VerifyOtp(VerifyOtpDTO model)
         {
             if (string.IsNullOrWhiteSpace(model.Email))
             {
@@ -144,7 +102,8 @@ namespace LoanApp_API.Controllers
                 });
             }
 
-            if (customer.OtpExpiry == null ||DateTime.UtcNow > customer.OtpExpiry)
+            if (customer.OtpExpiry == null ||
+                DateTime.UtcNow > customer.OtpExpiry)
             {
                 return BadRequest(new
                 {
@@ -161,7 +120,9 @@ namespace LoanApp_API.Controllers
             }
 
             bool verified =
-                _repo.VerifyEmailOtp(model.Email,model.Otp);
+                _repo.VerifyEmailOtp(
+                    model.Email,
+                    model.Otp);
 
             if (!verified)
             {
@@ -245,11 +206,10 @@ namespace LoanApp_API.Controllers
                         model.IdToken,
                         new GoogleJsonWebSignature.ValidationSettings
                         {
-                            Audience =
-                                new[]
-                                {
-                                    googleClientId
-                                }
+                            Audience = new[]
+                            {
+                                googleClientId
+                            }
                         }
                     );
             }
@@ -379,11 +339,9 @@ namespace LoanApp_API.Controllers
             });
         }
 
-        private IActionResult CreateJwtResponse(
-            User user)
+        private IActionResult CreateJwtResponse(User user)
         {
-            var claims =
-                new[]
+            var claims = new List<Claim>
                 {
                     new Claim(
                         ClaimTypes.NameIdentifier,
@@ -399,7 +357,20 @@ namespace LoanApp_API.Controllers
                         ClaimTypes.Role,
                         user.RoleId.ToString()
                     )
+
                 };
+
+            if (user.CustomerId.HasValue)
+            {
+                claims.Add(
+                    new Claim(
+                        "CustomerId",
+                        user.CustomerId.Value.ToString()
+                    )
+                );
+            }
+
+
 
             var key =
                 new SymmetricSecurityKey(

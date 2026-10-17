@@ -1,4 +1,6 @@
-﻿using LoanApp_API.Domain.Entities;
+﻿using LoanApp_API.Application.DTO;
+using LoanApp_API.Application.DTO.User;
+using LoanApp_API.Domain.Entities;
 
 namespace LoanApp_API.Application.Interfaces
 {
@@ -14,10 +16,12 @@ namespace LoanApp_API.Application.Interfaces
 
         Customers CreateCustomer(Customers customer);
 
+        Customers Register(CustomerRegistrationDTO model);
+
         User? Login(string email, string password);
 
         bool VerifyEmailOtp(string email, string otp);
 
         bool MarkEmailVerified(string email);
-    } 
+    }
 }

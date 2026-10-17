@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using LoanApp_API.Application.DTO;
+using LoanApp_API.Application.DTO.User;
 using LoanApp_API.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ namespace LoanApp_API.Application.Mapper
     {
         public MappingData()
         {
+            CreateMap<CustomerRegistrationDTO, Customers>();
             CreateMap<LoanDeals, LoanDealDTO>().ReverseMap();
 
             CreateMap<LoanAccount, LoanAccountDto>().ForMember(

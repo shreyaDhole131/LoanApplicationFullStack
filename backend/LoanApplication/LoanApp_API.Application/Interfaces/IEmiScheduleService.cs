@@ -9,6 +9,11 @@ namespace LoanApp_API.Application.Interfaces
     public interface IEmiScheduleService
     {
         Task GenerateEMISchedule(int loanAccountId);
-        Task<EmiScheduleSummaryDto> GetEMISchedule(int loanAccountId);
+        Task<EmiScheduleSummaryDto> GetEMISchedule(
+           int loanAccountId,
+           string email);
+
+        Task<List<LoanAccountDropdownDto>> GetMyLoanAccounts(
+            string email);
     }
 }

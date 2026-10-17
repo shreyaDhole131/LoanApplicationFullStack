@@ -32,6 +32,7 @@ builder.Services.AddScoped<IEmailSender, EmailSender>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ILoanAccountService, LoanAccountService>();
 builder.Services.AddScoped<IEmiScheduleService, EmiScheduleService>();
+builder.Services.AddScoped<INotificationService, NotificationService>();
 
 builder.Services.AddScoped<ILoanDeals, LoanDealsService>();
 builder.Services.AddScoped<ISanctionLetter, SanctionLetterService>();
@@ -149,6 +150,15 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+// Hangfire dashboard
+app.UseHangfireDashboard("/hangfire");
+
+RecurringJob.AddOrUpdate<INotificationService>(
+    "generate-emi-notifications",
+    service => service.GenerateEmiNotifications(),
+    //Cron.Daily
+    "*/1 * * * *");
+
 app.UseHttpsRedirection();
 
 // Uncomment if you want to enable the exception middleware
@@ -161,7 +171,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 
-// Hangfire dashboard
-app.UseHangfireDashboard("/hangfire");
+
 
 app.Run();
