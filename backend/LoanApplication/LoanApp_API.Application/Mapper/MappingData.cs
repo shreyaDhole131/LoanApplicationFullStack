@@ -181,15 +181,21 @@ namespace LoanApp_API.Application.Mapper
             // Officer Dashboard - Loan Portfolio
             CreateMap<OfficerLoanPortfolioData, OfficerLoanPortfolioVM>();
 
+
             // Foreclosure - Customer Loan Dropdown
             CreateMap<LoanAccount, CustomerLoanDto>();
 
             // Foreclosure - Customer Requests
             CreateMap<ForeClosureRequest, CustomerForeClosureDto>()
                 .ForMember(
+                    dest => dest.RequestId,
+                    opt => opt.MapFrom(src => src.RequestId))
+                .ForMember(
                     dest => dest.LoanAccountNo,
                     opt => opt.MapFrom(src =>
-                        src.LoanAccount!.LoanAccountNo))
+                        src.LoanAccount != null
+                            ? src.LoanAccount.LoanAccountNo
+                            : string.Empty))
                 .ForMember(
                     dest => dest.Amount,
                     opt => opt.MapFrom(src =>
@@ -206,36 +212,11 @@ namespace LoanApp_API.Application.Mapper
                 .ForMember(
                     dest => dest.LoanAccountNo,
                     opt => opt.MapFrom(src =>
-                        src.LoanAccount!.LoanAccountNo))
-                .ForMember(
-                    dest => dest.CustomerName,
-                    opt => opt.MapFrom(src =>
-                        src.LoanAccount!.Customer!.FirstName + " " +
-                        src.LoanAccount.Customer.LastName))
-                .ForMember(
-                    dest => dest.LoanAmount,
-                    opt => opt.MapFrom(src =>
-                        src.LoanAccount!.LoanAmount))
-                .ForMember(
-                    dest => dest.InterestRate,
-                    opt => opt.MapFrom(src =>
-                        src.LoanAccount!.InterestRate))
-                .ForMember(
-                    dest => dest.DisbursedOn,
-                    opt => opt.MapFrom(src =>
-                        src.LoanAccount!.DisbursementDate))
-                .ForMember(
-                    dest => dest.OutstandingPrincipal,
-                    opt => opt.MapFrom(src =>
-                        src.LoanAccount!.OutstandingPrincipal))
-                .ForMember(
-                    dest => dest.RequestDate,
-                    opt => opt.MapFrom(src =>
-                        src.RequestedDate))
-                .ForMember(
-                    dest => dest.CustomerNote,
-                    opt => opt.MapFrom(src =>
-                        src.Reason));
+                        src.LoanAccount != null
+                            ? src.LoanAccount.LoanAccountNo
+                            : string.Empty));
+
+
 
             // Payment History
             CreateMap<LoanPayment, PaymentHistoryDto>()
