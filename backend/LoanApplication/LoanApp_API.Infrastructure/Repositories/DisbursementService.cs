@@ -38,7 +38,7 @@ namespace LoanApp_API.Infrastructure.Repositories
 
         public async Task<DisbursePrefillDTO?> fetchDisbursePrefill(int dealId)
         {
-            var letter = await db.SanctionLetters.FirstOrDefaultAsync(s => s.DealId == dealId);
+            var letter = await db.LoanDeals.FirstOrDefaultAsync(d => d.DealId == dealId);
             if (letter == null) return null;
 
             return new DisbursePrefillDTO
@@ -48,6 +48,7 @@ namespace LoanApp_API.Infrastructure.Repositories
                 DisbursementDate = DateTime.UtcNow
             };
         }
+
 
 
     }

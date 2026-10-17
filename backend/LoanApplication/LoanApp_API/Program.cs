@@ -1,6 +1,7 @@
 using AutoMapper;
 using Hangfire;
 using LoanApp_API.Application.Interfaces;
+using LoanApp_API.Application.Interfaces.Reports;
 using LoanApp_API.Application.Mapper;
 using LoanApp_API.Infrastructure.Data;
 using LoanApp_API.Infrastructure.Email;
@@ -10,12 +11,12 @@ using LoanApp_API.Middleware;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.RateLimiting;
-using Microsoft.IdentityModel.JsonWebTokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -49,6 +50,16 @@ builder.Services.AddScoped<ILoanDeals, LoanDealsService>();
 builder.Services.AddScoped<ISanctionLetter, SanctionLetterService>();
 builder.Services.AddScoped<IDisbursement, DisbursementService>();
 builder.Services.AddScoped<IPendingDeals, PendingDealsService>();
+builder.Services.AddScoped<IOverdueReport, OverdueReportService>();
+builder.Services.AddScoped<ITatReport, TatServiceReport>();
+builder.Services.AddScoped<ICibilReport, CibiReportService>();
+builder.Services.AddScoped<IScoreReport, ScoreReportService>();
+builder.Services.AddScoped<IProductWiseReport, ProductWiseReportService>();
+builder.Services.AddScoped<ILoanProtfolio, LoanProtfolioService>();
+builder.Services.AddScoped<IEmiReport, EmiReportService>();
+builder.Services.AddScoped<IDisburseReport, DisburseReportService>();
+builder.Services.AddScoped<IPrepaymentReport, PrepaymentReportService>();
+
 
 
 // ============================================================
