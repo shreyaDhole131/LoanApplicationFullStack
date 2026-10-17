@@ -1,5 +1,4 @@
-﻿
-using Google.Apis.Auth;
+﻿using Google.Apis.Auth;
 using LoanApp_API.Application.DTO;
 using LoanApp_API.Application.DTO.User;
 using LoanApp_API.Application.Interfaces;
@@ -26,12 +25,8 @@ namespace LoanApp_API.Controllers
         public AuthController(
             IAuthRepository repo,
             IEmailSender emailSender,
-<<<<<<< HEAD
-            IConfiguration configuration)
-=======
             IConfiguration configuration,
             ITotpService totpService)
->>>>>>> 34a31db8a70434337dfb86b94b0052d3efa91f9e
         {
             _repo = repo;
             _emailSender = emailSender;
@@ -49,34 +44,6 @@ namespace LoanApp_API.Controllers
             {
                 var customer = _repo.Register(model);
 
-<<<<<<< HEAD
-                await _emailSender.SendOtpAsync(
-                    customer.Email,
-                    customer.EmailOtp!
-                );
-
-                return Ok(new
-                {
-                    message = "Registration successful. OTP sent to your email.",
-                    email = customer.Email
-                });
-            }
-            catch (Exception ex)
-            {
-                if (ex.Message == "Email already registered")
-                {
-                    return BadRequest(new
-                    {
-                        message = "Email already registered"
-                    });
-                }
-
-                return StatusCode(500, new
-                {
-                    message = "Registration failed"
-                });
-            }
-=======
                 if (string.IsNullOrWhiteSpace(customer.EmailOtp))
                 {
                     return StatusCode(500, new
@@ -109,22 +76,16 @@ namespace LoanApp_API.Controllers
 
                 return StatusCode(500, new
                 {
-                    message = "Registration failed",
-                    error = ex.Message,
-                    innerError = ex.InnerException?.Message
+                    message = "Registration failed"
                 });
             }
->>>>>>> 34a31db8a70434337dfb86b94b0052d3efa91f9e
         }
 
         // 2. VERIFY REGISTRATION EMAIL OTP
         [HttpPost("verify-otp")]
-<<<<<<< HEAD
-        public IActionResult VerifyOtp(VerifyOtpDTO model)
-=======
         [AllowAnonymous]
-        public IActionResult VerifyOtp([FromBody] VerifyOtpDTO model)
->>>>>>> 34a31db8a70434337dfb86b94b0052d3efa91f9e
+        public IActionResult VerifyOtp(
+            [FromBody] VerifyOtpDTO model)
         {
             if (string.IsNullOrWhiteSpace(model.Email) ||
                 string.IsNullOrWhiteSpace(model.Otp))
@@ -170,16 +131,11 @@ namespace LoanApp_API.Controllers
                 });
             }
 
-<<<<<<< HEAD
-            bool verified =
-                _repo.VerifyEmailOtp(
-                    model.Email,
-                    model.Otp);
+            bool verified = _repo.VerifyEmailOtp(
+                model.Email,
+                model.Otp);
 
             if (!verified)
-=======
-            if (!_repo.VerifyEmailOtp(model.Email, model.Otp))
->>>>>>> 34a31db8a70434337dfb86b94b0052d3efa91f9e
             {
                 return BadRequest(new
                 {
@@ -270,7 +226,8 @@ namespace LoanApp_API.Controllers
             var secret = _totpService.GenerateSecret();
 
             var saved = _repo.SavePendingAuthenticatorSecret(
-                user.UserId, secret);
+                user.UserId,
+                secret);
 
             if (!saved)
             {
@@ -281,33 +238,28 @@ namespace LoanApp_API.Controllers
             }
 
             var uri = _totpService.GenerateOtpUri(
-                user.Email, secret);
+                user.Email,
+                secret);
 
             var imageBytes = GenerateQrImage(uri);
 
             return Ok(new
             {
                 message = "Scan this QR code with your authenticator app",
-
                 secret = secret,
-
                 qrCodeDataUrl =
                     "data:image/png;base64," +
                     Convert.ToBase64String(imageBytes),
-
                 qrCodeHtml =
                     "<img src=\"data:image/png;base64," +
                     Convert.ToBase64String(imageBytes) +
                     "\" width=\"250\" height=\"250\" />",
-
                 qrImageEndpoint = "/api/auth/setup-2fa/qr",
-
                 nextStep = "verify-2fa-setup"
             });
         }
 
         // 5. RETURN QR CODE AS AN IMAGE
-        // Authorize this endpoint with the same setup challenge token.
         [Authorize]
         [HttpGet("setup-2fa/qr")]
         [Produces("image/png")]
@@ -317,7 +269,7 @@ namespace LoanApp_API.Controllers
             {
                 return Unauthorized(new
                 {
-                    message = "A valid 2FA setup token is required"
+                    message = "A valid setup token is required"
                 });
             }
 
@@ -347,7 +299,7 @@ namespace LoanApp_API.Controllers
             return File(imageBytes, "image/png");
         }
 
-        // Shared QR image generation method
+        // SHARED QR IMAGE GENERATION
         private static byte[] GenerateQrImage(string uri)
         {
             using var generator = new QRCodeGenerator();
@@ -393,7 +345,8 @@ namespace LoanApp_API.Controllers
             }
 
             if (!_totpService.VerifyOtp(
-                user.PendingAuthenticatorSecret, model.Otp))
+                user.PendingAuthenticatorSecret,
+                model.Otp))
             {
                 return BadRequest(new
                 {
@@ -458,7 +411,8 @@ namespace LoanApp_API.Controllers
             }
 
             if (!_totpService.VerifyOtp(
-                user.AuthenticatorSecret, model.Otp))
+                user.AuthenticatorSecret,
+                model.Otp))
             {
                 return Unauthorized(new
                 {
@@ -498,26 +452,13 @@ namespace LoanApp_API.Controllers
                     });
                 }
 
-<<<<<<< HEAD
                 payload =
                     await GoogleJsonWebSignature.ValidateAsync(
                         model.IdToken,
                         new GoogleJsonWebSignature.ValidationSettings
                         {
-                            Audience = new[]
-                            {
-                                googleClientId
-                            }
-                        }
-                    );
-=======
-                payload = await GoogleJsonWebSignature.ValidateAsync(
-                    model.IdToken,
-                    new GoogleJsonWebSignature.ValidationSettings
-                    {
-                        Audience = new[] { clientId }
-                    });
->>>>>>> 34a31db8a70434337dfb86b94b0052d3efa91f9e
+                            Audience = new[] { clientId }
+                        });
             }
             catch
             {
@@ -571,6 +512,7 @@ namespace LoanApp_API.Controllers
                 };
 
                 _repo.CreateCustomer(customer);
+
                 user = _repo.GetUserByEmail(email);
             }
 
@@ -601,12 +543,8 @@ namespace LoanApp_API.Controllers
             });
         }
 
-<<<<<<< HEAD
-        private IActionResult CreateJwtResponse(User user)
-=======
-        // 9. SHORT-LIVED TOKEN FOR AN AUTHENTICATION STAGE
+        // 9. CREATE SHORT-LIVED AUTHENTICATION STAGE TOKEN
         private string CreateStageToken(User user, string stage)
->>>>>>> 34a31db8a70434337dfb86b94b0052d3efa91f9e
         {
             var claims = new[]
             {
@@ -625,32 +563,48 @@ namespace LoanApp_API.Controllers
 
             return CreateToken(
                 claims,
-                DateTime.UtcNow.AddMinutes(5));
+ DateTime.UtcNow.AddDays(1));
         }
 
-        private bool TryGetStageUser(
-            string requiredStage,
-            out User user)
+        // 10. VALIDATE AUTHENTICATION STAGE TOKEN
+        private bool TryGetStageUser(string requiredStage, out User user)
         {
             user = null!;
 
-            if (User.Identity?.IsAuthenticated != true)
+            // 1. Get the raw token string from the header
+            var authHeader = Request.Headers["Authorization"].ToString();
+            if (string.IsNullOrWhiteSpace(authHeader) || !authHeader.StartsWith("Bearer "))
             {
+                Console.WriteLine("❌ RAW CHECK: No Bearer token found.");
                 return false;
             }
 
-            var stage = User.FindFirst("auth_stage")?.Value;
+            // 2. Strip "Bearer " and get the token
+            var rawToken = authHeader.Substring("Bearer ".Length).Trim();
+
+            // 3. Manually parse the token
+            var handler = new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(rawToken);
+
+            // 4. Read the exact auth_stage claim
+            var stage = jwtToken.Claims.FirstOrDefault(c => c.Type == "auth_stage")?.Value;
+
+            Console.WriteLine($"✅ RAW CHECK: Expected '{requiredStage}', Found '{stage}'");
 
             if (stage != requiredStage)
             {
                 return false;
             }
 
-            var userIdValue =
-                User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            // 5. Read the user ID
+            var userIdValue = jwtToken.Claims.FirstOrDefault(c =>
+                c.Type == System.Security.Claims.ClaimTypes.NameIdentifier ||
+                c.Type == "nameid" ||
+                c.Type == "sub")?.Value;
 
             if (!int.TryParse(userIdValue, out var userId))
             {
+                Console.WriteLine("❌ RAW CHECK: Could not parse User ID.");
                 return false;
             }
 
@@ -658,6 +612,7 @@ namespace LoanApp_API.Controllers
 
             if (foundUser == null)
             {
+                Console.WriteLine("❌ RAW CHECK: User not found in database.");
                 return false;
             }
 
@@ -665,7 +620,7 @@ namespace LoanApp_API.Controllers
             return true;
         }
 
-        // 10. FINAL JWT RESPONSE
+        // 11. CREATE FINAL JWT RESPONSE
         private IActionResult CreateJwtResponse(User user)
         {
             var claims = new[]
@@ -695,7 +650,7 @@ namespace LoanApp_API.Controllers
             });
         }
 
-        // 11. CREATE JWT
+        // 12. CREATE JWT
         private string CreateToken(
             IEnumerable<Claim> claims,
             DateTime expiry)

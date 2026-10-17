@@ -5,7 +5,6 @@ import { Register } from './auth/register/register';
 import { Login } from './auth/login/login';
 import { Otp } from './auth/otp/otp';
 import { VerifyLoginOtp } from './auth/verify-login-otp/verify-login-otp';
-import { Setup2FA } from './auth/setup-2fa/setup-2fa';
 
 import { Dashboard } from './customer/dashboard/dashboard';
 import { Profile } from './customer/profile/profile';
@@ -32,6 +31,12 @@ import { ScoreReport } from './score-report/score-report';
 import { ProductReport } from './product-report/product-report';
 import { LoanProtfolioReport } from './loan-protfolio-report/loan-protfolio-report';
 import { EmiReport } from './emi-report/emi-report';
+import { Setup2fa } from './auth/setup-2fa/setup-2fa';
+import { DisburseReport } from './disburse-report/disburse-report';
+import { OverdueReport } from './overdue-report/overdue-report';
+import { PrepaymentReport } from './prepayment-report/prepayment-report';
+import { TatReport } from './tat-report/tat-report';
+ 
 
 export const routes: Routes = [
   // Default and authentication
@@ -39,7 +44,7 @@ export const routes: Routes = [
   { path: 'login', component: Login },
   { path: 'register', component: Register },
   { path: 'otp', component: Otp },
-  { path: 'setup-2fa', component: Setup2FA },
+  { path: 'setup-2fa', component: Setup2fa },
   { path: 'verify-login-otp', component: VerifyLoginOtp },
 
   // Customer
@@ -48,6 +53,16 @@ export const routes: Routes = [
   { path: 'kyc', component: Kyc },
   { path: 'support', component: Support },
 
+  { path: '', redirectTo: '/applyLoan', pathMatch: 'full' },
+  { path: 'cibil-report', component: CibilReport },
+  { path: 'score-report', component: ScoreReport },
+  { path: 'product-report', component: ProductReport },
+  { path: 'loan-protfolio', component: LoanProtfolioReport },
+  { path: 'emi-report', component: EmiReport },
+  { path: 'disburse-report', component: DisburseReport },
+  { path: 'overdue-report', component: OverdueReport },
+  { path: 'prepayment-report', component: PrepaymentReport },
+  { path: 'tat-report', component: TatReport },
   // Officer
   { path: 'officer-dashboard', component: OfficerDashboard },
   { path: 'officer/customers', component: Customers },

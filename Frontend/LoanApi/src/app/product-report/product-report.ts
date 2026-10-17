@@ -6,7 +6,7 @@ import { FormsModule } from '@angular/forms';
 @Component({
   imports: [CommonModule, FormsModule],
   selector: 'app-product-report',
-  styleUrl: './product-report.scss',
+  styleUrl: './product-report.css',
   templateUrl: './product-report.html',
 })
 export class ProductReport {
