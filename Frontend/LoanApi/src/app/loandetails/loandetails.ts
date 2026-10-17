@@ -2,9 +2,10 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { Loanservice } from '../services/loanservice';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Sidebar } from '../customer/sidebar/sidebar';
 
 @Component({
-  imports: [CommonModule],
+  imports: [CommonModule,Sidebar],
   selector: 'app-loandetails',
   styleUrl: './loandetails.css',
   templateUrl: './loandetails.html',

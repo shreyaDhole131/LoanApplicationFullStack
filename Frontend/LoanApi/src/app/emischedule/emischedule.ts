@@ -3,9 +3,11 @@ import { Component, OnInit } from '@angular/core';
 import { Emischeduleservice } from '../services/emischeduleservice';
 import { NotificationComponent } from '../notification/notification';
 import { FormsModule } from '@angular/forms';
+import { Sidebar } from '../customer/sidebar/sidebar';
+import { Router } from '@angular/router';   // ADD THIS
 
 @Component({
-  imports: [CommonModule, NotificationComponent, FormsModule],
+  imports: [CommonModule, NotificationComponent, FormsModule, Sidebar],
   selector: 'app-emischedule',
   styleUrl: './emischedule.css',
   templateUrl: './emischedule.html',
@@ -28,16 +30,16 @@ export class Emischedule implements OnInit {
   remainingBalance = 0;
 
 
-  constructor(private service: Emischeduleservice) 
+  constructor(
+    private service: Emischeduleservice,
+    private router: Router              // ADD THIS
+  ) 
   {
   }
 
 
   ngOnInit(): void {
-
-    
     this.loadLoanAccounts();
-
   }
 
 
@@ -234,6 +236,10 @@ export class Emischedule implements OnInit {
       emi.installmentNo
     );
 
+    this.router.navigate([
+      '/emi-payment',
+      emi.emiScheduleId
+    ]);
   }
 
 }

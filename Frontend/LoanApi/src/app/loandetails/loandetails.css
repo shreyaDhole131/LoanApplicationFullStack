@@ -1,0 +1,56 @@
+.details-container {
+  margin-left: 340px;
+  padding: 30px;
+  min-height: 100vh;
+  background: #f5f7fb;
+  box-sizing: border-box;
+}
+
+.details-container h2 {
+  margin-bottom: 25px;
+}
+
+.details-card {
+  background: white;
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  max-width: 900px;
+}
+
+.details-card p {
+  margin: 15px 0;
+  font-size: 16px;
+}
+
+.details-card strong {
+  display: inline-block;
+  width: 220px;
+}
+
+.btn-secondary {
+  margin-top: 20px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* Responsive */
+@media (max-width: 700px) {
+
+  .details-container {
+    margin-left: 0;
+    padding: 15px;
+  }
+
+  .details-card {
+    padding: 18px;
+  }
+
+  .details-card strong {
+    width: auto;
+    display: block;
+    margin-bottom: 5px;
+  }
+}

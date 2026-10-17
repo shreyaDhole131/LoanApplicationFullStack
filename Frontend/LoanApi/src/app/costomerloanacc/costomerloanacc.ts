@@ -3,11 +3,13 @@ import { Component, PLATFORM_ID, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Customerservice } from '../services/customerservice';
+import { Sidebar } from '../customer/sidebar/sidebar';
+
 
 @Component({
   selector: 'app-customerloanaccounts',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule,Sidebar],
   templateUrl: './costomerloanacc.html',
   styleUrl: './costomerloanacc.css'
 })

@@ -1,5 +1,18 @@
+/* Sidebar */
+app-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 340px;
+  height: 100vh;
+  z-index: 1000;
+  display: block;
+}
+
+
 /* Main container */
 .emi-container {
+  margin-left: 260px;
   padding: 22px;
   background: #f5f7fb;
   min-height: 100vh;
@@ -191,6 +204,10 @@ td {
 /* Responsive */
 @media (max-width: 1000px) {
 
+  .emi-container {
+    margin-left: 340px;
+  }
+
   .summary-container {
     flex-wrap: wrap;
   }
@@ -209,7 +226,12 @@ td {
 
 @media (max-width: 700px) {
 
+  app-sidebar {
+    width: 0;
+  }
+
   .emi-container {
+    margin-left: 0;
     padding: 15px;
   }
 

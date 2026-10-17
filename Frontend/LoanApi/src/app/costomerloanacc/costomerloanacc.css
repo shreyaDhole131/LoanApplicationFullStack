@@ -1,22 +1,48 @@
+/* =========================================
+   SIDEBAR
+========================================= */
+
+app-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 340px;
+  height: 100vh;
+  z-index: 1000;
+  display: block;
+}
+
+
+/* =========================================
+   MAIN PAGE
+========================================= */
+
 .loan-page {
-  min-height: 100vh;
+  margin-left: 260px;
   padding: 18px;
   background: #f4f7fb;
+  min-height: 100vh;
   box-sizing: border-box;
 }
 
 
-/* Main white card */
+/* =========================================
+   MAIN WHITE CARD
+========================================= */
 
 .loan-card {
+  width: 100%;
   background: #ffffff;
   border-radius: 14px;
   padding: 22px;
   box-shadow: 0 5px 18px rgba(0, 0, 0, 0.08);
+  box-sizing: border-box;
 }
 
 
-/* Heading */
+/* =========================================
+   HEADING
+========================================= */
 
 .loan-card h1 {
   margin: 0 0 10px 0;
@@ -26,7 +52,9 @@
 }
 
 
-/* Status dropdown */
+/* =========================================
+   STATUS DROPDOWN
+========================================= */
 
 .filter-row {
   margin-bottom: 18px;
@@ -45,18 +73,21 @@
 }
 
 
-/* Table controls */
+/* =========================================
+   TABLE CONTROLS
+========================================= */
 
 .table-controls {
   display: flex;
   justify-content: space-between;
   align-items: center;
-
   margin-bottom: 12px;
 }
 
 
-/* Entries */
+/* =========================================
+   ENTRIES
+========================================= */
 
 .entries {
   display: flex;
@@ -77,13 +108,14 @@
 }
 
 
-/* Search */
+/* =========================================
+   SEARCH
+========================================= */
 
 .search-box {
   display: flex;
   align-items: center;
   gap: 5px;
-
   font-size: 14px;
 }
 
@@ -99,7 +131,9 @@
 }
 
 
-/* Table wrapper */
+/* =========================================
+   TABLE WRAPPER
+========================================= */
 
 .table-wrapper {
   width: 100%;
@@ -107,18 +141,21 @@
 }
 
 
-/* Table */
+/* =========================================
+   TABLE
+========================================= */
 
 table {
   width: 100%;
   border-collapse: collapse;
   background: white;
-
   font-size: 14px;
 }
 
 
-/* Header */
+/* =========================================
+   TABLE HEADER
+========================================= */
 
 thead th {
   background: #ffffff;
@@ -137,7 +174,9 @@ thead th {
 }
 
 
-/* Body */
+/* =========================================
+   TABLE BODY
+========================================= */
 
 tbody td {
   border: 1px solid #d8dee8;
@@ -168,7 +207,9 @@ tbody tr:hover {
 }
 
 
-/* View button */
+/* =========================================
+   VIEW BUTTON
+========================================= */
 
 .view-btn {
   background: #08bce5;
@@ -191,18 +232,20 @@ tbody tr:hover {
 }
 
 
-/* No data */
+/* =========================================
+   NO DATA
+========================================= */
 
 .no-data {
   text-align: center;
-
   padding: 20px;
-
   color: #666;
 }
 
 
-/* Footer */
+/* =========================================
+   FOOTER
+========================================= */
 
 .table-footer {
   display: flex;
@@ -224,7 +267,9 @@ tbody tr:hover {
 }
 
 
-/* Pagination */
+/* =========================================
+   PAGINATION
+========================================= */
 
 .pagination {
   display: flex;
@@ -272,9 +317,16 @@ tbody tr:hover {
 }
 
 
-/* Responsive */
+/* =========================================
+   RESPONSIVE
+========================================= */
 
 @media (max-width: 1000px) {
+
+  .loan-page {
+    margin-left: 260px;
+    padding: 15px;
+  }
 
   .loan-card {
     padding: 15px;
@@ -296,9 +348,19 @@ tbody tr:hover {
 }
 
 
-@media (max-width: 600px) {
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 700px) {
+
+  app-sidebar {
+    width: 0;
+  }
 
   .loan-page {
+    margin-left: 0;
+    width: 100%;
     padding: 10px;
   }
 
