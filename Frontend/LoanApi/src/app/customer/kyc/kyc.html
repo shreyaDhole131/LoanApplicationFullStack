@@ -1,0 +1,270 @@
+<div class="layout">
+
+  <app-sidebar></app-sidebar>
+
+
+  <div class="content">
+
+
+    <!-- UPLOAD -->
+
+    <div class="card shadow-sm mb-4">
+
+      <div class="card-header bg-primary text-white">
+
+        <h4 class="mb-0">
+          Upload KYC Documents
+        </h4>
+
+      </div>
+
+
+      <div class="card-body">
+
+
+        <div class="form-group">
+
+          <label>
+            Document Type
+          </label>
+
+
+          <select
+            class="form-control"
+            [(ngModel)]="selectedDocumentType">
+
+            <option value="">
+              -- Select Document --
+            </option>
+
+            <option value="PAN">
+              PAN Card
+            </option>
+
+            <option value="Aadhaar">
+              Aadhaar Card
+            </option>
+<option value="PAN">
+              Salary Slip 
+            </option>
+          </select>
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label>
+            Upload File
+          </label>
+
+
+          <input
+            type="file"
+            class="form-control-file"
+            accept=".jpg,.jpeg,.png,.pdf"
+            (change)="onFileSelected($event)">
+
+        </div>
+
+
+        @if (selectedFile) {
+
+          <p class="text-muted">
+
+            Selected File:
+            {{ selectedFile.name }}
+
+          </p>
+
+        }
+
+
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="uploadDocument()"
+          [disabled]="uploading">
+
+          @if (uploading) {
+
+            Uploading...
+
+          } @else {
+
+            Upload Document
+
+          }
+
+        </button>
+
+
+      </div>
+
+    </div>
+
+
+    <!-- DOCUMENT TABLE -->
+
+    <div class="card shadow-sm">
+
+      <div class="card-header">
+
+        <h4 class="mb-0">
+          Uploaded Documents
+        </h4>
+
+      </div>
+
+
+      <div class="card-body">
+
+        @if (documents.length > 0) {
+
+          <table
+            class="table table-bordered table-hover">
+
+            <thead class="thead-dark">
+
+              <tr>
+
+                <th>
+                  Document Name
+                </th>
+
+                <th>
+                  View Document
+                </th>
+
+                <th>
+                  Status
+                </th>
+
+                <th>
+                  Action
+                </th>
+
+              </tr>
+
+            </thead>
+
+
+            <tbody>
+
+              @for (
+                document of documents;
+                track document.documentId
+              ) {
+
+                <tr>
+
+                  <td>
+                    {{ document.documentType }}
+                  </td>
+
+
+                  <td>
+
+                    <button
+                      type="button"
+                      class="btn btn-primary btn-sm"
+                      (click)="viewDocument(document.documentId)">
+
+                      View
+
+                    </button>
+
+                  </td>
+
+
+                  <td>
+
+                    @if (
+                      document.verificationStatus === 'Pending'
+                    ) {
+
+                      <span
+                        class="badge badge-warning">
+
+                        Pending
+
+                      </span>
+
+                    }
+
+                    @else if (
+                      document.verificationStatus === 'Verified'
+                    ) {
+
+                      <span
+                        class="badge badge-success">
+
+                        Verified
+
+                      </span>
+
+                    }
+
+                    @else {
+
+                      <span
+                        class="badge badge-secondary">
+
+                        {{ document.verificationStatus }}
+
+                      </span>
+
+                    }
+
+                  </td>
+
+
+                  <td>
+
+                    <button
+                      type="button"
+                      class="btn btn-danger btn-sm"
+                      (click)="deleteDocument(document.documentId)">
+
+                      Delete
+
+                    </button>
+
+                  </td>
+
+                </tr>
+
+              }
+
+            </tbody>
+
+          </table>
+
+        }
+
+        @else {
+
+          <div class="alert alert-info">
+
+            No KYC documents uploaded yet.
+
+          </div>
+
+        }
+
+      </div>
+
+    </div>
+
+
+    <div class="footer">
+
+      © 2026 LoanApp |
+      Smart Loan Management System
+
+    </div>
+
+
+  </div>
+
+</div>

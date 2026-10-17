@@ -1,0 +1,75 @@
+
+<div class="setup-container">
+  <div class="setup-card">
+
+    <div class="security-icon">🔐</div>
+
+    <h2>Two-Factor Authentication</h2>
+
+    <p class="subtitle">
+      Secure your Loan Application account
+    </p>
+
+    <p class="instructions">
+      Open Google Authenticator or another compatible authenticator
+      app and scan this QR code.
+    </p>
+
+    <div class="qr-section">
+
+      <p *ngIf="loading">
+        Loading QR code...
+      </p>
+
+      <img
+        *ngIf="qrCodeUrl"
+        [src]="qrCodeUrl"
+        alt="Authenticator QR code"
+        width="220"
+        height="220"
+      />
+
+      <div *ngIf="errorMessage" class="error-message">
+        {{ errorMessage }}
+      </div>
+
+      <button
+        *ngIf="errorMessage && !verifying"
+        type="button"
+        class="retry-button"
+        (click)="loadQRCode()"
+      >
+        Retry QR Code
+      </button>
+
+    </div>
+
+    <form (ngSubmit)="verifyOTP()">
+
+      <label for="otp">Authenticator Code</label>
+
+      <input
+        id="otp"
+        name="otp"
+        type="text"
+        [(ngModel)]="otp"
+        maxlength="6"
+        inputmode="numeric"
+        autocomplete="one-time-code"
+        placeholder="Enter current 6-digit code"
+        pattern="[0-9]{6}"
+        required
+      />
+
+      <button
+        type="submit"
+        class="verify-button"
+        [disabled]="verifying || loading"
+      >
+        {{ verifying ? 'Verifying...' : 'Verify and Continue' }}
+      </button>
+
+    </form>
+
+  </div>
+</div>

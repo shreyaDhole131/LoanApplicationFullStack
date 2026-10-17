@@ -1,109 +1,126 @@
-﻿using LoanApp_API.Application.DTO;
+﻿
+using AutoMapper;
+using LoanApp_API.Application.DTO;
 using LoanApp_API.Application.Interfaces;
 using LoanApp_API.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace LoanApp_API.Infrastructure.Repositories
 {
     public class OfficerDashboardRepository : IOfficerDashboardRepository
     {
         private readonly AppDbContext _db;
+        private readonly IMapper _mapper;
 
-        public OfficerDashboardRepository(AppDbContext db)
+        public OfficerDashboardRepository(
+            AppDbContext db,
+            IMapper mapper)
         {
             _db = db;
+            _mapper = mapper;
         }
 
         public OfficerDashboardVM GetOfficerDashboard()
         {
-            var deals = _db.LoanDeals.ToList();
+            var deals = _db.LoanDeals
+                .AsNoTracking()
+                .ToList();
 
-            var loanAccounts = _db.LoanAccounts.ToList();
+            var loanAccounts = _db.LoanAccounts
+                .AsNoTracking()
+                .ToList();
 
-            var emiSchedules = _db.EmiSchedules.ToList();
+            var emiSchedules = _db.EmiSchedules
+                .AsNoTracking()
+                .ToList();
 
             var dashboard = new OfficerDashboardVM();
 
-            dashboard.ApplicationSummary = new OfficerApplicationSummaryVM
-            {
-                TotalApplications = deals.Count,
+            // Application summary: 4 cards
+            dashboard.ApplicationSummary =
+                new OfficerApplicationSummaryVM
+                {
+                    TotalApplications = deals.Count,
 
-                ApprovedApplications = deals
-                    .Count(x => x.CurrentStatus == "Approved"),
+                    ApprovedApplications = deals.Count(
+                        x => x.CurrentStatus == "Approved"),
 
-                RejectedApplications = deals
-                    .Count(x => x.CurrentStatus == "Rejected"),
+                    RejectedApplications = deals.Count(
+                        x => x.CurrentStatus == "Rejected"),
 
-                PendingApplications = deals
-                    .Count(x =>
-                        x.CurrentStatus != "Approved" &&
-                        x.CurrentStatus != "Rejected")
-            };
+                    PendingApplications = deals.Count(
+                        x => x.CurrentStatus != "Approved"
+                          && x.CurrentStatus != "Rejected")
+                };
 
+            // Loan summary: 3 cards
             dashboard.LoanSummary = new OfficerLoanSummaryVM
             {
                 TotalLoans = loanAccounts.Count,
 
-                ActiveLoans = loanAccounts
-                    .Count(x => x.LoanStatus == "Active"),
+                ActiveLoans = loanAccounts.Count(
+                    x => x.LoanStatus == "Active"),
 
-                ClosedLoans = loanAccounts
-                    .Count(x => x.LoanStatus == "Closed")
+                ClosedLoans = loanAccounts.Count(
+                    x => x.LoanStatus == "Closed")
             };
 
-            dashboard.ApplicationFunnel = deals
-                .GroupBy(x => x.CurrentStatus)
-                .Select(x => new OfficerApplicationFunnelVM
+            // Application funnel
+            var funnelItems =
+                _mapper.Map<List<OfficerApplicationFunnelVM>>(deals);
+
+            dashboard.ApplicationFunnel = funnelItems
+                .GroupBy(x => x.Stage)
+                .Select(g => new OfficerApplicationFunnelVM
                 {
-                    Stage = x.Key,
-                    Count = x.Count()
+                    Stage = g.Key,
+                    Count = g.Sum(x => x.Count)
                 })
+                .OrderByDescending(x => x.Count)
                 .ToList();
 
-            dashboard.LoanPortfolio = loanAccounts
+            // Loan portfolio: pie chart
+            var portfolioData = loanAccounts
                 .Join(
                     deals,
                     account => account.DealId,
                     deal => deal.DealId,
                     (account, deal) => new
                     {
-                        deal.LoanType,
+                        LoanType = deal.LoanType ?? "Other",
                         account.LoanAmount
                     })
                 .GroupBy(x => x.LoanType)
-                .Select(x => new OfficerLoanPortfolioVM
+                .Select(g => new OfficerLoanPortfolioData
                 {
-                    LoanType = x.Key,
-
-                    TotalLoanAmount = x.Sum(y => y.LoanAmount),
-
-                    LoanCount = x.Count()
+                    LoanType = g.Key,
+                    TotalLoanAmount = g.Sum(x => x.LoanAmount),
+                    LoanCount = g.Count()
                 })
                 .ToList();
 
-            var expectedAmount = emiSchedules
-                .Sum(x => x.Emi);
+            dashboard.LoanPortfolio =
+                _mapper.Map<List<OfficerLoanPortfolioVM>>(
+                    portfolioData);
 
-            var collectedAmount = emiSchedules
+            // Collection efficiency
+            decimal expectedAmount = emiSchedules.Sum(x => x.Emi);
+
+            decimal collectedAmount = emiSchedules
                 .Where(x => x.PaymentStatus == "Paid")
                 .Sum(x => x.Emi);
 
-            decimal collectionEfficiency = 0;
-
-            if (expectedAmount > 0)
-            {
-                collectionEfficiency =
-                    (collectedAmount / expectedAmount) * 100;
-            }
+            decimal efficiency = expectedAmount > 0
+                ? collectedAmount / expectedAmount * 100
+                : 0;
 
             dashboard.CollectionEfficiency =
                 new OfficerCollectionEfficiencyVM
                 {
                     ExpectedAmount = expectedAmount,
-
                     CollectedAmount = collectedAmount,
-
                     CollectionEfficiencyPercentage =
-                        Math.Round(collectionEfficiency, 2)
+                        Math.Round(efficiency, 2)
                 };
 
             return dashboard;

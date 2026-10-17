@@ -1,104 +1,67 @@
-﻿using LoanApp_API.Application.DTO;
+﻿using AutoMapper;
+using LoanApp_API.Application.DTO;
 using LoanApp_API.Application.Interfaces;
 using LoanApp_API.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace LoanApp_API.Infrastructure.Repositories
 {
-    public class OfficerSupportTicketRepository : IOfficerSupportTicketRepository
+    public class OfficerSupportTicketRepository
+        : IOfficerSupportTicketRepository
     {
         private readonly AppDbContext _db;
+        private readonly IMapper _mapper;
 
-        public OfficerSupportTicketRepository(AppDbContext db)
+        public OfficerSupportTicketRepository(
+            AppDbContext db,
+            IMapper mapper)
         {
             _db = db;
+            _mapper = mapper;
         }
 
+        // Get all customer support tickets
         public List<OfficerSupportTicketVM> GetAllTickets()
         {
-            return _db.SupportTickets
-                .Select(ticket => new OfficerSupportTicketVM
-                {
-                    TicketId = ticket.TicketId,
-
-                    CustomerId = ticket.CustomerId,
-
-                    CustomerName = ticket.Customer != null
-                        ? ticket.Customer.FirstName + " " + ticket.Customer.LastName
-                        : string.Empty,
-
-                    Email = ticket.Customer != null
-                        ? ticket.Customer.Email
-                        : string.Empty,
-
-                    LoanAccountId = ticket.LoanAccountId,
-
-                    LoanAccountNo = ticket.LoanAccount != null
-                        ? ticket.LoanAccount.LoanAccountNo
-                        : string.Empty,
-
-                    Subject = ticket.Subject,
-
-                    Description = ticket.Description,
-
-                    AttachmentPath = ticket.AttachmentPath,
-
-                    CreatedDate = ticket.CreatedDate,
-
-                    Status = ticket.Status,
-
-                    OfficerResponse = ticket.OfficerResponse
-                })
+            var tickets = _db.SupportTickets
+                .Include(x => x.Customer)
+                .Include(x => x.LoanAccount)
                 .ToList();
+
+            return _mapper.Map<List<OfficerSupportTicketVM>>(tickets);
         }
 
-        public OfficerSupportTicketVM? GetTicketById(int ticketId)
+        // Get particular support ticket
+        public OfficerSupportTicketVM? GetTicketById(
+            int ticketId)
         {
-            return _db.SupportTickets
-                .Where(ticket => ticket.TicketId == ticketId)
-                .Select(ticket => new OfficerSupportTicketVM
-                {
-                    TicketId = ticket.TicketId,
+            var ticket = _db.SupportTickets
+                .Include(x => x.Customer)
+                .Include(x => x.LoanAccount)
+                .FirstOrDefault(x =>
+                    x.TicketId == ticketId);
 
-                    CustomerId = ticket.CustomerId,
+            if (ticket == null)
+            {
+                return null;
+            }
 
-                    CustomerName = ticket.Customer != null
-                        ? ticket.Customer.FirstName + " " + ticket.Customer.LastName
-                        : string.Empty,
-
-                    Email = ticket.Customer != null
-                        ? ticket.Customer.Email
-                        : string.Empty,
-
-                    LoanAccountId = ticket.LoanAccountId,
-
-                    LoanAccountNo = ticket.LoanAccount != null
-                        ? ticket.LoanAccount.LoanAccountNo
-                        : string.Empty,
-
-                    Subject = ticket.Subject,
-
-                    Description = ticket.Description,
-
-                    AttachmentPath = ticket.AttachmentPath,
-
-                    CreatedDate = ticket.CreatedDate,
-
-                    Status = ticket.Status,
-
-                    OfficerResponse = ticket.OfficerResponse
-                })
-                .FirstOrDefault();
+            return _mapper.Map<OfficerSupportTicketVM>(ticket);
         }
 
+        // Update ticket status and officer response
         public bool UpdateTicket(
             int ticketId,
             OfficerSupportTicketUpdateDTO model)
         {
             var ticket = _db.SupportTickets
-                .FirstOrDefault(x => x.TicketId == ticketId);
+                .FirstOrDefault(x =>
+                    x.TicketId == ticketId);
 
             if (ticket == null)
+            {
                 return false;
+            }
 
             ticket.Status = model.Status;
             ticket.OfficerResponse = model.OfficerResponse;

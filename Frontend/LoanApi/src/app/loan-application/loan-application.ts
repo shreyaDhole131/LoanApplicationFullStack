@@ -6,8 +6,7 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 @Component({
   selector: 'app-loan-application',
   imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './loan-application.html',
-  styleUrl: './loan-application.css',
+  templateUrl: './loan-application.html'
 })
 export class LoanApplication {
   constructor(private service: Applyloan) {
@@ -26,7 +25,8 @@ export class LoanApplication {
     }
     this.service.SaveLoan(payload).subscribe({
       next: res => {
-        alert(res.message)
+        alert(res.message);
+        this.loans.reset();
       },
       error: err => {
         console.log(err);

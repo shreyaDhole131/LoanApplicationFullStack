@@ -8,9 +8,7 @@ declare var $: any;
 @Component({
   selector: 'app-generate-sanction',
   imports: [CommonModule, FormsModule, ReactiveFormsModule],
-  templateUrl: './generate-sanction.html',
-  styleUrl: './generate-sanction.css',
-})
+  templateUrl: './generate-sanction.html'})
 export class GenerateSanction {
   constructor(private service: SanctionService, private cd: ChangeDetectorRef) {
     this.fetchpendingcusts();
@@ -93,6 +91,41 @@ export class GenerateSanction {
 
   }
 
+  name = '';
+  fromDate = '';
+  toDate = '';
+  filter = '';
+  sort = '';
+  applyFilters() {
+    this.page = 1;
+    const filters: any = {};
+    if (this.name) filters.name = this.name;
+    if (this.fromDate) filters.fromDate = this.fromDate;
+    if (this.toDate) filters.toDate = this.toDate;
+    if (this.filter) filters.filter = this.filter;
+    if (this.sort) filters.sort = this.sort;
+
+    this.service.GetSanctionGrid(filters).subscribe({
+      next: res => {
+        this.allsanctions = res;
+        this.cd.detectChanges();
+      },
+      error: err => console.log(err)
+    });
+  }
+
+  resetFilters() {
+    this.page = 1;
+    this.pageSize = 10;
+    this.name = '';
+    this.fromDate = '';
+    this.toDate = '';
+    this.filter = '';
+    this.sort = '';
+    this.GetSanctionGrid();
+  }
+
+
   dealId: any;
   disbursemntAmount: any;
   prefilDisbursement(dealId: number) {
@@ -172,6 +205,36 @@ export class GenerateSanction {
   downloadPdf(letterId: number) {
     if (!letterId) { alert('No sanction letter for this deal.'); return; }
     window.open(this.service.downloadPdf(letterId), '_blank');
+  }
+
+  // pagination
+  page = 1;
+  pageSize = 10;
+
+  get pagedSanctions(): any[] {
+    const start = (this.page - 1) * this.pageSize;
+    return (this.allsanctions || []).slice(start, start + this.pageSize);
+  }
+
+  get totalCount(): number {
+    return this.allsanctions?.length || 0;
+  }
+
+  get totalPages(): number {
+    return Math.ceil(this.totalCount / this.pageSize) || 1;
+  }
+
+  get pagesArray(): number[] {
+    return Array.from({ length: this.totalPages }, (_, i) => i + 1);
+  }
+
+  goToPage(n: number) {
+    if (n < 1 || n > this.totalPages) return;
+    this.page = n;
+  }
+
+  onPageSizeChange() {
+    this.page = 1;
   }
 
 

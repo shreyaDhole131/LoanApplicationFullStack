@@ -1,4 +1,5 @@
-﻿using LoanApp_API.Application.DTO;
+﻿using AutoMapper;
+using LoanApp_API.Application.DTO;
 using LoanApp_API.Application.Interfaces;
 using LoanApp_API.Infrastructure.Data;
 
@@ -7,21 +8,40 @@ namespace LoanApp_API.Infrastructure.Repositories
     public class CustomerDashboardRepository : ICustomerDashboardRepository
     {
         private readonly AppDbContext _db;
+        private readonly IMapper _mapper;
 
-        public CustomerDashboardRepository(AppDbContext db)
+        public CustomerDashboardRepository(
+            AppDbContext db,
+            IMapper mapper)
         {
             _db = db;
+            _mapper = mapper;
         }
+
 
         public CustomerDashboardVM? GetCustomerDashboard(int userId)
         {
+            // =====================================================
+            // 1. FIND LOGGED-IN USER
+            // =====================================================
+
             var user = _db.Users
                 .FirstOrDefault(x => x.UserId == userId);
 
             if (user == null || user.CustomerId == null)
                 return null;
 
+
+            // =====================================================
+            // 2. GET CUSTOMER ID
+            // =====================================================
+
             int customerId = user.CustomerId.Value;
+
+
+            // =====================================================
+            // 3. GET PARTICULAR CUSTOMER
+            // =====================================================
 
             var customer = _db.Customers
                 .FirstOrDefault(x => x.CustomerId == customerId);
@@ -29,147 +49,195 @@ namespace LoanApp_API.Infrastructure.Repositories
             if (customer == null)
                 return null;
 
+
+            // =====================================================
+            // 4. GET ONLY THIS CUSTOMER'S LOAN DEALS
+            // =====================================================
+
             var deals = _db.LoanDeals
                 .Where(x => x.CustomerId == customerId)
                 .ToList();
+
+
+            // =====================================================
+            // 5. GET ONLY THIS CUSTOMER'S LOAN ACCOUNTS
+            // =====================================================
 
             var loanAccounts = _db.LoanAccounts
                 .Where(x => x.CustomerId == customerId)
                 .ToList();
 
+
+            // =====================================================
+            // 6. CREATE DASHBOARD
+            // =====================================================
+
             var dashboard = new CustomerDashboardVM
             {
+                CustomerId = customer.CustomerId,
+
+                CustomerName =
+                    customer.FirstName + " " + customer.LastName,
+
                 TotalApplications = deals.Count,
 
-                TotalActiveLoanAccounts = loanAccounts
-                    .Count(x => x.LoanStatus == "Active"),
+                TotalActiveLoanAccounts =
+                    loanAccounts.Count(
+                        x => x.LoanStatus == "Active"
+                    ),
 
-                Applications = deals
-                    .Select(x => new CustomerApplicationVM
-                    {
-                        DealId = x.DealId,
-                        LoanType = x.LoanType,
-                        LoanAmount = x.LoanAmount,
-                        ApprovedAmount = x.ApprovedAmount,
-                        CurrentStatus = x.CurrentStatus,
-                        AppliedDate = x.AppliedDate
-                    })
-                    .ToList(),
+                Applications =
+                    _mapper.Map<List<CustomerApplicationVM>>(
+                        deals
+                    ),
 
-                LoanAccounts = loanAccounts
-                    .Select(x => new CustomerLoanDropdownVM
-                    {
-                        LoanAccountNo = x.LoanAccountNo
-                    })
-                    .ToList(),
+                LoanAccounts =
+                    _mapper.Map<List<CustomerLoanDropdownVM>>(
+                        loanAccounts
+                    ),
 
-                KycDocuments = _db.KycDocuments
-                    .Where(x => x.CustomerId == customerId)
-                    .Select(x => new CustomerKycVM
-                    {
-                        DocumentId = x.DocumentId,
-                        DocumentType = x.DocumentType,
-                        VerificationStatus = x.VerificationStatus
-                    })
-                    .ToList()
+                KycDocuments =
+                    _mapper.Map<List<CustomerKycVM>>(
+                        _db.KycDocuments
+                            .Where(x => x.CustomerId == customerId)
+                            .ToList()
+                    )
             };
 
+
+            // =====================================================
+            // 7. IF CUSTOMER HAS NO LOAN
+            // =====================================================
+
             if (loanAccounts.Count == 0)
+            {
                 return dashboard;
+            }
 
-            var selectedLoan = loanAccounts.FirstOrDefault();
 
-            if (selectedLoan == null)
-                return dashboard;
+            // =====================================================
+            // 8. SELECT FIRST LOAN
+            // =====================================================
+
+            var selectedLoan = loanAccounts.First();
+
 
             dashboard.SelectedLoanAccountNo =
                 selectedLoan.LoanAccountNo;
 
+
+            // =====================================================
+            // 9. GET EMI SCHEDULE
+            // =====================================================
+
             var emiSchedules = _db.EmiSchedules
-                .Where(x => x.LoanAccountId == selectedLoan.LoanAccountId)
+                .Where(x =>
+                    x.LoanAccountId ==
+                    selectedLoan.LoanAccountId
+                )
                 .ToList();
 
+
+            // =====================================================
+            // 10. PAID EMI
+            // =====================================================
+
             var paidEmis = emiSchedules
-                .Where(x => x.PaymentStatus == "Paid")
+                .Where(x =>
+                    x.PaymentStatus == "Paid"
+                )
                 .ToList();
+
+
+            // =====================================================
+            // 11. NEXT EMI
+            // =====================================================
 
             var nextEmi = emiSchedules
                 .Where(x =>
                     x.PaymentStatus != "Paid" &&
-                    x.DueDate >= DateTime.Now)
+                    x.DueDate >= DateTime.Now
+                )
                 .OrderBy(x => x.DueDate)
                 .FirstOrDefault();
 
-            dashboard.SelectedLoanDetails = new CustomerLoanDetailsVM
-            {
-                LoanAccountNo = selectedLoan.LoanAccountNo,
 
-                LoanType = deals
-                    .Where(x => x.DealId == selectedLoan.DealId)
-                    .Select(x => x.LoanType)
-                    .FirstOrDefault() ?? string.Empty,
+            // =====================================================
+            // 12. MAP LOAN ACCOUNT
+            // =====================================================
 
-                LoanAmount = selectedLoan.LoanAmount,
+            var loanDetails =
+                _mapper.Map<CustomerLoanDetailsVM>(
+                    selectedLoan
+                );
 
-                OutstandingPrincipal =
-                    selectedLoan.OutstandingPrincipal,
 
-                LoanStatus =
-                    selectedLoan.LoanStatus,
+            // =====================================================
+            // 13. ADD CALCULATED EMI INFORMATION
+            // =====================================================
 
-                InterestRate =
-                    selectedLoan.InterestRate,
+            loanDetails.NextEmiDate =
+                nextEmi?.DueDate;
 
-                TenureMonths =
-                    selectedLoan.TenureMonths,
+            loanDetails.TotalEmis =
+                emiSchedules.Count;
 
-                EmiAmount =
-                    selectedLoan.EmiAmount,
+            loanDetails.PaidEmis =
+                paidEmis.Count;
 
-                DisbursementDate =selectedLoan.DisbursementDate,
+            loanDetails.RemainingEmis =
+                emiSchedules.Count -
+                paidEmis.Count;
 
-                TotalPaidAmount =selectedLoan.TotalPaidAmount,
 
-                NextEmiDate =nextEmi?.DueDate,
+            dashboard.SelectedLoanDetails =
+                loanDetails;
 
-                TotalEmis =emiSchedules.Count,
 
-                PaidEmis =paidEmis.Count,
+            // =====================================================
+            // 14. EMI SUMMARY
+            // =====================================================
 
-                RemainingEmis =emiSchedules.Count - paidEmis.Count
-            };
-
-            dashboard.EmiSummary = new CustomerEmiSummaryVM
-            {
-                TotalEmis =emiSchedules.Count,
-
-                PaidEmis =paidEmis.Count,
-
-                RemainingEmis =emiSchedules.Count - paidEmis.Count,
-
-                TotalPaidAmount =selectedLoan.TotalPaidAmount,
-
-                NextEmiDate =nextEmi?.DueDate,
-
-                NextEmiAmount =nextEmi?.Emi
-            };
-
-            dashboard.RecentPayments = paidEmis
-                .OrderByDescending(x => x.PaidDate)
-                .Take(5)
-                .Select(x => new CustomerEmiPaymentVM
+            dashboard.EmiSummary =
+                new CustomerEmiSummaryVM
                 {
-                    InstallmentNo =x.InstallmentNo,
+                    TotalEmis =
+                        emiSchedules.Count,
 
-                    DueDate =x.DueDate,
+                    PaidEmis =
+                        paidEmis.Count,
 
-                    Emi =x.Emi,
+                    RemainingEmis =
+                        emiSchedules.Count -
+                        paidEmis.Count,
 
-                    PaymentStatus =x.PaymentStatus,
+                    TotalPaidAmount =
+                        selectedLoan.TotalPaidAmount,
 
-                    PaidDate =x.PaidDate
-                })
-                .ToList();
+                    NextEmiDate =
+                        nextEmi?.DueDate,
+
+                    NextEmiAmount =
+                        nextEmi?.Emi
+                };
+
+
+            // =====================================================
+            // 15. RECENT PAYMENTS
+            // =====================================================
+
+            dashboard.RecentPayments =
+                _mapper.Map<List<CustomerEmiPaymentVM>>(
+                    paidEmis
+                        .OrderByDescending(x => x.PaidDate)
+                        .Take(5)
+                        .ToList()
+                );
+
+
+            // =====================================================
+            // 16. RETURN CUSTOMER DASHBOARD
+            // =====================================================
 
             return dashboard;
         }

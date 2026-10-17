@@ -1,0 +1,389 @@
+<div class="profile-layout">
+
+  <app-sidebar></app-sidebar>
+
+  <div class="profile-main">
+
+    <div class="top-header">
+      <span>🔔</span>
+    </div>
+
+    <div class="profile-content">
+
+      <h1>Customer Profile</h1>
+
+      <button
+        type="button"
+        class="edit-btn"
+        (click)="openEditModal()">
+        ✏️ Edit Profile
+      </button>
+
+
+      <!-- PERSONAL DETAILS -->
+
+      <div class="profile-card">
+
+        <h2>Personal Details</h2>
+
+        <hr>
+
+        <div class="details-grid">
+
+          <div>
+
+            <p>
+              <strong>Name:</strong>
+              {{ profileData?.firstName }}
+              {{ profileData?.lastName }}
+            </p>
+
+            <p>
+              <strong>Email:</strong>
+              {{ profileData?.email }}
+            </p>
+
+            <p>
+              <strong>Mobile:</strong>
+              {{ profileData?.mobileNo }}
+            </p>
+
+            <p>
+              <strong>PAN:</strong>
+              {{ profileData?.pan }}
+            </p>
+
+          </div>
+
+
+          <div>
+
+            <p>
+              <strong>Aadhaar:</strong>
+              {{ profileData?.aadhaarNo }}
+            </p>
+
+            <p>
+              <strong>Employment:</strong>
+              {{ profileData?.employmentType }}
+            </p>
+
+            <p>
+              <strong>Monthly Income:</strong>
+              ₹ {{ profileData?.monthlyIncome }}
+            </p>
+
+            <p>
+              <strong>Age:</strong>
+              {{ profileData?.age }}
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- KYC DOCUMENTS -->
+
+      <div class="profile-card">
+
+        <h2>KYC Documents</h2>
+
+        <hr>
+
+        @if (profileData?.kycDocuments?.length > 0) {
+
+          <table>
+
+            <thead>
+
+              <tr>
+                <th>Document</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+
+            </thead>
+
+            <tbody>
+
+              @for (
+                document of profileData.kycDocuments;
+                track document.documentId
+              ) {
+
+                <tr>
+
+                  <td>
+                    {{ document.documentType }}
+                  </td>
+
+                  <td>
+                    {{ document.verificationStatus }}
+                  </td>
+
+                  <td>
+
+                    <button
+                      type="button"
+                      class="btn btn-primary btn-sm"
+                      (click)="viewKyc(document.documentId)">
+                      View
+                    </button>
+
+                  </td>
+
+                </tr>
+
+              }
+
+            </tbody>
+
+          </table>
+
+        }
+        @else {
+
+          <p>No KYC Documents Uploaded</p>
+
+        }
+
+      </div>
+
+
+      <!-- LOAN DETAILS -->
+
+      <div class="profile-card">
+
+        <h2>Loan Details</h2>
+
+        <hr>
+
+        @if (profileData?.loanAccounts?.length > 0) {
+
+          @for (
+            loan of profileData.loanAccounts;
+            track loan.loanAccountId
+          ) {
+
+            <div class="loan-details">
+
+              <p>
+                <strong>Loan Amount:</strong>
+                ₹ {{ loan.loanAmount }}
+              </p>
+
+            </div>
+
+          }
+
+        }
+        @else {
+
+          <p>No Loan Taken</p>
+
+        }
+
+      </div>
+
+
+      <!-- SCORE CARD -->
+
+      <div class="profile-card">
+
+        <h2>Score Card</h2>
+
+        <hr>
+
+        @if (profileData?.scoreCards?.length > 0) {
+
+          @for (
+            score of profileData.scoreCards;
+            track score.scoreCardId
+          ) {
+
+            <div class="score-details">
+
+              <p>
+                <strong>Risk Category:</strong>
+                {{ score.riskCategory }}
+              </p>
+
+              <p>
+                <strong>Eligible Loan Amount:</strong>
+                ₹ {{ score.eligibleLoanAmount }}
+              </p>
+
+            </div>
+
+          }
+
+        }
+        @else {
+
+          <p>Score Card Not Generated</p>
+
+        }
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- EDIT PROFILE MODAL -->
+
+@if (editOpen) {
+
+  <div class="modal-backdrop fade show"></div>
+
+  <div
+    class="modal fade show d-block"
+    tabindex="-1">
+
+    <div class="modal-dialog">
+
+      <div class="modal-content">
+
+        <div class="modal-header">
+
+          <h5 class="modal-title">
+            Edit Profile
+          </h5>
+
+          <button
+            type="button"
+            class="close"
+            (click)="closeEditModal()">
+
+            <span>&times;</span>
+
+          </button>
+
+        </div>
+
+
+        <div class="modal-body">
+
+          <div class="form-group">
+
+            <label>First Name</label>
+
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="editModel.firstName">
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label>Last Name</label>
+
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="editModel.lastName">
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label>Mobile</label>
+
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="editModel.mobileNo">
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label>Age</label>
+
+            <input
+              type="number"
+              class="form-control"
+              [(ngModel)]="editModel.age">
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label>Employment Type</label>
+
+            <select
+              class="form-control"
+              [(ngModel)]="editModel.employmentType">
+
+              <option value="">
+                Select Employment Type
+              </option>
+
+              <option value="Salaried">
+                Salaried
+              </option>
+
+              <option value="Self Employed">
+                Self Employed
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label>Monthly Income</label>
+
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="editModel.monthlyIncome">
+
+          </div>
+
+        </div>
+
+
+        <div class="modal-footer">
+
+          <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="closeEditModal()">
+
+            Cancel
+
+          </button>
+
+
+          <button
+            type="button"
+            class="btn btn-primary"
+            (click)="updateProfile()">
+
+            Save Changes
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+}
