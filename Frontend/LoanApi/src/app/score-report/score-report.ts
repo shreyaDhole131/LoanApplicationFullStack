@@ -2,9 +2,11 @@ import { ChangeDetectorRef, Component } from '@angular/core';
 import { ScoreReportService } from '../services/score-report-service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { Sidebar } from '../officer/sidebar/sidebar';
+
 
 @Component({
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, Sidebar],
   selector: 'app-score-report',
   styleUrl: './score-report.css',
   templateUrl: './score-report.html',

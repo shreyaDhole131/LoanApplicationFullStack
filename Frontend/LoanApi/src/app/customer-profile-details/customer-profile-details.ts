@@ -2,11 +2,12 @@ import { ChangeDetectorRef, Component } from '@angular/core';
 import { Pendingdeals } from '../services/pendingdeals';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { Sidebar } from '../officer/sidebar/sidebar';
 
 
 @Component({
   selector: 'app-customer-profile-details',
-  imports: [CommonModule],
+  imports: [CommonModule, Sidebar],
   templateUrl: './customer-profile-details.html',
   styleUrl: './customer-profile-details.css',
 })

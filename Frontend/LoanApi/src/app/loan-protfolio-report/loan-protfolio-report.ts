@@ -2,9 +2,10 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { LoanProtfolioService } from '../services/loan-protfolio-service';
 import { FormsModule } from '@angular/forms';
+import { Sidebar } from '../officer/sidebar/sidebar';
 
 @Component({
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, Sidebar],
   selector: 'app-loan-protfolio-report',
   styleUrl: './loan-protfolio-report.css',
   templateUrl: './loan-protfolio-report.html',

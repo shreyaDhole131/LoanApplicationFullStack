@@ -2,9 +2,11 @@ import { ChangeDetectorRef, Component } from '@angular/core';
 import { EmiReportService } from '../services/emi-report-service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { Sidebar } from '../officer/sidebar/sidebar';
+
 
 @Component({
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, Sidebar],
   selector: 'app-emi-report',
   styleUrl: './emi-report.css',
   templateUrl: './emi-report.html',

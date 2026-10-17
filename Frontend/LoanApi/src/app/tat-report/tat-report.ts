@@ -2,9 +2,10 @@ import { ChangeDetectorRef, Component } from '@angular/core';
 import { TatService } from '../services/tat-service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { Sidebar } from '../officer/sidebar/sidebar';
 
 @Component({
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, Sidebar],
   selector: 'app-tat-report',
   styleUrl: './tat-report.css',
   templateUrl: './tat-report.html',

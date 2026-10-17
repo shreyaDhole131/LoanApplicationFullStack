@@ -2,10 +2,11 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { Applyloan } from '../services/applyloan';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Sidebar } from '../customer/sidebar/sidebar';
 
 @Component({
   selector: 'app-loan-application',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, Sidebar],
   templateUrl: './loan-application.html',
   styleUrl: './loan-application.css',
 })
