@@ -127,8 +127,27 @@ namespace LoanApp_API.Infrastructure.Repositories
             await db.SaveChangesAsync();
         }
 
-        public async Task<EmiScheduleSummaryDto> GetEMISchedule(int loanAccountId)
+        public async Task<EmiScheduleSummaryDto> GetEMISchedule(
+    int loanAccountId,
+    string email)
         {
+            
+            var customer = await db.Customers
+                .FirstOrDefaultAsync(x => x.Email == email);
+
+            if (customer == null)
+                throw new Exception("Customer not found.");
+
+         
+            var loanAccount = await db.LoanAccounts
+                .FirstOrDefaultAsync(x =>
+                    x.LoanAccountId == loanAccountId &&
+                    x.CustomerId == customer.CustomerId);
+
+            if (loanAccount == null)
+                throw new Exception("Loan account not found.");
+
+           
             var schedules = await db.EmiSchedules
                 .Where(x => x.LoanAccountId == loanAccountId)
                 .OrderBy(x => x.InstallmentNo)
@@ -143,40 +162,44 @@ namespace LoanApp_API.Infrastructure.Repositories
                 .ToList();
 
             var firstPending = pendingSchedules
-               .OrderBy(x => x.InstallmentNo)
-               .FirstOrDefault();
+                .OrderBy(x => x.InstallmentNo)
+                .FirstOrDefault();
 
             return new EmiScheduleSummaryDto
             {
                 PaidEmiCount = paidSchedules.Count,
 
-                PaidEmiAmount = paidSchedules
-                    .Sum(x => x.Emi),
+                PaidEmiAmount = paidSchedules.Sum(x => x.Emi),
 
                 PendingEmiCount = pendingSchedules.Count,
 
-                PendingEmiAmount = pendingSchedules
-                    .Sum(x => x.Emi),
+                PendingEmiAmount = pendingSchedules.Sum(x => x.Emi),
 
                 RemainingEmiCount = pendingSchedules.Count,
 
                 RemainingBalance = firstPending?.OpeningBalance ?? 0,
 
-                //Schedules = schedules.Select(x => new EmiScheduleDto
-                //{
-                //    InstallmentNo = x.InstallmentNo,
-                //    DueDate = x.DueDate,
-                //    Emi = x.Emi,
-                //    PrincipalAmount = x.PrincipalAmount,
-                //    InterestAmount = x.InterestAmount,
-                //    OpeningBalance = x.OpeningBalance,
-                //    ClosingBalance = x.ClosingBalance,
-                //    PaymentStatus = x.PaymentStatus
-                //}).ToList()
-
                 Schedules = mapper.Map<List<EmiScheduleDto>>(schedules)
             };
         }
 
+        public async Task<List<LoanAccountDropdownDto>> GetMyLoanAccounts(
+    string email)
+        {
+            var customer = await db.Customers
+                .FirstOrDefaultAsync(x => x.Email == email);
+
+            if (customer == null)
+                throw new Exception("Customer not found.");
+
+            return await db.LoanAccounts
+                .Where(x => x.CustomerId == customer.CustomerId)
+                .Select(x => new LoanAccountDropdownDto
+                {
+                    LoanAccountId = x.LoanAccountId,
+                    LoanAccountNo = x.LoanAccountNo
+                })
+                .ToListAsync();
+        }
     }
 }

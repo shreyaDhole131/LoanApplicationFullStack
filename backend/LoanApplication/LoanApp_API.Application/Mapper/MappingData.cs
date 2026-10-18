@@ -1,10 +1,14 @@
 ﻿
 using AutoMapper;
 using LoanApp_API.Application.DTO;
+
+using LoanApp_API.Application.DTO.User;
+
 using LoanApp_API.Application.DTO.ScoreCard;
 using LoanApp_API.Application.DTO.User;
 using LoanApp_API.Application.DTO.ForeClosure;
 using LoanApp_API.Application.DTO.PaymentHistory;
+
 using LoanApp_API.Domain.Entities;
 using System;
 
@@ -14,9 +18,14 @@ namespace LoanApp_API.Application.Mapper
     {
         public MappingData()
         {
+
+            CreateMap<CustomerRegistrationDTO, Customers>();
+            CreateMap<LoanDeals, LoanDealDTO>().ReverseMap();
+
             // Loan Deals
             CreateMap<LoanDeals, LoanDealDTO>()
                 .ReverseMap();
+
 
             // Loan Account
             CreateMap<LoanAccount, LoanAccountDto>()

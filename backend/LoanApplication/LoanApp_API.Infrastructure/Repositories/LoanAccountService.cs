@@ -36,6 +36,14 @@ namespace LoanApp_API.Infrastructure.Repositories
             if (disbursement.Status != "Disbursed")
                 throw new Exception("Loan is not disbursed yet");
 
+            var existingAccount = await db.LoanAccounts
+          .FirstOrDefaultAsync(x => x.DealId == disbursement.DealId);
+
+            if (existingAccount != null)
+            {
+                return;
+            }
+
             var loanAccount = new LoanAccount
             {
                 DealId = disbursement.DealId,
@@ -92,5 +100,41 @@ namespace LoanApp_API.Infrastructure.Repositories
                 .ToListAsync();
             return mapper.Map<List<LoanAccountDto>>(loanAccounts);
         }
+
+        public async Task<LoanAccountDto?> FetchLoanAccountDetailsById(int loanAccountId)
+        {
+            var loanAccount = await db.LoanAccounts
+                .Include(x => x.Customer)
+                .FirstOrDefaultAsync(x => x.LoanAccountId == loanAccountId);
+
+            if (loanAccount == null)
+                return null;
+
+            return mapper.Map<LoanAccountDto>(loanAccount);
+        }
+
+        public async Task<List<LoanAccountDto>> SearchLoanAccounts(string search)
+        {
+            search = search?.Trim() ?? "";
+
+            var loans = await db.LoanAccounts
+                .Include(x => x.Customer)
+                .Where(x =>
+                    x.LoanAccountNo.Contains(search) ||
+
+                    x.Customer.FirstName.Contains(search) ||
+
+                    x.Customer.LastName.Contains(search) ||
+
+                    (x.Customer.FirstName + " " + x.Customer.LastName)
+                        .Contains(search) ||
+
+                    x.LoanStatus.Contains(search)
+                )
+                .ToListAsync();
+
+            return mapper.Map<List<LoanAccountDto>>(loans);
+        }
+
     }
 }

@@ -13,5 +13,9 @@ namespace LoanApp_API.Application.Interfaces
 
         Task<List<LoanAccountDto>> FetchLoanAccountById(int customerId);
 
+        Task<LoanAccountDto?> FetchLoanAccountDetailsById(int loanAccountId);
+
+        Task<List<LoanAccountDto>> SearchLoanAccounts(string search);
+
     }
 }

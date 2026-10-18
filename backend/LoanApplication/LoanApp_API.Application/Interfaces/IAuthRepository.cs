@@ -22,7 +22,9 @@ namespace LoanApp_API.Application.Interfaces
         bool MarkEmailVerified(string email);
 
 
+
         bool SavePendingAuthenticatorSecret(int userId, string secret);
         bool EnableTwoFactor(int userId, string secret);
+
     }
 }
