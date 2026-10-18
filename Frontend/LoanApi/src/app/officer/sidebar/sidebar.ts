@@ -12,6 +12,7 @@ export class Sidebar {
   customerOpen = false;
   loanOpen = false;
   requestOpen = false;
+  reportOpen = false;
 
   toggleCustomer() {
     this.customerOpen = !this.customerOpen;
@@ -23,6 +24,10 @@ export class Sidebar {
 
   toggleRequest() {
     this.requestOpen = !this.requestOpen;
+  }
+
+  toggleReport() {
+    this.reportOpen = !this.reportOpen;
   }
 
 }

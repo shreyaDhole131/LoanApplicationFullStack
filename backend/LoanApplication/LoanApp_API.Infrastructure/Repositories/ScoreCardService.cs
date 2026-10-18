@@ -1,9 +1,9 @@
-﻿
-using LoanApp_API.Application.DTO.ScoreCard;
+﻿using LoanApp_API.Application.DTO.ScoreCard;
 using LoanApp_API.Application.Interfaces;
 using LoanApp_API.Domain.Entities;
 using LoanApp_API.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 namespace LoanApp_API.Infrastructure.Repositories
 {
@@ -16,7 +16,7 @@ namespace LoanApp_API.Infrastructure.Repositories
             this.context = context;
         }
 
-        // Get all customers for the customer list
+        // Get customers for the officer's customer list
         public async Task<List<ScoreCardCustomerDto>> GetCustomersAsync()
         {
             return await context.Customers
@@ -25,13 +25,14 @@ namespace LoanApp_API.Infrastructure.Repositories
                     CustomerId = c.CustomerId,
                     Name = c.FirstName + " " + c.LastName,
                     Email = c.Email,
-                    MonthlyIncome = c.MonthlyIncome
+                    MonthlyIncome = c.MonthlyIncome ?? string.Empty
                 })
                 .ToListAsync();
         }
 
-        // Generate a new scorecard or update the existing one
-        public async Task<ScoreCard?> GenerateScoreCardAsync(int customerId)
+        // Generate or update the scorecard
+        public async Task<ScoreCardDto?> GenerateScoreCardAsync(
+            int customerId)
         {
             var customer = await context.Customers
                 .FirstOrDefaultAsync(c => c.CustomerId == customerId);
@@ -45,9 +46,9 @@ namespace LoanApp_API.Infrastructure.Repositories
             if (report == null)
                 return null;
 
+            // Calculate risk category
             int cibilScore = report.CibilScore;
 
-            // Calculate risk category
             string riskCategory;
 
             if (cibilScore >= 750)
@@ -57,9 +58,23 @@ namespace LoanApp_API.Infrastructure.Repositories
             else
                 riskCategory = "High";
 
-            // Calculate eligible loan amount
-            decimal.TryParse(customer.MonthlyIncome, out decimal income);
+            // Read monthly income
+            decimal income;
 
+            if (!decimal.TryParse(
+                customer.MonthlyIncome,
+                NumberStyles.Any,
+                CultureInfo.InvariantCulture,
+                out income))
+            {
+                decimal.TryParse(
+                    customer.MonthlyIncome,
+                    NumberStyles.Any,
+                    CultureInfo.CurrentCulture,
+                    out income);
+            }
+
+            // Calculate eligible loan amount
             decimal loanAmount;
 
             if (income > 100000)
@@ -83,27 +98,19 @@ namespace LoanApp_API.Infrastructure.Repositories
                 context.ScoreCards.Add(scoreCard);
             }
 
+            // Insert or update calculated values
             scoreCard.RiskCategory = riskCategory;
             scoreCard.EligibleLoanAmount = loanAmount;
 
             await context.SaveChangesAsync();
 
-            return scoreCard;
-        }
-
-        // Retrieve an existing scorecard without recalculating it
-        public async Task<ScoreCard?> GetScoreCardAsync(int customerId)
-        {
-            return await context.ScoreCards
-                .FirstOrDefaultAsync(s => s.CustomerId == customerId);
-        }
-
-        // Get all generated scorecards
-        public async Task<List<ScoreCard>> GetAllScoreCardsAsync()
-        {
-            return await context.ScoreCards
-                .OrderBy(s => s.CustomerId)
-                .ToListAsync();
+            return new ScoreCardDto
+            {
+                ScoreCardId = scoreCard.ScoreCardId,
+                CustomerId = scoreCard.CustomerId,
+                RiskCategory = scoreCard.RiskCategory,
+                EligibleLoanAmount = scoreCard.EligibleLoanAmount
+            };
         }
     }
 }

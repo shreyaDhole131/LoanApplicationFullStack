@@ -1,0 +1,73 @@
+<div class="details-container" *ngIf="loan">
+
+  <h2>Loan Account Details</h2>
+
+  <div class="details-card">
+    
+
+    <p>
+      <strong>Loan Account No:</strong>
+      {{ loan.loanAccountNo }}
+    </p>
+    
+
+    <p>
+      <strong>Customer:</strong>
+      
+      {{ loan.customerName }}
+    </p>
+
+    <p>
+      <strong>Loan Amount:</strong>
+      ₹ {{ loan.loanAmount | number:'1.2-2' }}
+    </p>
+
+    <p>
+      <strong>Outstanding Principal:</strong>
+      ₹ {{ loan.outstandingPrincipal | number:'1.2-2' }}
+    </p>
+
+    <p>
+      <strong>Loan Status:</strong>
+      {{ loan.loanStatus }}
+    </p>
+
+    <p>
+      <strong>Interest Rate:</strong>
+      {{ loan.interestRate }} %
+
+    </p>
+
+    
+    <p>
+      <strong>Tenure Months:</strong>
+      {{ loan.tenureMonths }}
+    </p>
+
+    <p>
+      <strong>EMI Amount:</strong>
+      ₹ {{ loan.emiAmount | number:'1.2-2' }}
+    </p>
+
+    <p>
+      <strong>Total Paid Amount:</strong>
+      ₹ {{ loan.totalPaidAmount | number:'1.2-2' }}
+    </p>
+
+    <p>
+      <strong>Disbursement Date:</strong>
+      {{ loan.disbursementDate | date:'dd MMM yyyy' }}
+    </p>
+
+    <p>
+      <strong>Created At:</strong>
+      {{ loan.createdAt | date:'dd MMM yyyy' }}
+    </p>
+
+  </div>
+
+  <button class="btn btn-secondary" (click)="goBack()">
+    Back
+  </button>
+
+</div>

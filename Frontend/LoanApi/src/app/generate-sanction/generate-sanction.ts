@@ -3,14 +3,17 @@ import { ChangeDetectorRef, Component } from '@angular/core';
 import { error } from 'console';
 import { SanctionService } from '../services/sanction-service';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Sidebar } from '../officer/sidebar/sidebar';
 declare var $: any;
 
 @Component({
   selector: 'app-generate-sanction',
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, Sidebar],
   templateUrl: './generate-sanction.html',
   styleUrl: './generate-sanction.css',
 })
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  templateUrl: './generate-sanction.html'})
 export class GenerateSanction {
   constructor(private service: SanctionService, private cd: ChangeDetectorRef) {
     this.fetchpendingcusts();

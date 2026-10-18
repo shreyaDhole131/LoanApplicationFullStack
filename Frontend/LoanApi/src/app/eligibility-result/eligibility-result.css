@@ -1,0 +1,264 @@
+:host {
+    display: block;
+    min-height: 100%;
+    background: #f3f6fc;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #202938;
+}
+
+/* Center the page */
+.result-page {
+    width: 100%;
+    max-width: 1050px;
+    margin: 0 auto;
+    padding: 24px;
+    box-sizing: border-box;
+}
+
+/* Header and result card */
+.page-header,
+.result-card {
+    width: 100%;
+    box-sizing: border-box;
+    background: #ffffff;
+    padding: 24px;
+    border-radius: 14px;
+    box-shadow: 0 5px 22px rgba(20, 40, 80, 0.08);
+    margin: 0 auto 20px;
+}
+
+.page-header h1 {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 26px;
+}
+
+.page-header p {
+    color: #718096;
+    margin-bottom: 0;
+    font-size: 15px;
+}
+
+.title-icon {
+    display: inline-flex;
+    width: 32px;
+    height: 32px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #1267f5;
+    color: #ffffff;
+    font-size: 21px;
+    flex-shrink: 0;
+}
+
+/* Customer and EMI information */
+.detail-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+    margin-bottom: 22px;
+}
+
+.detail-item {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    padding: 17px;
+    border-radius: 9px;
+    background: #f6f8fb;
+    overflow-wrap: anywhere;
+    min-width: 0;
+}
+
+.detail-item span {
+    color: #718096;
+    font-size: 14px;
+}
+
+.detail-item strong {
+    font-size: 18px;
+}
+
+.loan-amount {
+    color: #138b47;
+    font-weight: 700;
+}
+
+/* Status banner */
+.status-banner {
+    text-align: center;
+    padding: 22px 16px;
+    margin: 6px 0 24px;
+    border-radius: 12px;
+    overflow-wrap: anywhere;
+}
+
+.status-banner h2 {
+    font-size: 26px;
+    margin: 0 0 10px;
+}
+
+.status-banner p {
+    font-size: 15px;
+    margin: 8px 0;
+}
+
+.approved {
+    background: #d2e9df;
+    color: #075b37;
+}
+
+.rejected {
+    background: #fee4e2;
+    color: #a82020;
+}
+
+.pending {
+    background: #fff0c2;
+    color: #805300;
+}
+
+/* EMI and tenure sections */
+.calculation-section {
+    margin-top: 28px;
+}
+
+.calculation-section h2 {
+    margin: 0 0 15px;
+    font-size: 21px;
+    color: #202938;
+}
+
+.section-description {
+    color: #718096;
+    margin: -5px 0 15px;
+    font-size: 14px;
+}
+
+/* Tenure table */
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    border: 1px solid #e0e6ef;
+    border-radius: 9px;
+}
+
+.tenure-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 620px;
+}
+
+.tenure-table th {
+    background: #1267f5;
+    color: #ffffff;
+    font-weight: 600;
+    text-align: left;
+    padding: 14px 12px;
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+.tenure-table td {
+    padding: 14px 12px;
+    border-bottom: 1px solid #e0e6ef;
+    font-size: 14px;
+}
+
+.tenure-table tbody tr:nth-child(even) {
+    background: #f6f8fb;
+}
+
+.tenure-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.tenure-years {
+    display: block;
+    color: #718096;
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+.result-disclaimer {
+    color: #718096;
+    font-size: 12px;
+    line-height: 1.6;
+    margin: 20px 0 0;
+}
+
+/* Loading and errors */
+.alert-error {
+    padding: 13px 16px;
+    border-radius: 8px;
+    margin-bottom: 18px;
+    color: #a82020;
+    background: #fee4e2;
+    border: 1px solid #ffc9c4;
+}
+
+.info-message {
+    color: #667085;
+}
+
+/* Refresh button */
+.btn {
+    padding: 11px 17px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.btn-refresh {
+    display: block;
+    margin: 0 auto;
+    color: #ffffff;
+    background: #1267f5;
+}
+
+.btn-refresh:hover:not(:disabled) {
+    background: #0755d3;
+}
+
+/* Mobile layout */
+@media (max-width: 650px) {
+    .result-page {
+        padding: 15px;
+    }
+
+    .page-header,
+    .result-card {
+        padding: 17px;
+    }
+
+    .page-header h1 {
+        font-size: 23px;
+    }
+
+    .detail-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .detail-item {
+        padding: 15px;
+    }
+
+    .status-banner h2 {
+        font-size: 23px;
+    }
+
+    .calculation-section h2 {
+        font-size: 19px;
+    }
+}

@@ -1,229 +1,241 @@
-<div class="sanction-page">
+<div class="customers-layout">
 
-  <!-- ===== Top bar ===== -->
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2 class="page-title mb-0">Sanction Letters</h2>
-    <button type="button" class="btn btn-primary btn-generate" data-toggle="modal" data-target="#exampleModal">
-      <i class="fas fa-plus-circle me-1"></i> Generate Sanction Letter
-    </button>
-  </div>
+  <app-officer-sidebar></app-officer-sidebar>
 
-  <!-- ===== Filter card ===== -->
-  <div class="card filter-card mb-4">
-    <div class="card-body">
-      <div class="row g-3">
+  <div class="customers-main">
 
-        <div class="col-md-3">
-          <label class="form-label">Search Customer</label>
-          <input type="text" class="form-control" placeholder="Enter customer name" [(ngModel)]="name" name="name">
-        </div>
+    <div class="sanction-page">
 
-        <div class="col-md-2">
-          <label class="form-label">From Date</label>
-          <input type="date" class="form-control" [(ngModel)]="fromDate" name="fromDate">
-        </div>
+      <!-- ===== Top bar ===== -->
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="page-title mb-0">Sanction Letters</h2>
+        <button type="button" class="btn btn-primary btn-generate" data-toggle="modal" data-target="#exampleModal">
+          <i class="fas fa-plus-circle me-1"></i> Generate Sanction Letter
+        </button>
+      </div>
 
-        <div class="col-md-2">
-          <label class="form-label">To Date</label>
-          <input type="date" class="form-control" [(ngModel)]="toDate" name="toDate">
-        </div>
+      <!-- ===== Filter card ===== -->
+      <div class="card filter-card mb-4">
+        <div class="card-body">
+          <div class="row g-3">
 
-        <div class="col-md-2">
-          <label class="form-label">Filter</label>
-          <select class="form-control" [(ngModel)]="filter" name="filter">
-            <option value="">Select Filter</option>
-            <option>Home Loan</option>
-            <option>Personal Loan</option>
-            <option>Education Loan</option>
-          </select>
-        </div>
+            <div class="col-md-3">
+              <label class="form-label">Search Customer</label>
+              <input type="text" class="form-control" placeholder="Enter customer name" [(ngModel)]="name" name="name">
+            </div>
 
-        <div class="col-md-2">
-          <label class="form-label">Sort</label>
-          <select class="form-control" [(ngModel)]="sort" name="sort">
-            <option value="">Sort By Custom</option>
-            <option value="ascending">Ascending</option>
-            <option value="descending">Descending</option>
-          </select>
-        </div>
+            <div class="col-md-2">
+              <label class="form-label">From Date</label>
+              <input type="date" class="form-control" [(ngModel)]="fromDate" name="fromDate">
+            </div>
 
-        <div class="col-md-1 d-flex align-items-end">
-          <button class="btn btn-primary w-100" (click)="applyFilters()">Search</button>
+            <div class="col-md-2">
+              <label class="form-label">To Date</label>
+              <input type="date" class="form-control" [(ngModel)]="toDate" name="toDate">
+            </div>
+
+            <div class="col-md-2">
+              <label class="form-label">Filter</label>
+              <select class="form-control" [(ngModel)]="filter" name="filter">
+                <option value="">Select Filter</option>
+                <option>Home Loan</option>
+                <option>Personal Loan</option>
+                <option>Education Loan</option>
+              </select>
+            </div>
+
+            <div class="col-md-2">
+              <label class="form-label">Sort</label>
+              <select class="form-control" [(ngModel)]="sort" name="sort">
+                <option value="">Sort By Custom</option>
+                <option value="ascending">Ascending</option>
+                <option value="descending">Descending</option>
+              </select>
+            </div>
+
+            <div class="col-md-1 d-flex align-items-end">
+              <button class="btn btn-primary w-100" (click)="applyFilters()">Search</button>
+            </div>
+          </div>
+
+          <div class="mt-3">
+            <button class="btn btn-outline-secondary btn-sm" (click)="resetFilters()">Reset</button>
+          </div>
         </div>
       </div>
 
-      <div class="mt-3">
-        <button class="btn btn-outline-secondary btn-sm" (click)="resetFilters()">Reset</button>
-      </div>
-    </div>
-  </div>
+      <!-- ===== Entries per page + Table + Pagination card ===== -->
+      <div class="card table-card">
+        <div class="card-body">
 
-  <!-- ===== Entries per page + Table + Pagination card ===== -->
-  <div class="card table-card">
-    <div class="card-body">
+          <!-- Entries per page -->
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="d-flex align-items-center">
+              <select class="form-control form-control-sm" style="width: 80px;" [(ngModel)]="pageSize" name="pageSize"
+                (ngModelChange)="onPageSizeChange()">
+                <option [ngValue]="10">10</option>
+                <option [ngValue]="25">25</option>
+                <option [ngValue]="50">50</option>
+                <option [ngValue]="100">100</option>
+              </select>
+              <span class="ms-2 text-muted small">entries per page</span>
+            </div>
+          </div>
 
-      <!-- Entries per page -->
-      <div class="d-flex justify-content-between align-items-center mb-3">
-        <div class="d-flex align-items-center">
-          <select class="form-control form-control-sm" style="width: 80px;" [(ngModel)]="pageSize" name="pageSize"
-            (ngModelChange)="onPageSizeChange()">
-            <option [ngValue]="10">10</option>
-            <option [ngValue]="25">25</option>
-            <option [ngValue]="50">50</option>
-            <option [ngValue]="100">100</option>
-          </select>
-          <span class="ms-2 text-muted small">entries per page</span>
+          <!-- Table -->
+          <div class="table-responsive">
+            <table class="table sl-table align-middle mb-0">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Customer ID</th>
+                  <th scope="col">Customer Name</th>
+                  <th scope="col">Loan Amount</th>
+                  <th scope="col">Loan Type</th>
+                  <th scope="col">Tenure</th>
+                  <th scope="col">Interest</th>
+                  <th scope="col">EMI</th>
+                  <th scope="col">Created At</th>
+                  <th scope="col">Action</th>
+                  <th scope="col">Disbursement</th>
+                  <th scope="col">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let e of pagedSanctions; let i = index">
+                  <td class="text-muted">{{ (page - 1) * pageSize + i + 1 }}</td>
+                  <td>{{ e.customerID }}</td>
+                  <td class="fw-500">{{ e.customerName }}</td>
+                  <td>{{ e.loanAmount }}</td>
+                  <td>
+                    <span class="loan-badge">{{ e.loanType }}</span>
+                  </td>
+                  <td>{{ e.tenureMonths }}</td>
+                  <td>{{ e.interestRate }}</td>
+                  <td>{{ e.emiAmount }}</td>
+                  <td class="text-muted small">{{ e.appliedDate }}</td>
+                  <td class="text-nowrap">
+                    <button type="button" class="btn btn-primary btn-sm me-1"
+                      (click)="openPdf(e.sanctionLetterId)">View</button>
+                    <button type="button" class="btn btn-primary btn-sm"
+                      (click)="downloadPdf(e.sanctionLetterId)">Download</button>
+                  </td>
+                  <td>
+                    <button type="button" class="btn btn-primary btn-sm" (click)="prefilDisbursement(e.dealId)"
+                      data-toggle="modal" data-target="#exampleModal2">Disburse</button>
+                  </td>
+                  <td>{{ e.disbursementStatus }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Footer: Showing X to Y + Pagination -->
+          <div class="d-flex justify-content-between align-items-center mt-3">
+            <div class="text-muted small">
+              Showing
+              {{ totalCount === 0 ? 0 : (page - 1) * pageSize + 1 }}
+              to
+              {{ totalCount < page * pageSize ? totalCount : page * pageSize }} of {{ totalCount }} entries </div>
+
+                <nav>
+                  <ul class="pagination mb-0">
+                    <li class="page-item" [class.disabled]="page === 1">
+                      <a class="page-link" (click)="goToPage(1)" style="cursor: pointer;">&laquo;</a>
+                    </li>
+                    <li class="page-item" [class.disabled]="page === 1">
+                      <a class="page-link" (click)="goToPage(page - 1)" style="cursor: pointer;">&lsaquo;</a>
+                    </li>
+                    <li class="page-item" *ngFor="let p of pagesArray" [class.active]="page === p">
+                      <a class="page-link" (click)="goToPage(p)" style="cursor: pointer;">{{ p }}</a>
+                    </li>
+                    <li class="page-item" [class.disabled]="page === totalPages">
+                      <a class="page-link" (click)="goToPage(page + 1)" style="cursor: pointer;">&rsaquo;</a>
+                    </li>
+                    <li class="page-item" [class.disabled]="page === totalPages">
+                      <a class="page-link" (click)="goToPage(totalPages)" style="cursor: pointer;">&raquo;</a>
+                    </li>
+                  </ul>
+                </nav>
+            </div>
+
+          </div>
         </div>
       </div>
 
-      <!-- Table -->
-      <div class="table-responsive">
-        <table class="table sl-table align-middle mb-0">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Customer ID</th>
-              <th scope="col">Customer Name</th>
-              <th scope="col">Loan Amount</th>
-              <th scope="col">Loan Type</th>
-              <th scope="col">Tenure</th>
-              <th scope="col">Interest</th>
-              <th scope="col">EMI</th>
-              <th scope="col">Created At</th>
-              <th scope="col">Action</th>
-              <th scope="col">Disbursement</th>
-              <th scope="col">Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let e of pagedSanctions; let i = index">
-              <td class="text-muted">{{ (page - 1) * pageSize + i + 1 }}</td>
-              <td>{{ e.customerID }}</td>
-              <td class="fw-500">{{ e.customerName }}</td>
-              <td>{{ e.loanAmount }}</td>
-              <td>
-                <span class="loan-badge">{{ e.loanType }}</span>
-              </td>
-              <td>{{ e.tenureMonths }}</td>
-              <td>{{ e.interestRate }}</td>
-              <td>{{ e.emiAmount }}</td>
-              <td class="text-muted small">{{ e.appliedDate }}</td>
-              <td class="text-nowrap">
-                <button type="button" class="btn btn-primary btn-sm me-1"
-                  (click)="openPdf(e.sanctionLetterId)">View</button>
-                <button type="button" class="btn btn-primary btn-sm"
-                  (click)="downloadPdf(e.sanctionLetterId)">Download</button>
-              </td>
-              <td>
-                <button type="button" class="btn btn-primary btn-sm" (click)="prefilDisbursement(e.dealId)"
-                  data-toggle="modal" data-target="#exampleModal2">Disburse</button>
-              </td>
-              <td>{{ e.disbursementStatus }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      <!-- ===== Generate Sanction Letter Modal (unchanged) ===== -->
+      <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Generate Sanction Letter</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form>
+                Select Customer
+                <select class="form-control" [(ngModel)]="selectCustomerId" name="customer"
+                  (change)="onCustomerChange()">
+                  <option value="">-- Select Customer --</option>
+                  @for (c of pendingcustomers; track c.dealId) {
+                  <option [value]="c.dealId">{{ c.name }}</option>
+                  }
+                </select><br>
 
-      <!-- Footer: Showing X to Y + Pagination -->
-      <div class="d-flex justify-content-between align-items-center mt-3">
-        <div class="text-muted small">
-          Showing
-          {{ totalCount === 0 ? 0 : (page - 1) * pageSize + 1 }}
-          to
-          {{ totalCount < page * pageSize ? totalCount : page * pageSize }} of {{ totalCount }} entries </div>
-
-            <nav>
-              <ul class="pagination mb-0">
-                <li class="page-item" [class.disabled]="page === 1">
-                  <a class="page-link" (click)="goToPage(1)" style="cursor: pointer;">&laquo;</a>
-                </li>
-                <li class="page-item" [class.disabled]="page === 1">
-                  <a class="page-link" (click)="goToPage(page - 1)" style="cursor: pointer;">&lsaquo;</a>
-                </li>
-                <li class="page-item" *ngFor="let p of pagesArray" [class.active]="page === p">
-                  <a class="page-link" (click)="goToPage(p)" style="cursor: pointer;">{{ p }}</a>
-                </li>
-                <li class="page-item" [class.disabled]="page === totalPages">
-                  <a class="page-link" (click)="goToPage(page + 1)" style="cursor: pointer;">&rsaquo;</a>
-                </li>
-                <li class="page-item" [class.disabled]="page === totalPages">
-                  <a class="page-link" (click)="goToPage(totalPages)" style="cursor: pointer;">&raquo;</a>
-                </li>
-              </ul>
-            </nav>
-        </div>
-
-      </div>
-    </div>
-  </div>
-
-  <!-- ===== Generate Sanction Letter Modal (unchanged) ===== -->
-  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Generate Sanction Letter</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <form>
-            Select Customer
-            <select class="form-control" [(ngModel)]="selectCustomerId" name="customer" (change)="onCustomerChange()">
-              <option value="">-- Select Customer --</option>
-              @for (c of pendingcustomers; track c.dealId) {
-              <option [value]="c.dealId">{{ c.name }}</option>
-              }
-            </select><br>
-
-            Loan Amount <input type="text" [(ngModel)]="loanAmount" name="loanAmount" class="form-control"><br>
-            Loan Type <input type="text" [(ngModel)]="loanType" name="loanType" class="form-control"><br>
-            Tenure Months <input type="text" [(ngModel)]="tenureMonths" name="tenureMonths" class="form-control"><br>
-            Interest Rate <input type="text" [(ngModel)]="interestRate" name="interestRate" class="form-control"><br>
-            Emi Amount <input type="text" [(ngModel)]="emiAmount" name="emiAmount" class="form-control"><br>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" (click)="SaveSanctionLetter()">Generate Sanction Letter</button>
+                Loan Amount <input type="text" [(ngModel)]="loanAmount" name="loanAmount" class="form-control"><br>
+                Loan Type <input type="text" [(ngModel)]="loanType" name="loanType" class="form-control"><br>
+                Tenure Months <input type="text" [(ngModel)]="tenureMonths" name="tenureMonths"
+                  class="form-control"><br>
+                Interest Rate <input type="text" [(ngModel)]="interestRate" name="interestRate"
+                  class="form-control"><br>
+                Emi Amount <input type="text" [(ngModel)]="emiAmount" name="emiAmount" class="form-control"><br>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" (click)="SaveSanctionLetter()">Generate Sanction
+                Letter</button>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
 
-  <!-- ===== Disburse Modal (unchanged) ===== -->
-  <div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Disburse Loan</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <form>
-            DealId <input type="text" class="form-control" [(ngModel)]="dealId" name="dealId" readonly><br>
-            Disbursement Amount <input type="text" class="form-control" [(ngModel)]="disbursementAmount"
-              name="disbursementAmount"><br>
-            Date <input type="date" class="form-control" [(ngModel)]="disbursementDate" name="disbursementDate"><br>
-            Bank Partner
-            <select class="form-control" [(ngModel)]="disbursementPartnerBank" name="disbursementPartnerBank">
-              <option>Bank of India</option>
-              <option>HDFC</option>
-              <option>ICIC</option>
-              <option>Bank of Maharashtra</option>
-              <option>State Bank of India</option>
-              <option>Axis Bank</option>
-            </select>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" (click)="applyDisbursement()">Save changes</button>
+      <!-- ===== Disburse Modal (unchanged) ===== -->
+      <div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Disburse Loan</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form>
+                DealId <input type="text" class="form-control" [(ngModel)]="dealId" name="dealId" readonly><br>
+                Disbursement Amount <input type="text" class="form-control" [(ngModel)]="disbursementAmount"
+                  name="disbursementAmount"><br>
+                Date <input type="date" class="form-control" [(ngModel)]="disbursementDate" name="disbursementDate"><br>
+                Bank Partner
+                <select class="form-control" [(ngModel)]="disbursementPartnerBank" name="disbursementPartnerBank">
+                  <option>Bank of India</option>
+                  <option>HDFC</option>
+                  <option>ICIC</option>
+                  <option>Bank of Maharashtra</option>
+                  <option>State Bank of India</option>
+                  <option>Axis Bank</option>
+                </select>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" (click)="applyDisbursement()">Save changes</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>

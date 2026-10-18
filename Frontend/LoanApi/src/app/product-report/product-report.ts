@@ -2,9 +2,10 @@ import { ChangeDetectorRef, Component } from '@angular/core';
 import { ProductReportService } from '../services/product-report-service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Sidebar } from '../officer/sidebar/sidebar';
 
 @Component({
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, Sidebar],
   selector: 'app-product-report',
   styleUrl: './product-report.css',
   templateUrl: './product-report.html',

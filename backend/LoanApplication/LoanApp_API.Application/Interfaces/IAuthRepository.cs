@@ -9,7 +9,7 @@ namespace LoanApp_API.Application.Interfaces
         User? GetUserByEmail(string email);
         User? GetUserById(int userId);
         Customers? GetCustomerByEmail(string email);
-
+        
         User CreateUser(User user);
         User CreateOfficer(User user);
         Customers CreateCustomer(Customers customer);
@@ -22,7 +22,9 @@ namespace LoanApp_API.Application.Interfaces
         bool MarkEmailVerified(string email);
 
 
+
         bool SavePendingAuthenticatorSecret(int userId, string secret);
         bool EnableTwoFactor(int userId, string secret);
+
     }
 }

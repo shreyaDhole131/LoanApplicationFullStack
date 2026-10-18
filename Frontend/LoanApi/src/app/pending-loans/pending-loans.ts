@@ -3,14 +3,19 @@ import { Pendingdeals } from '../services/pendingdeals';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Sidebar } from '../officer/sidebar/sidebar';
+
+
 
 
 @Component({
   selector: 'app-pending-loans',
-  imports: [CommonModule, RouterLink, FormsModule],
+  imports: [CommonModule, RouterLink, FormsModule, Sidebar],
   templateUrl: './pending-loans.html',
   styleUrl: './pending-loans.css',
 })
+  imports: [CommonModule, RouterLink, FormsModule],
+  templateUrl: './pending-loans.html'})
 export class PendingLoans {
   constructor(private service: Pendingdeals, private cdr: ChangeDetectorRef) {
     this.getAllPendingDeals();

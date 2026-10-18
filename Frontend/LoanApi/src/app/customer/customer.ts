@@ -1,9 +1,10 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { inject, Service } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
-@Service()
+@Injectable({
+  providedIn: 'root'
+})
 export class Customer {
-
   http = inject(HttpClient);
 
   url = "https://localhost:7277/api/customer-dashboard";

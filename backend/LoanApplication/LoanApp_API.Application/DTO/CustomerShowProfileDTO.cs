@@ -26,5 +26,7 @@ namespace LoanApp_API.Application.DTO
         public int TenureMonths { get; set; }
 
         public decimal EmiAmount { get; set; }
+
+        public int CibilScore { get; set; }
     }
 }
