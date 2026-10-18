@@ -1,71 +1,86 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { inject, Service } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 
-@Service()
+@Injectable({
+  providedIn: 'root'
+})
 export class EligibilityService {
-    http = inject(HttpClient);
 
-    url = "http://localhost:5095/api/Eligibility";
+  private http = inject(HttpClient);
 
-    getHeaders() {
-        const token = typeof localStorage !== 'undefined'
-            ? localStorage.getItem('token')
-            : null;
-        return new HttpHeaders({
-            Authorization: token ? `Bearer ${token}` : ''
-        });
-    }
+  // Backend API base URL
+  private url = 'https://localhost:7277/api/Eligibility';
 
-    ProcessAutomaticEligibility() {
-        return this.http.post<any>(
-            `${this.url}/process-automatic`,
-            null,
-            { headers: this.getHeaders() }
-        );
-    }
+  // Attach JWT token
+  private getHeaders(): HttpHeaders {
+    const token =
+      typeof localStorage !== 'undefined'
+        ? localStorage.getItem('token')
+        : null;
 
-    GetManualReviewCustomers() {
-        return this.http.get<any>(
-            `${this.url}/manual-review-customers`,
-            { headers: this.getHeaders() }
-        );
-    }
+    return new HttpHeaders(
+      token
+        ? { Authorization: `Bearer ${token}` }
+        : {}
+    );
+  }
 
-    EvaluateEligibility(customerId: number) {
-        return this.http.post<any>(
-            `${this.url}/evaluate/${customerId}`,
-            null,
-            { headers: this.getHeaders() }
-        );
-    }
+  // Process automatic eligibility
+  ProcessAutomaticEligibility() {
+    return this.http.post<any>(
+      `${this.url}/process-automatic`,
+      null,
+      { headers: this.getHeaders() }
+    );
+  }
 
-    ApproveEligibility(customerId: number) {
-        return this.http.post<any>(
-            `${this.url}/approve/${customerId}`,
-            null,
-            { headers: this.getHeaders() }
-        );
-    }
+  // Get customers awaiting manual review
+  GetManualReviewCustomers() {
+    return this.http.get<any>(
+      `${this.url}/manual-review-customers`,
+      { headers: this.getHeaders() }
+    );
+  }
 
-    RejectEligibility(
-        customerId: number,
-        rejectionReason: string,
-        otherReason: string
-    ) {
-        return this.http.post<any>(
-            `${this.url}/reject/${customerId}`,
-            {
-                rejectionReason: rejectionReason,
-                otherReason: otherReason
-            },
-            { headers: this.getHeaders() }
-        );
-    }
+  // Evaluate a customer's eligibility
+  EvaluateEligibility(customerId: number) {
+    return this.http.post<any>(
+      `${this.url}/evaluate/${customerId}`,
+      null,
+      { headers: this.getHeaders() }
+    );
+  }
 
-    GetMyResult() {
-        return this.http.get<any>(
-            `${this.url}/my-result`,
-            { headers: this.getHeaders() }
-        );
-    }
+  // Approve eligibility
+  ApproveEligibility(customerId: number) {
+    return this.http.post<any>(
+      `${this.url}/approve/${customerId}`,
+      null,
+      { headers: this.getHeaders() }
+    );
+  }
+
+  // Reject eligibility
+  RejectEligibility(
+    customerId: number,
+    rejectionReason: string,
+    otherReason: string
+  ) {
+    return this.http.post<any>(
+      `${this.url}/reject/${customerId}`,
+      {
+        rejectionReason,
+        otherReason
+      },
+      { headers: this.getHeaders() }
+    );
+  }
+
+  // Get the logged-in customer's eligibility result
+  GetMyResult() {
+    return this.http.get<any>(
+      `${this.url}/my-result`,
+      { headers: this.getHeaders() }
+    );
+  }
 }
