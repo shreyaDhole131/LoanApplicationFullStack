@@ -369,6 +369,9 @@ builder.Services.AddCors(options =>
 });
 
 
+
+
+
 // ============================================================
 // 11. BUILD APPLICATION
 // ============================================================
@@ -414,6 +417,8 @@ if (app.Environment.IsDevelopment())
 }
 
 
+
+
 // ============================================================
 // 13. MIDDLEWARE PIPELINE
 // ============================================================
@@ -445,6 +450,12 @@ app.MapControllers();
 // ============================================================
 
 app.UseHangfireDashboard("/hangfire");
+
+RecurringJob.AddOrUpdate<INotificationService>(
+    "generate-emi-notifications",
+    service => service.GenerateEmiNotifications(),
+    //Cron.Daily
+    "*/1 * * * *");
 
 
 // ============================================================

@@ -31,14 +31,18 @@ namespace LoanApp_API.Application.DTO.ForeClosure
     }
 
     // "My Foreclosure Requests" table
+
     public class CustomerForeClosureDto
     {
+        public int RequestId { get; set; }
+
         public string LoanAccountNo { get; set; } = "";
         public decimal Amount { get; set; }
         public string ForeClosureType { get; set; } = "";
         public string Reason { get; set; } = "";
         public string Status { get; set; } = "";
     }
+
 
     // --Officer side DTO
     // ONE dto used for both the dashboard table and the View page

@@ -1,6 +1,6 @@
-﻿
-using LoanApp_API.Application.DTO.ForeClosure;
+﻿using LoanApp_API.Application.DTO.ForeClosure;
 using LoanApp_API.Application.Interfaces;
+using LoanApp_API.Infrastructure.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -9,25 +9,45 @@ namespace LoanApp_API.Controllers
 {
     [ApiController]
     [Route("api/customer/foreclosure")]
-   // [Authorize]
+    // [Authorize]
     public class CustomerForeClosureController : ControllerBase
     {
         private readonly IForeClosureRepository _foreClosureRepository;
+        private readonly AppDbContext _db;
 
         public CustomerForeClosureController(
-            IForeClosureRepository foreClosureRepository)
+            IForeClosureRepository foreClosureRepository,
+            AppDbContext db)
         {
             _foreClosureRepository = foreClosureRepository;
+            _db = db;
         }
 
         private int? GetCustomerId()
         {
-            string? customerId =
+            // 1. Use the CustomerId claim if the token has it
+            string? customerClaim =
                 User.FindFirst("CustomerId")?.Value ??
-                User.FindFirst("customerId")?.Value ??
-                User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                User.FindFirst("customerId")?.Value;
 
-            return int.TryParse(customerId, out int id) ? id : null;
+            if (int.TryParse(customerClaim, out int customerId))
+                return customerId;
+
+            // 2. Otherwise the token holds the USER id, so find that user's customer
+            string? userClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (int.TryParse(userClaim, out int userId))
+            {
+                int? linkedCustomerId = _db.Users
+                    .Where(u => u.UserId == userId)
+                    .Select(u => (int?)u.CustomerId)
+                    .FirstOrDefault();
+
+                if (linkedCustomerId != null && linkedCustomerId != 0)
+                    return linkedCustomerId;
+            }
+
+            return null;
         }
 
         // GET: api/customer/foreclosure/loans

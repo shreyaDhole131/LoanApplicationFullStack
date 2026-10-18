@@ -1,0 +1,94 @@
+<div class="notification-container">
+
+
+
+
+  <button
+    class="bell-button"
+    type="button"
+    (click)="toggleDropdown()"
+    aria-label="Notifications">
+
+    <span class="bell-icon">
+      &#128276;
+    </span>
+
+
+   
+
+    <span
+      class="badge"
+      *ngIf="unreadCount > 0">
+
+      {{ unreadCount }}
+
+    </span>
+
+  </button>
+
+
+
+
+
+  <div
+    class="notification-dropdown"
+    *ngIf="showDropdown">
+
+
+ 
+
+    <div class="dropdown-title">
+
+      Notifications
+
+    </div>
+
+
+
+   
+
+    <div
+      *ngIf="notifications.length === 0"
+      class="empty-message">
+
+      No notifications available.
+
+    </div>
+
+
+
+ 
+
+    <div
+      *ngFor="let item of notifications"
+
+      class="notification-item"
+
+      [class.unread]="!item.isRead"
+
+      (click)="markAsRead(item.notificationId)">
+
+
+
+
+      <span class="calendar-icon">
+
+        &#128197;
+
+      </span>
+
+
+   
+
+      <span>
+
+        {{ item.message }}
+
+      </span>
+
+
+    </div>
+
+  </div>
+
+</div>

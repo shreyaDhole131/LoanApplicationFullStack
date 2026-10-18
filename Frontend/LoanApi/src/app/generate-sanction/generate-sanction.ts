@@ -12,6 +12,8 @@ declare var $: any;
   templateUrl: './generate-sanction.html',
   styleUrl: './generate-sanction.css',
 })
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  templateUrl: './generate-sanction.html'})
 export class GenerateSanction {
   constructor(private service: SanctionService, private cd: ChangeDetectorRef) {
     this.fetchpendingcusts();

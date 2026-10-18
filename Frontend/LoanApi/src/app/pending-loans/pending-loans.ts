@@ -14,6 +14,8 @@ import { Sidebar } from '../officer/sidebar/sidebar';
   templateUrl: './pending-loans.html',
   styleUrl: './pending-loans.css',
 })
+  imports: [CommonModule, RouterLink, FormsModule],
+  templateUrl: './pending-loans.html'})
 export class PendingLoans {
   constructor(private service: Pendingdeals, private cdr: ChangeDetectorRef) {
     this.getAllPendingDeals();

@@ -9,6 +9,8 @@ import { Sidebar } from '../customer/sidebar/sidebar';
   imports: [CommonModule, ReactiveFormsModule, Sidebar],
   templateUrl: './loan-application.html',
   styleUrl: './loan-application.css',
+  imports: [CommonModule, ReactiveFormsModule],
+  templateUrl: './loan-application.html'
 })
 export class LoanApplication {
   constructor(private service: Applyloan) {
