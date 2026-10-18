@@ -7,9 +7,10 @@ import {
 
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { CibilService } from '../services/cibil';
+import { Sidebar } from '../customer/sidebar/sidebar';
 
 @Component({
-  imports: [CommonModule],
+  imports: [CommonModule,Sidebar],
   selector: 'app-cibil',
   styleUrl: './cibil.css',
   templateUrl: './cibil.html'
@@ -37,7 +38,6 @@ export class Cibil {
     }
   }
 
-  // Get the logged-in customer's saved CIBIL report
   GetMyCibil()
   {
     if (!this.hasToken())
@@ -86,7 +86,6 @@ export class Cibil {
     });
   }
 
-  // Generate CIBIL score for the logged-in customer
   GenerateCibil()
   {
     if (!this.hasToken())
@@ -153,7 +152,6 @@ export class Cibil {
     });
   }
 
-  // Check whether a JWT is available
   hasToken(): boolean {
     if (!isPlatformBrowser(this.platformId)) {
         return false;
@@ -171,7 +169,6 @@ export class Cibil {
     return true;
 }
 
-  // Calculate the gauge needle angle
   getNeedleAngle(): number
   {
     const score = Number(this.result?.cibilScore ?? 700);
@@ -180,7 +177,6 @@ export class Cibil {
     return ((validScore - 700) / 200) * 90;
   }
 
-  // Apply colour according to score status
   getStatusClass(): string
   {
     const status = this.result?.scoreStatus;

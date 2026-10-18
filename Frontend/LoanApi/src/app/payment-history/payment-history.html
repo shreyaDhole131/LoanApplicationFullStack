@@ -1,111 +1,116 @@
+<div class="dashboard-layout">
+  <app-sidebar></app-sidebar>
 
-<div class="container mt-4">
+  <div class="payment-page">
+    <div class="container mt-4">
 
-  <h2 class="mb-4">Payment History</h2>
+      <h2 class="mb-4">Payment History</h2>
 
-  <div class="row mb-3">
+      <div class="row mb-3">
 
-    <div class="col-md-4">
-      <label class="form-label">Loan Account</label>
+        <div class="col-md-4">
+          <label class="form-label">Loan Account</label>
 
-      <select
-        class="form-select"
-        [(ngModel)]="SelectedLoanAccount"
-        (ngModelChange)="applyFilters()">
+          <select
+            class="form-select"
+            [(ngModel)]="SelectedLoanAccount"
+            (ngModelChange)="applyFilters()">
 
-        <option [ngValue]="null">All Loan Accounts</option>
+            <option [ngValue]="null">All Loan Accounts</option>
 
-        <option
-          *ngFor="let loan of LoanAccounts"
-          [ngValue]="loan.loanAccountId ?? loan.LoanAccountId">
+            <option
+              *ngFor="let loan of LoanAccounts"
+              [ngValue]="loan.loanAccountId ?? loan.LoanAccountId">
 
-          {{ loan.loanAccountNo ?? loan.LoanAccountNo }}
+              {{ loan.loanAccountNo ?? loan.LoanAccountNo }}
 
-        </option>
-      </select>
+            </option>
+          </select>
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label">Date Range</label>
+
+          <select
+            class="form-select"
+            [(ngModel)]="SelectedMonths"
+            (ngModelChange)="applyFilters()">
+
+            <option [ngValue]="0">All History</option>
+            <option [ngValue]="1">Last 1 Month</option>
+            <option [ngValue]="3">Last 3 Months</option>
+            <option [ngValue]="6">Last 6 Months</option>
+
+          </select>
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label">Search</label>
+
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="searchText"
+            placeholder="Search payment history">
+        </div>
+
+      </div>
+
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped table-hover">
+
+          <thead class="table-dark">
+            <tr>
+              <th>Date</th>
+              <th>Loan Account</th>
+              <th>Amount</th>
+              <th>Payment Mode</th>
+              <th>Reference</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+
+          <tbody>
+
+            <tr *ngFor="let payment of filteredPayments">
+
+              <td>
+                {{ (payment.paymentDate ?? payment.PaymentDate) | date:'dd-MM-yyyy' }}
+              </td>
+
+              <td>
+                {{ payment.loanAccountNo ?? payment.LoanAccountNo }}
+              </td>
+
+              <td>
+                {{ (payment.amount ?? payment.Amount) | number:'1.2-2' }}
+              </td>
+
+              <td>
+                {{ payment.paymentMode ?? payment.PaymentMode }}
+              </td>
+
+              <td>
+                {{ payment.reference ?? payment.Reference }}
+              </td>
+
+              <td>
+                {{ payment.status ?? payment.Status }}
+              </td>
+
+            </tr>
+
+            <tr *ngIf="filteredPayments.length === 0">
+              <td colspan="6" class="text-center">
+                No payment history found.
+              </td>
+            </tr>
+
+          </tbody>
+
+        </table>
+      </div>
+
     </div>
-
-    <div class="col-md-4">
-      <label class="form-label">Date Range</label>
-
-      <select
-        class="form-select"
-        [(ngModel)]="SelectedMonths"
-        (ngModelChange)="applyFilters()">
-
-        <option [ngValue]="0">All History</option>
-        <option [ngValue]="1">Last 1 Month</option>
-        <option [ngValue]="3">Last 3 Months</option>
-        <option [ngValue]="6">Last 6 Months</option>
-
-      </select>
-    </div>
-
-    <div class="col-md-4">
-      <label class="form-label">Search</label>
-
-      <input
-        type="text"
-        class="form-control"
-        [(ngModel)]="searchText"
-        placeholder="Search payment history">
-    </div>
-
   </div>
-
-  <div class="table-responsive">
-    <table class="table table-bordered table-striped table-hover">
-
-      <thead class="table-dark">
-        <tr>
-          <th>Date</th>
-          <th>Loan Account</th>
-          <th>Amount</th>
-          <th>Payment Mode</th>
-          <th>Reference</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-
-      <tbody>
-
-        <tr *ngFor="let payment of filteredPayments">
-
-          <td>
-            {{ (payment.paymentDate ?? payment.PaymentDate) | date:'dd-MM-yyyy' }}
-          </td>
-
-          <td>
-            {{ payment.loanAccountNo ?? payment.LoanAccountNo }}
-          </td>
-
-          <td>
-            {{ (payment.amount ?? payment.Amount) | number:'1.2-2' }}
-          </td>
-
-          <td>
-            {{ payment.paymentMode ?? payment.PaymentMode }}
-          </td>
-
-          <td>
-            {{ payment.reference ?? payment.Reference }}
-          </td>
-
-          <td>
-            {{ payment.status ?? payment.Status }}
-          </td>
-
-        </tr>
-
-        <tr *ngIf="filteredPayments.length === 0">
-          <td colspan="6" class="text-center">
-            No payment history found.
-          </td>
-        </tr>
-
-      </tbody>
-
-    </table>
-  </div>
-
 </div>

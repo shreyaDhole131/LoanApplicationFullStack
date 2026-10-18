@@ -42,9 +42,6 @@ export class Kyc {
 
   }
 
-
-  // GET DOCUMENTS
-
   getKycDocuments() {
 
     this.service
@@ -74,9 +71,6 @@ export class Kyc {
 
   }
 
-
-  // SELECT FILE
-
   onFileSelected(event: any) {
 
     const file =
@@ -95,9 +89,6 @@ export class Kyc {
     }
 
   }
-
-
-  // UPLOAD
 
   uploadDocument() {
 
@@ -174,9 +165,6 @@ export class Kyc {
 
   }
 
-
-  // VIEW
-
   viewDocument(
     documentId: number
   ) {
@@ -212,9 +200,6 @@ export class Kyc {
       });
 
   }
-
-
-  // DELETE
 
   deleteDocument(
     documentId: number

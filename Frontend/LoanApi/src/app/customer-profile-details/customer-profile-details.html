@@ -1,4 +1,3 @@
-
 <div class="customers-layout">
 
   <app-officer-sidebar></app-officer-sidebar>
@@ -9,7 +8,6 @@
 
       @if (custprofile) {
 
-      <!-- ===== Customer Profile section ===== -->
       <h3 class="section-title">Customer Profile</h3>
 
       <h4 class="customer-name">{{ custprofile.customerName }}</h4>
@@ -39,7 +37,6 @@
 
       <hr class="section-divider">
 
-      <!-- ===== Loan Details section ===== -->
       <h3 class="section-title">Loan Details</h3>
 
       <div class="detail-list">
@@ -67,7 +64,6 @@
 
       <hr class="section-divider">
 
-      <!-- ===== Action buttons ===== -->
       <div class="action-block">
         <button class="btn btn-approve" (click)="reviewDeals(custprofile.dealId, 'Approved')">
           Approve
@@ -82,7 +78,6 @@
       }
 
     </div>
-
 
   </div>
 </div>

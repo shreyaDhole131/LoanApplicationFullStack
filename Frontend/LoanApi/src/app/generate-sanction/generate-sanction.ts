@@ -203,7 +203,6 @@ export class GenerateSanction {
     window.open(this.service.downloadPdf(letterId), '_blank');
   }
 
-  // pagination
   page = 1;
   pageSize = 10;
 

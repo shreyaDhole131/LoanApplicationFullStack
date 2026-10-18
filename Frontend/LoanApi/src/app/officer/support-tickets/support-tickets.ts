@@ -14,21 +14,11 @@ export class SupportTickets {
 
   selectedTicket: any = null;
 
-
-  // =========================================================
-  // CONSTRUCTOR
-  // =========================================================
-
   constructor(private service: Officer) {
 
     this.getTickets();
 
   }
-
-
-  // =========================================================
-  // GET ALL SUPPORT TICKETS
-  // =========================================================
 
   getTickets() {
 
@@ -52,11 +42,6 @@ export class SupportTickets {
 
   }
 
-
-  // =========================================================
-  // VIEW TICKET DETAILS
-  // =========================================================
-
   viewTicket(ticketId: number) {
 
     this.service.getSupportTicket(ticketId).subscribe({
@@ -79,23 +64,13 @@ export class SupportTickets {
 
   }
 
-
-  // =========================================================
-  // VIEW ATTACHMENT
-  // =========================================================
-
   viewAttachment(ticketId: number) {
 
     console.log('BUTTON CLICKED');
 
     console.log('TICKET ID:', ticketId);
 
-
-    // Open a blank tab immediately.
-    // This prevents browser popup blocking.
-
     const newTab = window.open('', '_blank');
-
 
     if (!newTab) {
 
@@ -104,9 +79,6 @@ export class SupportTickets {
       return;
 
     }
-
-
-    // Call backend
 
     this.service.viewSupportAttachment(ticketId).subscribe({
 
@@ -118,18 +90,9 @@ export class SupportTickets {
 
         console.log('FILE SIZE:', file.size);
 
-
-        // Create temporary URL for Blob
-
         const fileUrl = URL.createObjectURL(file);
 
-
-        // Open file inside already opened tab
-
         newTab.location.href = fileUrl;
-
-
-        // Release Blob URL after 1 minute
 
         setTimeout(() => {
 
@@ -138,7 +101,6 @@ export class SupportTickets {
         }, 60000);
 
       },
-
 
       error: (err: any) => {
 
@@ -154,11 +116,6 @@ export class SupportTickets {
 
   }
 
-
-  // =========================================================
-  // RESOLVE TICKET
-  // =========================================================
-
   resolveTicket() {
 
     if (!this.selectedTicket) {
@@ -166,7 +123,6 @@ export class SupportTickets {
       return;
 
     }
-
 
     this.service.resolveSupportTicket(
       this.selectedTicket.ticketId
@@ -176,11 +132,7 @@ export class SupportTickets {
 
         alert('Support ticket resolved successfully');
 
-        // Refresh ticket list
-
         this.getTickets();
-
-        // Go back to ticket list
 
         this.selectedTicket = null;
 
@@ -195,11 +147,6 @@ export class SupportTickets {
     });
 
   }
-
-
-  // =========================================================
-  // BACK TO TICKET LIST
-  // =========================================================
 
   backToTickets() {
 

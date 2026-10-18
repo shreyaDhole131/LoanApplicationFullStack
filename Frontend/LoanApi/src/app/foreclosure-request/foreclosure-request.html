@@ -1,88 +1,90 @@
+<div class="dashboard-layout">
   <app-sidebar></app-sidebar>
 
-<label for="LoanAccount">Select Loan Account</label>
+  <div class="foreclosure-page">
+    <label for="LoanAccount">Select Loan Account</label>
 
-<select id="LoanAccount" name="LoanAccount" class="form-select"
-        [(ngModel)]="SelectedLoanAccount"
-        (ngModelChange)="onLoanChange($event)">
+    <select id="LoanAccount" name="LoanAccount" class="form-select"
+            [(ngModel)]="SelectedLoanAccount"
+            (ngModelChange)="onLoanChange($event)">
 
-  <option value="">--- Select Loan Account ---</option>
+      <option value="">--- Select Loan Account ---</option>
 
-  <option *ngFor="let loan of LoanAccounts" [value]="loan.loanAccountId">
-    {{ loan.loanAccountNo }}
-  </option>
-</select>
+      <option *ngFor="let loan of LoanAccounts" [value]="loan.loanAccountId">
+        {{ loan.loanAccountNo }}
+      </option>
+    </select>
 
-<div>
-  <div>
-    <h1>Foreclosure Request</h1>
     <div>
-
-      <div *ngIf="info">
-        <p>Loan Account Number: {{ loanAccountNo }}</p>
-        <p>Outstanding Principal: {{ outstandingPrincipal }}</p>
-        <p>Next EMI Date: {{ NextEmiDate }}</p><br><br>
-
-        <label>Select Foreclosure Type</label>
-
+      <div>
+        <h1>Foreclosure Request</h1>
         <div>
-          <input type="radio" id="Partial" name="ForeClosureType" value="Partial" [(ngModel)]="ForeClosureType">
-          <label for="Partial">Partial Foreclosure</label>
+
+          <div *ngIf="info">
+            <p>Loan Account Number: {{ loanAccountNo }}</p>
+            <p>Outstanding Principal: {{ outstandingPrincipal }}</p>
+            <p>Next EMI Date: {{ NextEmiDate }}</p><br><br>
+
+            <label>Select Foreclosure Type</label>
+
+            <div>
+              <input type="radio" id="Partial" name="ForeClosureType" value="Partial" [(ngModel)]="ForeClosureType">
+              <label for="Partial">Partial Foreclosure</label>
+            </div>
+
+            <div>
+              <input type="radio" id="Full" name="ForeClosureType" value="Full" [(ngModel)]="ForeClosureType">
+              <label for="Full">Full Foreclosure</label>
+            </div>
+
+            <div *ngIf="ForeClosureType == 'Partial'">
+              <label for="PartialAmount">Partial Amount </label>
+              <input type="number" id="PartialAmount" name="PartialAmount" class="form-control" [(ngModel)]="PartialAmount"><br><br>
+            </div>
+
+            <label for="ExpectedClosureDate">Expected Closure Date</label>
+            <input type="date" id="ExpectedClosureDate" name="ExpectedClosureDate" class="form-control" [(ngModel)]="ExpectedClosureDate"><br><br>
+
+            <label for="Reason">Reason</label>
+            <textarea id="Reason" name="Reason" class="form-control" [(ngModel)]="Reason"></textarea><br><br>
+
+            <button type="button" class="btn btn-primary" (click)="SaveForeClosure()">Submit Request</button>
+          </div>
+
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">LoanAccount</th>
+                <th scope="col">Amount</th>
+                <th scope="col">Type</th>
+                <th scope="col">Reason</th>
+                <th scope="col">Status</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let r of allrequests">
+                <th scope="row">{{ r.loanAccountNo }}</th>
+                <td>{{ r.amount }}</td>
+                <td>{{ r.foreClosureType }}</td>
+                <td>{{ r.reason }}</td>
+                <td>{{ r.status }}</td>
+                <td>
+                  <button
+                    type="button"
+                    class="btn btn-sm"
+                    [ngClass]="r.status === 'Approved' ? 'btn-primary' : 'btn-secondary'"
+                    [disabled]="r.status !== 'Approved' || payingRequestId !== null"
+                    (click)="payForeClosure(r)">
+                    {{ payingRequestId === r.requestId ? 'Processing...' : 'Pay' }}
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
         </div>
-
-        <div>
-          <input type="radio" id="Full" name="ForeClosureType" value="Full" [(ngModel)]="ForeClosureType">
-          <label for="Full">Full Foreclosure</label>
-        </div>
-
-        <div *ngIf="ForeClosureType == 'Partial'">
-          <label for="PartialAmount">Partial Amount </label>
-          <input type="number" id="PartialAmount" name="PartialAmount" class="form-control" [(ngModel)]="PartialAmount"><br><br>
-        </div>
-
-        <label for="ExpectedClosureDate">Expected Closure Date</label>
-        <input type="date" id="ExpectedClosureDate" name="ExpectedClosureDate" class="form-control" [(ngModel)]="ExpectedClosureDate"><br><br>
-
-        <label for="Reason">Reason</label>
-        <textarea id="Reason" name="Reason" class="form-control" [(ngModel)]="Reason"></textarea><br><br>
-
-        <button type="button" class="btn btn-primary" (click)="SaveForeClosure()">Submit Request</button>
       </div>
-
-      <table class="table">
-        <thead>
-          <tr>
-            <th scope="col">LoanAccount</th>
-            <th scope="col">Amount</th>
-            <th scope="col">Type</th>
-            <th scope="col">Reason</th>
-            <th scope="col">Status</th>
-            <th scope="col">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let r of allrequests">
-            <th scope="row">{{ r.loanAccountNo }}</th>
-            <td>{{ r.amount }}</td>
-            <td>{{ r.foreClosureType }}</td>
-            <td>{{ r.reason }}</td>
-            <td>{{ r.status }}</td>
-            <td>
-             
-<button
-  type="button"
-  class="btn btn-sm"
-  [ngClass]="r.status === 'Approved' ? 'btn-primary' : 'btn-secondary'"
-  [disabled]="r.status !== 'Approved' || payingRequestId !== null"
-  (click)="payForeClosure(r)">
-  {{ payingRequestId === r.requestId ? 'Processing...' : 'Pay' }}
-</button>
-
-            </td>
-          </tr>
-        </tbody>
-      </table>
-
     </div>
   </div>
 </div>

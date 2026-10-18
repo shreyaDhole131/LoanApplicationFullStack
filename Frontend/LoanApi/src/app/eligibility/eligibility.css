@@ -6,10 +6,24 @@
     color: #202938;
 }
 
+.dashboard-layout {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f3f6fc;
+}
+
+app-sidebar {
+  width: 260px;
+  flex-shrink: 0;
+}
+
 .eligibility-page {
+    flex-grow: 1;
+    width: 100%;
     min-height: 100%;
     padding: 30px;
     box-sizing: border-box;
+    overflow-y: auto;
 }
 
 .page-header,

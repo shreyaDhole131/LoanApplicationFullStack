@@ -2,10 +2,24 @@
   display: block;
 }
 
+
+.dashboard-layout {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f4f6fb;
+}
+
+app-sidebar {
+  width: 260px;
+  flex-shrink: 0;
+}
+
 .cibil-page {
+  flex-grow: 1;
   width: 100%;
   padding: 36px 38px;
   box-sizing: border-box;
+  overflow-y: auto;
 }
 
 .cibil-card {
@@ -237,40 +251,27 @@
   margin-top: 4px;
 }
 
-.disclaimer {
-  margin-top: 30px;
-  color: #858b95;
-  font-size: 12px;
-  line-height: 1.6;
-}
-
 @media (max-width: 850px) {
   .cibil-page {
     padding: 20px;
   }
-
   .cibil-card {
     padding: 24px;
   }
-
   .profile-grid {
     grid-template-columns: 1fr;
     gap: 14px;
   }
-
   .card-heading h1 {
     font-size: 26px;
   }
-
   .check-button {
     padding: 12px 16px;
     font-size: 15px;
   }
-
   .profile-value {
     font-size: 21px;
   }
-
   .score-number {
     font-size: 52px;
   }
@@ -280,26 +281,21 @@
   .cibil-page {
     padding: 12px;
   }
-
   .cibil-card {
     padding: 18px;
   }
-
   .card-heading {
     align-items: flex-start;
     flex-direction: column;
   }
-
   .gauge {
     height: 150px;
   }
-
   .gauge-inner {
     top: 36px;
     left: 36px;
     right: 36px;
   }
-
   .gauge-needle {
     height: 105px;
   }

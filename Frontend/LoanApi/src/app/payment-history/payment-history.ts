@@ -3,11 +3,12 @@ import { Component, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { customer_loans } from '../services/customer-loans';
+import { Sidebar } from '../customer/sidebar/sidebar';
 
 @Component({
   selector: 'app-payment-history',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule,Sidebar],
   templateUrl: './payment-history.html',
   styleUrl: './payment-history.css'
 })

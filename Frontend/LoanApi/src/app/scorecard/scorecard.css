@@ -6,6 +6,26 @@
     color: #202938;
 }
 
+.dashboard-layout {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f3f6fc;
+}
+
+app-officer-sidebar {
+  width: 260px;
+  min-width: 260px;
+  flex-shrink: 0;
+  display: block;
+}
+
+.main-content {
+  flex-grow: 1;
+  width: 100%;
+  min-width: 0;
+  overflow-x: auto;
+}
+
 .scorecard-page {
     padding: 30px;
     min-height: 100%;

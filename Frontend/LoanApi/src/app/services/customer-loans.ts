@@ -9,7 +9,6 @@ export class customer_loans {
 
   http = inject(HttpClient);
 
-  // Customer foreclosure requests
   url = 'https://localhost:7277/api/customer/foreclosure/loans';
 
   getLoanAccounts() {
@@ -51,7 +50,6 @@ export class customer_loans {
     return this.http.post<any>(`${this.url6}/verify`, data);
   }
 
-  // Customer payment history
   url7 = 'https://localhost:7277/api/customer/payment-history';
 
   getPaymentHistory(loanAccountId: number | null, months: number) {
@@ -64,7 +62,6 @@ export class customer_loans {
     return this.http.get<any>(requestUrl);
   }
 
-  // Officer foreclosure requests
   url8 = 'https://localhost:7277/api/officer/foreclosure';
 
   getAllForeClosureRequests() {
@@ -76,7 +73,6 @@ export class customer_loans {
   }
 
   changeForeClosureStatus(requestId: number, status: string) {
-    // The backend controller accepts a JSON string, e.g. "Approved".
     return this.http.put<any>(
       `${this.url8}/${requestId}`,
       status

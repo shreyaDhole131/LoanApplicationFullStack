@@ -1,12 +1,9 @@
 <div class="dashboard-layout">
 
-  <!-- Sidebar -->
   <app-officer-sidebar></app-officer-sidebar>
 
-  <!-- Main Dashboard -->
   <main class="dashboard-main">
 
-    <!-- Header: No Refresh Button -->
     <header class="dashboard-header">
       <div>
         <h1>Officer Dashboard</h1>
@@ -14,27 +11,22 @@
       </div>
     </header>
 
-    <!-- Dashboard Content -->
     <section class="dashboard-content">
 
-      <!-- Loading -->
       <div
         class="status-message"
         *ngIf="loading && !dashboardData">
         Loading dashboard data...
       </div>
 
-      <!-- Error -->
       <div
         class="error-message"
         *ngIf="errorMessage">
         {{ errorMessage }}
       </div>
 
-      <!-- Dashboard Data -->
       <ng-container *ngIf="dashboardData as data">
 
-        <!-- Application Summary -->
         <section class="dashboard-section">
           <h2 class="section-title">Application Summary</h2>
 
@@ -75,7 +67,6 @@
           </div>
         </section>
 
-        <!-- Loan Summary -->
         <section class="dashboard-section">
           <h2 class="section-title">Loan Summary</h2>
 
@@ -108,10 +99,8 @@
           </div>
         </section>
 
-        <!-- Charts -->
         <div class="charts-grid">
 
-          <!-- Application Funnel -->
           <section class="panel">
             <div class="panel-heading">
               <div>
@@ -151,7 +140,6 @@
             </ng-template>
           </section>
 
-          <!-- Loan Portfolio -->
           <section class="panel">
             <div class="panel-heading">
               <div>
@@ -174,7 +162,6 @@
             </ng-template>
           </section>
 
-          <!-- Collection Efficiency -->
           <section class="panel collection-panel">
             <div class="panel-heading">
               <div>

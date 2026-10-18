@@ -4,7 +4,7 @@ import { Loanservice } from '../services/loanservice';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { Sidebar } from '../customer/sidebar/sidebar';
+import { Sidebar } from '../officer/sidebar/sidebar';
 
 @Component({
   selector: 'app-loanaccount',

@@ -1,153 +1,151 @@
+<div class="dashboard-layout">
+  <app-officer-sidebar></app-officer-sidebar>
 
-<div class="container-fluid mt-4">
+  <div class="closure-main">
+    <div class="container-fluid mt-4">
 
-  <h3>Foreclosure / Closure Requests</h3>
-  <p class="text-muted">
-    Manage customer foreclosure and closure requests
-  </p>
+      <h3>Foreclosure / Closure Requests</h3>
+      <p class="text-muted">
+        Manage customer foreclosure and closure requests
+      </p>
 
-  <!-- Tabs -->
-  <ul class="nav nav-tabs mb-3">
-    <li class="nav-item">
-      <a class="nav-link active" href="javascript:void(0)">
-        Foreclosure Requests
-      </a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="javascript:void(0)">
-        Closure Requests
-      </a>
-    </li>
-  </ul>
+     
+      <ul class="nav nav-tabs mb-3">
+        <li class="nav-item">
+          <a class="nav-link active" href="javascript:void(0)">
+            Foreclosure Requests
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="javascript:void(0)">
+            Closure Requests
+          </a>
+        </li>
+      </ul>
 
-  <!-- Page Error -->
-  <div *ngIf="errorMessage" class="alert alert-danger">
-    {{ errorMessage }}
+      <div *ngIf="errorMessage" class="alert alert-danger">
+        {{ errorMessage }}
 
-    <button
-      type="button"
-      class="btn-close float-end"
-      aria-label="Close"
-      (click)="errorMessage = ''">
-    </button>
+        <button
+          type="button"
+          class="btn-close float-end"
+          aria-label="Close"
+          (click)="errorMessage = ''">
+        </button>
+      </div>
+
+      
+      <div *ngIf="loading" class="alert alert-info">
+        Loading requests...
+      </div>
+
+      
+      <div class="table-responsive">
+        <table class="table table-bordered table-hover align-middle">
+
+          <thead class="table-light">
+            <tr>
+              <th>Request ID</th>
+              <th>Loan Account</th>
+              <th>Customer Name</th>
+              <th>Type</th>
+              <th>Request Date</th>
+              <th>Outstanding Principal</th>
+              <th>Foreclosure Amount</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+
+          <tbody>
+
+            <tr *ngFor="let request of allrequests">
+
+              <td>
+                {{ request.requestNo || request.requestId || 'N/A' }}
+              </td>
+
+              <td>{{ request.loanAccountNo || 'N/A' }}</td>
+
+              <td>{{ request.customerName || 'N/A' }}</td>
+
+              <td>{{ request.foreClosureType || 'N/A' }}</td>
+
+              <td>
+                {{
+                  request.requestDate
+                    ? (request.requestDate | date:'dd MMM yyyy, hh:mm a')
+                    : 'N/A'
+                }}
+              </td>
+
+              <td>
+                {{
+                  request.outstandingPrincipal != null
+                    ? (request.outstandingPrincipal | currency:'INR':'symbol':'1.2-2')
+                    : 'N/A'
+                }}
+              </td>
+
+              <td>
+                {{
+                  request.foreClosureAmount != null
+                    ? (request.foreClosureAmount | currency:'INR':'symbol':'1.2-2')
+                    : 'N/A'
+                }}
+              </td>
+
+              <td>
+                <span
+                  class="badge"
+                  [ngClass]="{
+                    'text-bg-success': request.status === 'Approved',
+                    'text-bg-danger': request.status === 'Rejected',
+                    'text-bg-warning': request.status === 'Pending',
+                    'text-bg-secondary':
+                      request.status !== 'Approved' &&
+                      request.status !== 'Rejected' &&
+                      request.status !== 'Pending'
+                  }">
+                  {{ request.status || 'Unknown' }}
+                </span>
+              </td>
+
+              <td>
+                <button
+                  type="button"
+                  class="btn btn-primary btn-sm"
+                  data-bs-toggle="modal"
+                  data-bs-target="#requestModal"
+                  (click)="viewRequest(request.requestId ?? request.RequestId)">
+                  View
+                </button>
+              </td>
+
+            </tr>
+
+            <tr *ngIf="!loading && allrequests.length === 0">
+              <td colspan="9" class="text-center text-muted py-4">
+                No foreclosure requests found.
+              </td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+
+      <button
+        type="button"
+        class="btn btn-outline-primary btn-sm"
+        [disabled]="loading"
+        (click)="getAllRequests()">
+        Refresh Requests
+      </button>
+
+    </div>
   </div>
-
-  <!-- Loading -->
-  <div *ngIf="loading" class="alert alert-info">
-    Loading requests...
-  </div>
-
-  <!-- Requests Table -->
-  <div class="table-responsive">
-    <table class="table table-bordered table-hover align-middle">
-
-      <thead class="table-light">
-        <tr>
-          <th>Request ID</th>
-          <th>Loan Account</th>
-          <th>Customer Name</th>
-          <th>Type</th>
-          <th>Request Date</th>
-          <th>Outstanding Principal</th>
-          <th>Foreclosure Amount</th>
-          <th>Status</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-
-      <tbody>
-
-        <tr *ngFor="let request of allrequests">
-
-          <td>
-            {{ request.requestNo || request.requestId || 'N/A' }}
-          </td>
-
-          <td>{{ request.loanAccountNo || 'N/A' }}</td>
-
-          <td>{{ request.customerName || 'N/A' }}</td>
-
-          <td>{{ request.foreClosureType || 'N/A' }}</td>
-
-          <td>
-            {{
-              request.requestDate
-                ? (request.requestDate | date:'dd MMM yyyy, hh:mm a')
-                : 'N/A'
-            }}
-          </td>
-
-          <td>
-            {{
-              request.outstandingPrincipal != null
-                ? (request.outstandingPrincipal | currency:'INR':'symbol':'1.2-2')
-                : 'N/A'
-            }}
-          </td>
-
-          <td>
-            {{
-              request.foreClosureAmount != null
-                ? (request.foreClosureAmount | currency:'INR':'symbol':'1.2-2')
-                : 'N/A'
-            }}
-          </td>
-
-          <td>
-            <span
-              class="badge"
-              [ngClass]="{
-                'text-bg-success': request.status === 'Approved',
-                'text-bg-danger': request.status === 'Rejected',
-                'text-bg-warning': request.status === 'Pending',
-                'text-bg-secondary':
-                  request.status !== 'Approved' &&
-                  request.status !== 'Rejected' &&
-                  request.status !== 'Pending'
-              }">
-              {{ request.status || 'Unknown' }}
-            </span>
-          </td>
-
-          <td>
-            
-<button
-  type="button"
-  class="btn btn-primary btn-sm"
-  data-bs-toggle="modal"
-  data-bs-target="#requestModal"
-  (click)="viewRequest(request.requestId ?? request.RequestId)">
-  View
-</button>
-
-          </td>
-
-        </tr>
-
-        <!-- Empty State -->
-        <tr *ngIf="!loading && allrequests.length === 0">
-          <td colspan="9" class="text-center text-muted py-4">
-            No foreclosure requests found.
-          </td>
-        </tr>
-
-      </tbody>
-    </table>
-  </div>
-
-  <!-- Refresh -->
-  <button
-    type="button"
-    class="btn btn-outline-primary btn-sm"
-    [disabled]="loading"
-    (click)="getAllRequests()">
-    Refresh Requests
-  </button>
-
 </div>
 
-
-<!-- Request Details Modal -->
 <div
   class="modal fade"
   id="requestModal"
@@ -160,7 +158,6 @@
 
     <div class="modal-content">
 
-      <!-- Modal Header -->
       <div class="modal-header">
         <h5 class="modal-title" id="requestModalLabel">
           Foreclosure Request Details
@@ -174,22 +171,18 @@
         </button>
       </div>
 
-      <!-- Modal Body -->
       <div class="modal-body">
 
-        <!-- Details Loading -->
         <div *ngIf="loadingDetails" class="alert alert-info mb-0">
           Loading request details...
         </div>
 
-        <!-- Details Error -->
         <div
           *ngIf="!loadingDetails && modalErrorMessage"
           class="alert alert-danger">
           {{ modalErrorMessage }}
         </div>
 
-        <!-- Request Details -->
         <div *ngIf="!loadingDetails && selectedRequest">
 
           <h6 class="mb-3">Loan &amp; Customer Details</h6>
@@ -340,7 +333,6 @@
 
       </div>
 
-      <!-- Modal Footer -->
       <div class="modal-footer">
 
         <ng-container

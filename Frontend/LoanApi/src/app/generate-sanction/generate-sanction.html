@@ -6,7 +6,6 @@
 
     <div class="sanction-page">
 
-      <!-- ===== Top bar ===== -->
       <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="page-title mb-0">Sanction Letters</h2>
         <button type="button" class="btn btn-primary btn-generate" data-toggle="modal" data-target="#exampleModal">
@@ -14,7 +13,6 @@
         </button>
       </div>
 
-      <!-- ===== Filter card ===== -->
       <div class="card filter-card mb-4">
         <div class="card-body">
           <div class="row g-3">
@@ -64,11 +62,9 @@
         </div>
       </div>
 
-      <!-- ===== Entries per page + Table + Pagination card ===== -->
       <div class="card table-card">
         <div class="card-body">
 
-          <!-- Entries per page -->
           <div class="d-flex justify-content-between align-items-center mb-3">
             <div class="d-flex align-items-center">
               <select class="form-control form-control-sm" style="width: 80px;" [(ngModel)]="pageSize" name="pageSize"
@@ -82,7 +78,6 @@
             </div>
           </div>
 
-          <!-- Table -->
           <div class="table-responsive">
             <table class="table sl-table align-middle mb-0">
               <thead>
@@ -130,7 +125,6 @@
             </table>
           </div>
 
-          <!-- Footer: Showing X to Y + Pagination -->
           <div class="d-flex justify-content-between align-items-center mt-3">
             <div class="text-muted small">
               Showing
@@ -163,7 +157,6 @@
         </div>
       </div>
 
-      <!-- ===== Generate Sanction Letter Modal (unchanged) ===== -->
       <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -203,7 +196,6 @@
         </div>
       </div>
 
-      <!-- ===== Disburse Modal (unchanged) ===== -->
       <div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">

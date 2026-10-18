@@ -4,7 +4,6 @@
   min-height: 100vh;
 }
 
-
 .section-title {
   font-size: 1.6rem;
   font-weight: 700;
@@ -12,14 +11,12 @@
   margin-bottom: 0.75rem;
 }
 
-
 .customer-name {
   font-size: 1.35rem;
   font-weight: 600;
   color: #1e293b;
   margin-bottom: 1rem;
 }
-
 
 .detail-list {
   margin-bottom: 0.5rem;
@@ -42,18 +39,15 @@
   color: #0f172a;
 }
 
-
 .section-divider {
   border: 0;
   border-top: 1px solid #e2e8f0;
   margin: 1.5rem 0;
 }
 
-
 .action-block {
   margin-top: 1rem;
 }
-
 
 .btn-approve {
   display: block;
@@ -74,7 +68,6 @@
   color: #ffffff;
 }
 
-
 .btn-reject {
   background-color: #d9363e;
   border: none;
@@ -91,31 +84,23 @@
   color: #ffffff;
 }
 
-
-/* 1. Make the parent a flex container */
 .customers-layout {
   display: flex;
   min-height: 100vh;
   background-color: #f8f9fa;
 }
 
-/* 2. Force the sidebar component to take up a fixed width */
 app-officer-sidebar {
   width: 260px;
-  /* Standard sidebar width */
   flex-shrink: 0;
-
   display: block;
 }
-
 
 .customers-main {
   flex-grow: 1;
   overflow-x: auto;
-  /* Prevents your tables from breaking the layout on small screens */
 }
 
-/* (Optional) If the TL's sidebar doesn't stretch to the bottom of the screen, force it */
 app-officer-sidebar ::ng-deep .sidebar {
   height: 100vh;
 }

@@ -42,7 +42,6 @@ export class Dashboard implements OnInit, AfterViewInit, OnDestroy {
     private cdr: ChangeDetectorRef
   ) {}
 
-  // Automatically load data when the page opens
   ngOnInit(): void {
     this.loadDashboard();
   }
@@ -55,7 +54,6 @@ export class Dashboard implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  // Fetch dashboard data from the API
   loadDashboard(): void {
     this.loading = true;
     this.errorMessage = '';
@@ -67,7 +65,6 @@ export class Dashboard implements OnInit, AfterViewInit, OnDestroy {
 
         console.log('Dashboard data:', response);
 
-        // Update the HTML before accessing canvas elements
         this.cdr.detectChanges();
 
         if (this.viewReady) {
@@ -86,7 +83,6 @@ export class Dashboard implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  // Application funnel data
   get funnelItems(): any[] {
     return this.dashboardData?.applicationFunnel ?? [];
   }
@@ -105,7 +101,6 @@ export class Dashboard implements OnInit, AfterViewInit, OnDestroy {
     );
   }
 
-  // Calculate funnel stage widths
   getFunnelWidth(index: number): number {
     const total = this.funnelItems.length;
 
@@ -116,7 +111,6 @@ export class Dashboard implements OnInit, AfterViewInit, OnDestroy {
     return 100 - index * (70 / total);
   }
 
-  // Render charts after the API data and view are ready
   renderCharts(): void {
     if (!this.dashboardData || !this.viewReady) {
       return;
@@ -126,7 +120,6 @@ export class Dashboard implements OnInit, AfterViewInit, OnDestroy {
     this.createCollectionChart();
   }
 
-  // Loan Portfolio Doughnut Chart
   createPortfolioChart(): void {
     const canvas = this.portfolioCanvas?.nativeElement;
 
@@ -200,7 +193,6 @@ export class Dashboard implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  // Collection Efficiency Bar Chart
   createCollectionChart(): void {
     const canvas = this.collectionCanvas?.nativeElement;
 
@@ -283,7 +275,6 @@ export class Dashboard implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  // Clean up chart instances when leaving the page
   ngOnDestroy(): void {
     this.portfolioChart?.destroy();
     this.collectionChart?.destroy();

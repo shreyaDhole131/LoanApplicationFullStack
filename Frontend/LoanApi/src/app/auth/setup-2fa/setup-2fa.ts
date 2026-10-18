@@ -31,10 +31,7 @@ export class Setup2fa implements OnInit {
   errorMessage = '';
   successMessage = '';
 
-  // =========================
-  // PAGE LOAD
-  // =========================
-
+  
   ngOnInit(): void {
     console.log('Setup 2FA page loaded.');
 
@@ -43,7 +40,6 @@ export class Setup2fa implements OnInit {
 
     if (!challengeToken) {
       this.errorMessage = 'Authentication session expired. Please login again.';
-      // Force UI update in case the token is missing on load
       this.cdr.detectChanges();
       return;
     }
@@ -51,9 +47,7 @@ export class Setup2fa implements OnInit {
     this.loadQrCode();
   }
 
-  // =========================
-  // LOAD QR CODE
-  // =========================
+  
 
   loadQrCode(): void {
     this.loading = true;
@@ -73,22 +67,19 @@ export class Setup2fa implements OnInit {
         }
 
         this.loading = false;
-        this.cdr.detectChanges(); // <-- Forces the QR code to render
+        this.cdr.detectChanges(); 
       },
       error: (error: any) => {
         console.error('Setup 2FA error:', error);
         this.loading = false;
 
-        // Shows the exact backend error message
         this.errorMessage = error.error?.message || 'Failed to load QR code.';
         this.cdr.detectChanges(); 
       }
     });
   }
 
-  // =========================
-  // VERIFY 2FA
-  // =========================
+  
 
   verifySetup(): void {
     this.errorMessage = '';
@@ -115,9 +106,8 @@ export class Setup2fa implements OnInit {
           console.log('Final JWT token saved.');
         }
 
-        this.cdr.detectChanges(); // <-- Forces the success message to show
+        this.cdr.detectChanges(); 
 
-        // Give the user 1.5 seconds to read the success message, then go to dashboard
         setTimeout(() => {
           if (response.roleId == 1) {
             this.router.navigate(['/customer-dashboard']);
@@ -132,9 +122,8 @@ export class Setup2fa implements OnInit {
         console.error('2FA verification error:', error);
         this.loading = false;
         
-        // Shows exactly what the backend says (e.g. "Invalid authenticator OTP")
         this.errorMessage = error.error?.message || 'Invalid code. Please try again.';
-        this.cdr.detectChanges(); // <-- Forces the error message to show
+        this.cdr.detectChanges(); 
       }
     });
   }

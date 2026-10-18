@@ -3,12 +3,9 @@
 
   <h1>EMI Schedule</h1>
 
-
   <div class="navbar-notifications">
     <app-notification></app-notification>
   </div>
-
-
 
   <div class="loan-selection">
 
@@ -26,7 +23,6 @@
         
       </option>
 
-
       <option
         *ngFor="let loan of loanAccounts"
         [ngValue]="loan.loanAccountId"
@@ -38,11 +34,8 @@
 
   </div>
 
-
-  <!-- Summary Cards -->
   <div class="summary-container">
 
-    <!-- Paid EMIs -->
     <div class="summary-card paid">
 
       <h3>Paid EMIs</h3>
@@ -63,8 +56,6 @@
 
     </div>
 
-
-    <!-- Pending EMIs -->
     <div class="summary-card pending">
 
       <h3>Pending EMIs</h3>
@@ -85,8 +76,6 @@
 
     </div>
 
-
-    <!-- Remaining Balance -->
     <div class="summary-card remaining">
 
       <h3>Remaining Balance</h3>
@@ -109,8 +98,6 @@
 
   </div>
 
-
-
   <table>
 
     <thead>
@@ -129,10 +116,8 @@
 
     </thead>
 
-
     <tbody>
 
-  
       <tr
         *ngFor="let emi of allEmi; let i = index"
       >
@@ -186,7 +171,6 @@
         </td>
 
       </tr>
-
 
       <tr *ngIf="allEmi.length === 0">
 

@@ -1,5 +1,4 @@
 
-/* OTP Page */
 .otp-page {
   min-height: 100vh;
   background: linear-gradient(115deg, #1268f5, #062653);
@@ -11,7 +10,7 @@
   font-family: Arial, sans-serif;
 }
 
-/* OTP Card */
+
 .otp-card {
   width: 420px;
   max-width: 100%;
@@ -22,7 +21,7 @@
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.18);
 }
 
-/* Heading */
+
 .otp-card h2 {
   text-align: center;
   color: #1268f5;
@@ -30,7 +29,6 @@
   margin: 0 0 25px;
 }
 
-/* Labels */
 .otp-card label {
   display: block;
   font-size: 14px;
@@ -39,7 +37,6 @@
   margin-bottom: 8px;
 }
 
-/* Inputs */
 .otp-card input {
   width: 100%;
   height: 42px;
@@ -63,7 +60,6 @@
   cursor: not-allowed;
 }
 
-/* Verify Button */
 .otp-btn {
   width: 100%;
   padding: 12px;
@@ -81,7 +77,6 @@
   background-color: #0755d4;
 }
 
-/* Mobile Responsive */
 @media (max-width: 480px) {
   .otp-card {
     padding: 22px;
