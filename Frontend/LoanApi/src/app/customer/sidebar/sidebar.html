@@ -1,272 +1,117 @@
 <div class="sidebar">
 
   <div class="sidebar-header">
-
     <div class="logo-icon">
       🏦
     </div>
-
     <h2>
       Loan Application
     </h2>
-
   </div>
 
-
-
+  <!-- =========================================
+       CUSTOMER
+  ========================================== -->
   <div class="menu-title" (click)="toggleCustomer()">
-
     <span>
       👤 Customer
     </span>
-
     <span>
       {{ customerOpen ? '⌃' : '⌄' }}
     </span>
-
   </div>
-
 
   @if (customerOpen) {
-
-  <div class="submenu">
-
-    <a routerLink="/customer-dashboard">
-      📊
-      <span>
-        Dashboard
-      </span>
-    </a>
-
-    <a routerLink="/profile">
-      👤
-      <span>
-        Profile
-      </span>
-    </a>
-
-    <a routerLink="/kyc">
-      🪪
-      <span>
-        KYC Verification
-      </span>
-    </a>
-
-    <a routerLink="/cibil-score">
-      📈
-      <span>
-        CIBIL Score
-      </span>
-    </a>
-
-    <a routerLink="/eligibility">
-      ✅
-      <span>
-        Eligibility Result
-      </span>
-    </a>
-
-  </div>
-
+    <div class="submenu">
+      <a routerLink="/customer-dashboard">
+        📊
+        <span>Dashboard</span>
+      </a>
+      <a routerLink="/profile">
+        👤
+        <span>Profile</span>
+      </a>
+      <a routerLink="/kyc">
+        🪪
+        <span>KYC Verification</span>
+      </a>
+      <a routerLink="/cibil-score">
+        📈
+        <span>CIBIL Score</span>
+      </a>
+      <a routerLink="/eligibility">
+        ✅
+        <span>Eligibility Result</span>
+      </a>
+    </div>
   }
 
-
-<<<<<<< HEAD
-  <div
-    class="menu-title"
-    (click)="toggleLoan()"
-  >
-=======
   <!-- =========================================
        LOAN SERVICES
   ========================================== -->
-
   <div class="menu-title" (click)="toggleLoan()">
->>>>>>> 0f6a40688c82c8dc7f57919a0bc03046a0c4532f
-
     <span>
       🏦 Loan Services
     </span>
-
     <span>
       {{ loanOpen ? '⌃' : '⌄' }}
     </span>
-
   </div>
-
 
   @if (loanOpen) {
-
-  <div class="submenu">
     <div class="submenu">
-
-      <a routerLink="/apply-loan">
+      <a routerLink="/applyLoan">
         📝
-        <span>
-          Apply Loan
-        </span>
+        <span>Apply Loan</span>
       </a>
-
-      <a routerLink="/track-status">
-        🔍
-        <span>
-          Track Status
-        </span>
-      </a>
-
       <a routerLink="/costomerloanacc">
         📊
-        <span>
-          Loan Dashboard
-        </span>
+        <span>Loan Dashboard</span>
       </a>
-
       <a routerLink="/foreclosure-request">
         📄
-        <span>
-          Foreclosure Request
-        </span>
+        <span>Foreclosure Request</span>
       </a>
-      
-
-    <a routerLink="/applyLoan">
-      📝
-      <span>
-        Apply Loan
-      </span>
-    </a>
-
-    <a routerLink="/track-status">
-      🔍
-      <span>
-        Track Status
-      </span>
-    </a>
-
-    <a routerLink="/loan-dashboard">
-      📊
-      <span>
-        Loan Dashboard
-      </span>
-    </a>
-
-    <a routerLink="/foreclosure">
-      📄
-      <span>
-        Foreclosure Request
-      </span>
-    </a>
-
-  </div>
-
+    </div>
   }
 
-
- 
-
+  <!-- =========================================
+       PAYMENTS
+  ========================================== -->
   <div class="menu-title" (click)="togglePayment()">
-
     <span>
       💳 Payments
     </span>
-
     <span>
       {{ paymentOpen ? '⌃' : '⌄' }}
     </span>
-
   </div>
-
 
   @if (paymentOpen) {
-
-  <div class="submenu">
-
     <div class="submenu">
-
       <a routerLink="/emischedule">
         📅
-        <span>
-          EMI Schedule
-        </span>
+        <span>EMI Schedule</span>
       </a>
-
-      <a routerLink="/make-payment">
-        💰
-        <span>
-          Make Payment
-        </span>
-      </a>
-
       <a routerLink="/payment-history">
         📜
-        <span>
-          Payment History
-        </span>
+        <span>Payment History</span>
       </a>
-
-      <a routerLink="/penalties">
-        ⚠️
-        <span>
-          My Penalties
-        </span>
-      </a>
-
-    <a routerLink="/emi-schedule">
-      📅
-      <span>
-        EMI Schedule
-      </span>
-    </a>
-
-    <a routerLink="/make-payment">
-      💰
-      <span>
-        Make Payment
-      </span>
-    </a>
-
-    <a routerLink="/payment-history">
-      📜
-      <span>
-        Payment History
-      </span>
-    </a>
-
-    <a routerLink="/penalties">
-      ⚠️
-      <span>
-        My Penalties
-      </span>
-    </a>
-
-  </div>
-
+    </div>
   }
 
-
+  <!-- =========================================
+       BOTTOM MENU
+  ========================================== -->
   <div class="bottom-menu">
-
     <a routerLink="/support">
-
       🎫
-
-      <span>
-        Support
-      </span>
-
+      <span>Support</span>
     </a>
-
-
     <a routerLink="/login">
-
       🚪
-
-      <span>
-        Logout
-      </span>
-
+      <span>Logout</span>
     </a>
-
   </div>
 
 </div>
