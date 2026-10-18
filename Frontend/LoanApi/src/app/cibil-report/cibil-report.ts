@@ -2,9 +2,10 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { CibilReportService } from '../services/cibil-reportService';
 import { FormsModule } from '@angular/forms';
+import { Sidebar } from '../officer/sidebar/sidebar';
 
 @Component({
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, Sidebar],
   selector: 'app-cibil-report',
   styleUrl: './cibil-report.css',
   templateUrl: './cibil-report.html',

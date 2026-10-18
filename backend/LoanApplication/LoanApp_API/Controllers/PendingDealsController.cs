@@ -1,6 +1,8 @@
 ﻿using LoanApp_API.Application.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace LoanApp_API.Controllers
 {
@@ -18,35 +20,38 @@ namespace LoanApp_API.Controllers
         [HttpGet("FetchCustomerProfile")]
         public async Task<IActionResult> fetchCustomerProfile(int dealId)
         {
-            var data =await service.fetchCustomerProfile(dealId);
+            var data = await service.fetchCustomerProfile(dealId);
             return Ok(data);
 
         }
 
-        [HttpGet("PendingDeals")]
+        //[HttpGet("PendingDeals")]
 
-        public async Task<IActionResult> fetchPendingDeals()
-        {
-            var data = await service.fetchPendingDeals();
-            return Ok(data);
-        }
+        //public async Task<IActionResult> fetchPendingDeals()
+        //{
+        //    var data = await service.fetchPendingDeals();
+        //    return Ok(data);
+        //}
 
         [HttpGet("SortingPending")]
 
-        public async Task<IActionResult> sortPendingDeals([FromQuery]string? LoanType,
-            [FromQuery] decimal? MinAmount, [FromQuery] decimal? MaxAmount, [FromQuery] string? dateFilter, [FromQuery] DateOnly? FromFilter, [FromQuery] DateOnly? ToFilter)
+        public async Task<IActionResult> sortPendingDeals([FromQuery] string? LoanType,
+            [FromQuery] decimal? MinAmount, [FromQuery] decimal? MaxAmount, [FromQuery] string? dateFilter, [FromQuery] DateOnly? FromFilter, [FromQuery] DateOnly? ToFilter, [FromQuery] string? search)
         {
-            var data = await service.sortPendingDeals(LoanType,MinAmount,MaxAmount,dateFilter,FromFilter,ToFilter);
+            var data = await service.sortPendingDeals(LoanType, MinAmount, MaxAmount, dateFilter, FromFilter, ToFilter, search);
             return Ok(data);
         }
 
+        [Authorize(Roles = "2")]
         [HttpPost("{dealId}/Review")]
-        public async Task<IActionResult> ReviewDeal(int dealId,string status)
+        public async Task<IActionResult> ReviewDeal(int dealId, string status)
         {
             if (status != "Approved" && status != "Rejected")
                 return BadRequest(new { message = "Status must be rejected or approved" });
 
-            await service.reviewDeal(dealId, status);
+            var officerId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+
+            await service.reviewDeal(dealId, status, officerId);
             return Ok(new { message = $"Deal {status.ToLower()}." });
         }
     }

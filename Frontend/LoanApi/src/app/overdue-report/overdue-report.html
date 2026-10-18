@@ -1,37 +1,47 @@
-<div class="container mt-4">
+<div class="customers-layout">
 
-  <h3 class="mb-3">Overdue Report</h3>
+  <app-officer-sidebar></app-officer-sidebar>
 
-  <div class="row g-3 align-items-end mb-3">
+  <div class="customers-main">
 
-    <div class="col-md-3">
-      <label class="form-label">As On Date</label>
-      <input type="date" class="form-control" [(ngModel)]="onDate" name="onDate" (ngModelChange)="applyfilters()">
+    <div class="container mt-4">
+
+      <h3 class="mb-3">Overdue Report</h3>
+
+      <div class="row g-3 align-items-end mb-3">
+
+        <div class="col-md-3">
+          <label class="form-label">As On Date</label>
+          <input type="date" class="form-control" [(ngModel)]="onDate" name="onDate" (ngModelChange)="applyfilters()">
+        </div>
+
+        <div class="col-md-2">
+          <button class="btn btn-outline-secondary w-100" (click)="resetFilters()">Reset</button>
+        </div>
+
+      </div>
+
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped align-middle mb-0">
+          <thead class="table-light">
+            <tr>
+              <th scope="col">Days Overdue</th>
+              <th scope="col">Accounts</th>
+              <th scope="col">Outstanding</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let e of overdueReport">
+              <td>{{ e.daysOverdue }}</td>
+              <td>{{ e.accounts }}</td>
+              <td>{{ e.outstanding }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
     </div>
 
-    <div class="col-md-2">
-      <button class="btn btn-outline-secondary w-100" (click)="resetFilters()">Reset</button>
-    </div>
 
   </div>
-
-  <div class="table-responsive">
-    <table class="table table-bordered table-striped align-middle mb-0">
-      <thead class="table-light">
-        <tr>
-          <th scope="col">Days Overdue</th>
-          <th scope="col">Accounts</th>
-          <th scope="col">Outstanding</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let e of overdueReport">
-          <td>{{ e.daysOverdue }}</td>
-          <td>{{ e.accounts }}</td>
-          <td>{{ e.outstanding }}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
 </div>

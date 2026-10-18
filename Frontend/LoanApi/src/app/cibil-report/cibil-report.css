@@ -3,3 +3,31 @@
   padding: 2rem 2rem 1.5rem 2.5rem;
   min-height: 100vh;
 }
+
+/* 1. Make the parent a flex container */
+.customers-layout {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f8f9fa;
+}
+
+/* 2. Force the sidebar component to take up a fixed width */
+app-officer-sidebar {
+  width: 260px;
+  /* Standard sidebar width */
+  flex-shrink: 0;
+
+  display: block;
+}
+
+
+.customers-main {
+  flex-grow: 1;
+  overflow-x: auto;
+  /* Prevents your tables from breaking the layout on small screens */
+}
+
+/* (Optional) If the TL's sidebar doesn't stretch to the bottom of the screen, force it */
+app-officer-sidebar ::ng-deep .sidebar {
+  height: 100vh;
+}

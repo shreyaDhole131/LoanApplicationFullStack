@@ -20,25 +20,25 @@
 
   @if (customerOpen) {
 
-    <div class="submenu">
+  <div class="submenu">
 
-      <a routerLink="/officer/customers">
-        👤 <span>Customers</span>
-      </a>
+    <a routerLink="/officer/customers">
+      👤 <span>Customers</span>
+    </a>
 
-      <a routerLink="/officer/kyc-verification">
-        🪪 <span>KYC Verification</span>
-      </a>
+    <a routerLink="/officer/kyc-verification">
+      🪪 <span>KYC Verification</span>
+    </a>
 
-      <a routerLink="/officer/eligibility">
-        ✅ <span>Eligibility Check</span>
-      </a>
+    <a routerLink="/officer/eligibility">
+      ✅ <span>Eligibility Check</span>
+    </a>
 
-      <a routerLink="/officer/score-cards">
-        📈 <span>Score Cards</span>
-      </a>
+    <a routerLink="/officer/score-cards">
+      📈 <span>Score Cards</span>
+    </a>
 
-    </div>
+  </div>
 
   }
 
@@ -52,21 +52,24 @@
 
   @if (loanOpen) {
 
-    <div class="submenu">
+  <div class="submenu">
 
-      <a routerLink="/officer/loan-applications">
-        📝 <span>Loan Applications</span>
-      </a>
+    <a routerLink="/pendingLoans">
+      📝 <span>Loan Applications</span>
+    </a>
 
-      <a routerLink="/officer/sanction-letters">
-        📄 <span>Sanction Letters</span>
-      </a>
+    <a routerLink="/generate-sanction">
+      📄 <span>Sanction Letters</span>
+    </a>
 
+    <a routerLink="/officer/loan-accounts">
+      🏦 <span>Loan Accounts</span>
+    </a>
       <a routerLink="/loanaccount">
         🏦 <span>Loan Accounts</span>
       </a>
 
-    </div>
+  </div>
 
   }
 
@@ -80,20 +83,76 @@
 
   @if (requestOpen) {
 
-    <div class="submenu">
+  <div class="submenu">
 
+    <a routerLink="/officer/closure-requests">
+      📑 <span>Closure Requests</span>
+    </a>
       <a routerLink="/closure-requests">
         📑 <span>Closure Requests</span>
       </a>
 
-      <a routerLink="/officer/penalty-charges">
-        ⚠️ <span>Penalty Charges</span>
-      </a>
+    <a routerLink="/officer/penalty-charges">
+      ⚠️ <span>Penalty Charges</span>
+    </a>
 
-    </div>
+  </div>
 
   }
 
+
+  <div class="menu-title" (click)="toggleReport()">
+    <span>📄 Reports </span>
+    <span>{{ reportOpen ? '⌃' : '⌄' }}</span>
+  </div>
+
+  @if (reportOpen) {
+
+  <div class="submenu">
+
+    <a routerLink="/cibil-report">
+      📑 <span>Cibil Reports</span>
+    </a>
+
+    <a routerLink="/score-report">
+      <span>Score Reports</span>
+    </a>
+
+    <a routerLink="/product-report">
+      <span>Products Reports</span>
+    </a>
+
+    <a routerLink="/loan-protfolio">
+      <span>Loan Protolio Reports</span>
+    </a>
+
+    <a routerLink="/emi-report">
+      <span>Emi Reports</span>
+    </a>
+
+    <a routerLink="/disburse-report">
+      <span>Disbursement Reports</span>
+    </a>
+
+    <a routerLink="/overdue-report">
+      <span>Overdue Reports</span>
+    </a>
+
+    <a routerLink="/overdue-report">
+      <span>Overdue Reports</span>
+    </a>
+
+    <a routerLink="/prepayment-report">
+      <span>Prepayment Reports</span>
+    </a>
+
+    <a routerLink="/tat-report">
+      <span>Tat Reports</span>
+    </a>
+
+  </div>
+
+  }
 
   <!-- SUPPORT -->
 

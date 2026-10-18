@@ -2,9 +2,11 @@ import { ChangeDetectorRef, Component } from '@angular/core';
 import { OverdueService } from '../services/overdue-service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { Sidebar } from '../officer/sidebar/sidebar';
+
 
 @Component({
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, Sidebar],
   selector: 'app-overdue-report',
   styleUrl: './overdue-report.css',
   templateUrl: './overdue-report.html',

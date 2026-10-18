@@ -1,60 +1,73 @@
-<div class="cibil-report-page">
+<div class="customers-layout">
 
-  <h3 class="report-title">CIBIL Score Range Report</h3>
+  <app-officer-sidebar></app-officer-sidebar>
 
-  <div class="card filter-card mb-3">
-    <div class="card-body">
+  <div class="customers-main">
 
-      <div class="row g-3 align-items-end">
 
-        <div class="col-md-3">
-          <label class="form-label">From Date</label>
-          <input type="date" class="form-control" [(ngModel)]="fromDate" name="fromDate"
-            (ngModelChange)="applyfilters()">
+
+    <div class="cibil-report-page">
+
+      <h3 class="report-title">CIBIL Score Range Report</h3>
+
+      <div class="card filter-card mb-3">
+        <div class="card-body">
+
+          <div class="row g-3 align-items-end">
+
+            <div class="col-md-3">
+              <label class="form-label">From Date</label>
+              <input type="date" class="form-control" [(ngModel)]="fromDate" name="fromDate"
+                (ngModelChange)="applyfilters()">
+            </div>
+
+            <div class="col-md-3">
+              <label class="form-label">To Date</label>
+              <input type="date" class="form-control" [(ngModel)]="toDate" name="toDate"
+                (ngModelChange)="applyfilters()">
+            </div>
+
+            <div class="col-md-2">
+              <button class="btn btn-primary w-100" (click)="applyfilters()">Search</button>
+            </div>
+
+            <div class="col-md-2">
+              <button class="btn btn-outline-secondary w-100" (click)="resetFilters()">Reset</button>
+            </div>
+
+          </div>
         </div>
-
-        <div class="col-md-3">
-          <label class="form-label">To Date</label>
-          <input type="date" class="form-control" [(ngModel)]="toDate" name="toDate" (ngModelChange)="applyfilters()">
-        </div>
-
-        <div class="col-md-2">
-          <button class="btn btn-primary w-100" (click)="applyfilters()">Search</button>
-        </div>
-
-        <div class="col-md-2">
-          <button class="btn btn-outline-secondary w-100" (click)="resetFilters()">Reset</button>
-        </div>
-
-      </div>
-    </div>
-  </div>
-
-  <div class="card table-card">
-    <div class="card-body p-0">
-
-      <div class="table-responsive">
-        <table class="table table-bordered align-middle mb-0 cibil-table">
-          <thead>
-            <tr>
-              <th scope="col">CIBIL Score Range</th>
-              <th scope="col">Applicants</th>
-              <th scope="col">Approved</th>
-              <th scope="col">Approval %</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let e of cibilReport">
-              <td>{{ e.cibilScoreRange }}</td>
-              <td>{{ e.applicants }}</td>
-              <td>{{ e.approved }}</td>
-              <td>{{ e.approval }} %</td>
-            </tr>
-          </tbody>
-        </table>
       </div>
 
-    </div>
-  </div>
+      <div class="card table-card">
+        <div class="card-body p-0">
 
+          <div class="table-responsive">
+            <table class="table table-bordered align-middle mb-0 cibil-table">
+              <thead>
+                <tr>
+                  <th scope="col">CIBIL Score Range</th>
+                  <th scope="col">Applicants</th>
+                  <th scope="col">Approved</th>
+                  <th scope="col">Approval %</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let e of cibilReport">
+                  <td>{{ e.cibilScoreRange }}</td>
+                  <td>{{ e.applicants }}</td>
+                  <td>{{ e.approved }}</td>
+                  <td>{{ e.approval }} %</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+
+  </div>
 </div>

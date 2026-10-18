@@ -2,9 +2,11 @@ import { ChangeDetectorRef, Component } from '@angular/core';
 import { DisbursementReportService } from '../services/disbursement-report-service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { Sidebar } from '../officer/sidebar/sidebar';
+
 
 @Component({
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, Sidebar],
   selector: 'app-disburse-report',
   styleUrl: './disburse-report.css',
   templateUrl: './disburse-report.html',

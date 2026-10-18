@@ -1,66 +1,77 @@
-<div class="apply-loan-page">
+<div class="layout">
 
-  <h2 class="page-title">Apply Loan</h2>
+  <!-- EXISTING CUSTOMER SIDEBAR -->
+  <app-sidebar></app-sidebar>
 
-  <form [formGroup]="loans" (ngSubmit)="SaveLoan(loans.value)">
+  <div class="content">
 
-    <div class="form-group">
-      <label for="LoanTypeSelect">Loan Type</label>
-      <select class="form-control" formControlName="loantype">
-        <option>Personal Loan</option>
-        <option>Education Loan</option>
-        <option>Home Loan</option>
-      </select>
+    <div class="apply-loan-page">
+
+      <h2 class="page-title">Apply Loan</h2>
+
+      <form [formGroup]="loans" (ngSubmit)="SaveLoan(loans.value)">
+
+        <div class="form-group">
+          <label for="LoanTypeSelect">Loan Type</label>
+          <select class="form-control" formControlName="loantype">
+            <option>Personal Loan</option>
+            <option>Education Loan</option>
+            <option>Home Loan</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="exampleLoanAmount">Loan Amount</label>
+          <input type="text" class="form-control" placeholder="Enter loan amount" formControlName="loanAmount">
+        </div>
+
+        <div class="form-group">
+          <label for="exampleTenureMonths">Tenure Months</label>
+          <input type="text" class="form-control" formControlName="tenureMonths" (input)="getPreview()">
+        </div>
+
+        <div class="form-group">
+          <label for="exampleInterestRate">Interest Rate (%)</label>
+          <input type="text" class="form-control" formControlName="interestRate" readonly>
+        </div>
+
+        <div class="form-group">
+          <label for="exampleEmiAmount">EMI Amount</label>
+          <input type="text" class="form-control" formControlName="emiAmount" readonly>
+        </div>
+
+        <div class="form-group">
+          <label for="exampleBankName">Bank Name</label>
+          <input type="text" class="form-control" formControlName="bankName">
+        </div>
+
+        <div class="form-group">
+          <label for="exampleBankAccountNumber">Bank Account Number</label>
+          <input type="text" class="form-control" formControlName="bankAccountNumber">
+        </div>
+
+        <div class="form-group">
+          <label for="exampleIFSC">IFSC Code</label>
+          <input type="text" class="form-control" formControlName="ifscCode">
+        </div>
+
+        <div class="form-group">
+          <label for="EmiSelect">Select EMI Day</label>
+          <select class="form-control" formControlName="emiDay">
+            <option>5</option>
+            <option>7</option>
+            <option>10</option>
+            <option>15</option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-apply">
+          Apply Loan
+        </button>
+
+      </form>
     </div>
 
-    <div class="form-group">
-      <label for="exampleLoanAmount">Loan Amount</label>
-      <input type="text" class="form-control" placeholder="Enter loan amount" formControlName="loanAmount">
-    </div>
 
-    <div class="form-group">
-      <label for="exampleTenureMonths">Tenure Months</label>
-      <input type="text" class="form-control" formControlName="tenureMonths" (input)="getPreview()">
-    </div>
-
-    <div class="form-group">
-      <label for="exampleInterestRate">Interest Rate (%)</label>
-      <input type="text" class="form-control" formControlName="interestRate" readonly>
-    </div>
-
-    <div class="form-group">
-      <label for="exampleEmiAmount">EMI Amount</label>
-      <input type="text" class="form-control" formControlName="emiAmount" readonly>
-    </div>
-
-    <div class="form-group">
-      <label for="exampleBankName">Bank Name</label>
-      <input type="text" class="form-control" formControlName="bankName">
-    </div>
-
-    <div class="form-group">
-      <label for="exampleBankAccountNumber">Bank Account Number</label>
-      <input type="text" class="form-control" formControlName="bankAccountNumber">
-    </div>
-
-    <div class="form-group">
-      <label for="exampleIFSC">IFSC Code</label>
-      <input type="text" class="form-control" formControlName="ifscCode">
-    </div>
-
-    <div class="form-group">
-      <label for="EmiSelect">Select EMI Day</label>
-      <select class="form-control" formControlName="emiDay">
-        <option>5</option>
-        <option>7</option>
-        <option>10</option>
-        <option>15</option>
-      </select>
-    </div>
-
-    <button type="submit" class="btn btn-primary btn-apply">
-      Apply Loan
-    </button>
-
-  </form>
+  </div>
 </div>

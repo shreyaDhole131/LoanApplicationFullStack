@@ -37,9 +37,7 @@
 
 
     <!-- DASHBOARD -->
-    <div
-      class="dashboard-container"
-      *ngIf="data && !loading">
+    <div class="dashboard-container" *ngIf="data && !loading">
 
 
       <!-- ==========================================
@@ -147,9 +145,7 @@
 
           <div class="progress-bar">
 
-            <div
-              class="progress-fill"
-              [style.width.%]="getApplicationProgress()">
+            <div class="progress-fill" [style.width.%]="getApplicationProgress()">
             </div>
 
           </div>
@@ -157,9 +153,7 @@
 
           <div class="progress-steps">
 
-            <div
-              class="progress-step"
-              [class.completed]="isStepCompleted('submitted')">
+            <div class="progress-step" [class.completed]="isStepCompleted('submitted')">
 
               <div class="step-circle">
                 ✓
@@ -170,9 +164,7 @@
             </div>
 
 
-            <div
-              class="progress-step"
-              [class.completed]="isStepCompleted('approved')">
+            <div class="progress-step" [class.completed]="isStepCompleted('approved')">
 
               <div class="step-circle">
                 ✓
@@ -183,9 +175,7 @@
             </div>
 
 
-            <div
-              class="progress-step"
-              [class.completed]="isStepCompleted('disbursed')">
+            <div class="progress-step" [class.completed]="isStepCompleted('disbursed')">
 
               <div class="step-circle">
                 ✓
@@ -196,9 +186,7 @@
             </div>
 
 
-            <div
-              class="progress-step"
-              [class.completed]="isStepCompleted('active')">
+            <div class="progress-step" [class.completed]="isStepCompleted('active')">
 
               <div class="step-circle">
                 ✓
@@ -232,9 +220,7 @@
           </div>
 
 
-          <div
-            class="loan-account"
-            *ngIf="data.selectedLoanDetails">
+          <div class="loan-account" *ngIf="data.selectedLoanDetails">
 
             <span>Loan Account</span>
 
@@ -245,9 +231,7 @@
           </div>
 
 
-          <div
-            class="loan-details"
-            *ngIf="data.selectedLoanDetails">
+          <div class="loan-details" *ngIf="data.selectedLoanDetails">
 
             <div>
               <span>Loan Type</span>
@@ -295,9 +279,7 @@
           </div>
 
 
-          <div
-            class="empty-data"
-            *ngIf="!data.selectedLoanDetails">
+          <div class="empty-data" *ngIf="!data.selectedLoanDetails">
 
             No active loan found.
 
@@ -347,9 +329,7 @@
 
               <!-- DONUT -->
 
-              <div
-                class="donut"
-                [style.background]="
+              <div class="donut" [style.background]="
                   'conic-gradient(#5146e5 ' +
                   getEmiPercentage() +
                   '%, #e7e9ef 0)'
@@ -437,9 +417,9 @@
 
                 <strong>
                   {{
-                    formatAmount(
-                      data.emiSummary?.nextEmiAmount
-                    )
+                  formatAmount(
+                  data.emiSummary?.nextEmiAmount
+                  )
                   }}
                 </strong>
 
@@ -452,9 +432,9 @@
 
                 <strong>
                   {{
-                    formatDate(
-                      data.emiSummary?.nextEmiDate
-                    )
+                  formatDate(
+                  data.emiSummary?.nextEmiDate
+                  )
                   }}
                 </strong>
 
@@ -480,14 +460,10 @@
             </div>
 
 
-            <div
-              class="payment-list"
-              *ngIf="data.recentPayments?.length">
+            <div class="payment-list" *ngIf="data.recentPayments?.length">
 
 
-              <div
-                class="payment-row"
-                *ngFor="
+              <div class="payment-row" *ngFor="
                   let payment of data.recentPayments
                 ">
 
@@ -521,9 +497,7 @@
             </div>
 
 
-            <div
-              class="empty-data"
-              *ngIf="!data.recentPayments?.length">
+            <div class="empty-data" *ngIf="!data.recentPayments?.length">
 
               No payments yet.
 
@@ -555,9 +529,7 @@
 
           <div class="kyc-list">
 
-            <div
-              class="kyc-row"
-              *ngFor="
+            <div class="kyc-row" *ngFor="
                 let document of data.kycDocuments
               ">
 
@@ -574,9 +546,7 @@
               </div>
 
 
-              <span
-                class="kyc-status"
-                [ngClass]="
+              <span class="kyc-status" [ngClass]="
                   getStatusClass(
                     document.verificationStatus
                   )
@@ -589,9 +559,7 @@
             </div>
 
 
-            <div
-              class="empty-data"
-              *ngIf="!data.kycDocuments?.length">
+            <div class="empty-data" *ngIf="!data.kycDocuments?.length">
 
               No KYC documents found.
 
