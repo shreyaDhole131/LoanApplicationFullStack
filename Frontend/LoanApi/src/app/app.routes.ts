@@ -1,5 +1,11 @@
 import { Routes } from '@angular/router';
 
+// import { ForeclosureRequest } from './foreclosure-request/foreclosure-request';
+import { Loanaccount } from './loanaccount/loanaccount';
+import { Emischedule } from './emischedule/emischedule';
+import { Loandetails } from './loandetails/loandetails';
+import { Customerloanaccounts } from './costomerloanacc/costomerloanacc';
+
 import { Register } from './auth/register/register';
 import { Login } from './auth/login/login';
 import { Otp } from './auth/otp/otp';
@@ -41,6 +47,7 @@ import { Scorecard } from './scorecard/scorecard';
 import { Eligibility } from './eligibility/eligibility';
 import { EligibilityResult } from './eligibility-result/eligibility-result';
 
+
 export const routes: Routes = [
   // Default and authentication
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -55,6 +62,18 @@ export const routes: Routes = [
   { path: 'profile', component: Profile },
   { path: 'kyc', component: Kyc },
   { path: 'support', component: Support },
+
+
+  { path: '', redirectTo: '/applyLoan', pathMatch: 'full' },
+  { path: 'cibil-report', component: CibilReport },
+  { path: 'score-report', component: ScoreReport },
+  { path: 'product-report', component: ProductReport },
+  { path: 'loan-protfolio', component: LoanProtfolioReport },
+  { path: 'emi-report', component: EmiReport },
+  { path: 'disburse-report', component: DisburseReport },
+  { path: 'overdue-report', component: OverdueReport },
+  { path: 'prepayment-report', component: PrepaymentReport },
+  { path: 'tat-report', component: TatReport },
 
   // Officer
   { path: 'officer-dashboard', component: OfficerDashboard },
@@ -94,3 +113,13 @@ export const routes: Routes = [
   // Fallback
   { path: '**', redirectTo: 'login' }
 ];
+  // Existing loan account routes
+  { path: 'loanaccount', component: Loanaccount },
+  { path: 'emischedule', component: Emischedule },
+  { path: 'loanaccount/details/:id', component: Loandetails },
+  { path: 'costomerloanacc', component: Customerloanaccounts },
+
+  // Fallback
+  { path: '**', redirectTo: 'login' }
+];
+

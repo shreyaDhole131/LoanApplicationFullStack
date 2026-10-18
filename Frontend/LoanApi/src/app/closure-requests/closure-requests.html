@@ -2,7 +2,9 @@
 <div class="container-fluid mt-4">
 
   <h3>Foreclosure / Closure Requests</h3>
-  <p class="text-muted">Manage customer foreclosure and closure requests</p>
+  <p class="text-muted">
+    Manage customer foreclosure and closure requests
+  </p>
 
   <!-- Tabs -->
   <ul class="nav nav-tabs mb-3">
@@ -18,14 +20,21 @@
     </li>
   </ul>
 
+  <!-- Page Error -->
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    {{ errorMessage }}
+
+    <button
+      type="button"
+      class="btn-close float-end"
+      aria-label="Close"
+      (click)="errorMessage = ''">
+    </button>
+  </div>
+
   <!-- Loading -->
   <div *ngIf="loading" class="alert alert-info">
     Loading requests...
-  </div>
-
-  <!-- Error -->
-  <div *ngIf="errorMessage" class="alert alert-danger">
-    {{ errorMessage }}
   </div>
 
   <!-- Requests Table -->
@@ -47,70 +56,107 @@
       </thead>
 
       <tbody>
+
         <tr *ngFor="let request of allrequests">
 
-          <td>{{ request.requestNo }}</td>
-          <td>{{ request.loanAccountNo }}</td>
-          <td>{{ request.customerName }}</td>
-          <td>{{ request.foreClosureType }}</td>
+          <td>
+            {{ request.requestNo || request.requestId || 'N/A' }}
+          </td>
+
+          <td>{{ request.loanAccountNo || 'N/A' }}</td>
+
+          <td>{{ request.customerName || 'N/A' }}</td>
+
+          <td>{{ request.foreClosureType || 'N/A' }}</td>
 
           <td>
-            {{ request.requestDate | date:'dd MMM yyyy, hh:mm a' }}
+            {{
+              request.requestDate
+                ? (request.requestDate | date:'dd MMM yyyy, hh:mm a')
+                : 'N/A'
+            }}
           </td>
 
           <td>
-            {{ request.outstandingPrincipal | currency:'INR':'symbol':'1.2-2' }}
+            {{
+              request.outstandingPrincipal != null
+                ? (request.outstandingPrincipal | currency:'INR':'symbol':'1.2-2')
+                : 'N/A'
+            }}
           </td>
 
           <td>
-            {{ request.foreClosureAmount | currency:'INR':'symbol':'1.2-2' }}
+            {{
+              request.foreClosureAmount != null
+                ? (request.foreClosureAmount | currency:'INR':'symbol':'1.2-2')
+                : 'N/A'
+            }}
           </td>
 
           <td>
-            <span class="badge"
+            <span
+              class="badge"
               [ngClass]="{
                 'text-bg-success': request.status === 'Approved',
                 'text-bg-danger': request.status === 'Rejected',
-                'text-bg-warning': request.status === 'Pending'
+                'text-bg-warning': request.status === 'Pending',
+                'text-bg-secondary':
+                  request.status !== 'Approved' &&
+                  request.status !== 'Rejected' &&
+                  request.status !== 'Pending'
               }">
-              {{ request.status }}
+              {{ request.status || 'Unknown' }}
             </span>
           </td>
 
           <td>
-            <button
-              type="button"
-              class="btn btn-primary btn-sm"
-              data-bs-toggle="modal"
-              data-bs-target="#requestModal"
-              (click)="viewRequest(request.requestId)">
-              View
-            </button>
+            
+<button
+  type="button"
+  class="btn btn-primary btn-sm"
+  data-bs-toggle="modal"
+  data-bs-target="#requestModal"
+  (click)="viewRequest(request.requestId ?? request.RequestId)">
+  View
+</button>
+
           </td>
 
         </tr>
 
+        <!-- Empty State -->
         <tr *ngIf="!loading && allrequests.length === 0">
-          <td colspan="9" class="text-center">
+          <td colspan="9" class="text-center text-muted py-4">
             No foreclosure requests found.
           </td>
         </tr>
-      </tbody>
 
+      </tbody>
     </table>
   </div>
+
+  <!-- Refresh -->
+  <button
+    type="button"
+    class="btn btn-outline-primary btn-sm"
+    [disabled]="loading"
+    (click)="getAllRequests()">
+    Refresh Requests
+  </button>
 
 </div>
 
 
 <!-- Request Details Modal -->
-<div class="modal fade"
-     id="requestModal"
-     tabindex="-1"
-     aria-labelledby="requestModalLabel"
-     aria-hidden="true">
+<div
+  class="modal fade"
+  id="requestModal"
+  tabindex="-1"
+  aria-labelledby="requestModalLabel"
+  aria-hidden="true">
 
-  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+  <div
+    class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
 
     <div class="modal-content">
 
@@ -120,60 +166,87 @@
           Foreclosure Request Details
         </h5>
 
-        <button type="button"
-                class="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close">
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close">
         </button>
       </div>
 
       <!-- Modal Body -->
       <div class="modal-body">
 
-        <div *ngIf="!selectedRequest" class="text-center p-3">
+        <!-- Details Loading -->
+        <div *ngIf="loadingDetails" class="alert alert-info mb-0">
           Loading request details...
         </div>
 
-        <div *ngIf="selectedRequest">
+        <!-- Details Error -->
+        <div
+          *ngIf="!loadingDetails && modalErrorMessage"
+          class="alert alert-danger">
+          {{ modalErrorMessage }}
+        </div>
 
-          <!-- Loan and Customer Details -->
-          <h6 class="mb-3">Loan & Customer Details</h6>
+        <!-- Request Details -->
+        <div *ngIf="!loadingDetails && selectedRequest">
+
+          <h6 class="mb-3">Loan &amp; Customer Details</h6>
 
           <div class="row mb-3">
 
-            <div class="col-md-6 mb-2">
+            <div class="col-md-6 mb-3">
               <strong>Loan Account No:</strong>
-              <div>{{ selectedRequest.loanAccountNo }}</div>
+              <div>{{ selectedRequest.loanAccountNo || 'N/A' }}</div>
             </div>
 
-            <div class="col-md-6 mb-2">
+            <div class="col-md-6 mb-3">
               <strong>Customer Name:</strong>
-              <div>{{ selectedRequest.customerName }}</div>
+              <div>{{ selectedRequest.customerName || 'N/A' }}</div>
             </div>
 
-            <div class="col-md-6 mb-2">
+            <div class="col-md-6 mb-3">
               <strong>Loan Amount:</strong>
               <div>
-                {{ selectedRequest.loanAmount | currency:'INR':'symbol':'1.2-2' }}
+                {{
+                  selectedRequest.loanAmount != null
+                    ? (selectedRequest.loanAmount | currency:'INR':'symbol':'1.2-2')
+                    : 'N/A'
+                }}
               </div>
             </div>
 
-            <div class="col-md-6 mb-2">
+            <div class="col-md-6 mb-3">
               <strong>Interest Rate:</strong>
-              <div>{{ selectedRequest.interestRate }}%</div>
+              <div>
+                {{
+                  selectedRequest.interestRate != null
+                    ? selectedRequest.interestRate + '%'
+                    : 'N/A'
+                }}
+              </div>
             </div>
 
-            <div class="col-md-6 mb-2">
+            <div class="col-md-6 mb-3">
               <strong>Disbursed On:</strong>
               <div>
-                {{ selectedRequest.disbursedOn | date:'dd MMM yyyy' }}
+                {{
+                  selectedRequest.disbursedOn
+                    ? (selectedRequest.disbursedOn | date:'dd MMM yyyy')
+                    : 'N/A'
+                }}
               </div>
             </div>
 
-            <div class="col-md-6 mb-2">
+            <div class="col-md-6 mb-3">
               <strong>Outstanding Principal:</strong>
               <div>
-                {{ selectedRequest.outstandingPrincipal | currency:'INR':'symbol':'1.2-2' }}
+                {{
+                  selectedRequest.outstandingPrincipal != null
+                    ? (selectedRequest.outstandingPrincipal | currency:'INR':'symbol':'1.2-2')
+                    : 'N/A'
+                }}
               </div>
             </div>
 
@@ -181,52 +254,74 @@
 
           <hr>
 
-          <!-- Foreclosure Details -->
           <h6 class="mb-3">Foreclosure Details</h6>
 
           <div class="row mb-3">
 
-            <div class="col-md-6 mb-2">
+            <div class="col-md-6 mb-3">
               <strong>Request ID:</strong>
-              <div>{{ selectedRequest.requestNo }}</div>
+              <div>
+                {{
+                  selectedRequest.requestNo ||
+                  selectedRequest.requestId ||
+                  'N/A'
+                }}
+              </div>
             </div>
 
-            <div class="col-md-6 mb-2">
+            <div class="col-md-6 mb-3">
               <strong>Request Date:</strong>
               <div>
-                {{ selectedRequest.requestDate | date:'dd MMM yyyy, hh:mm a' }}
+                {{
+                  selectedRequest.requestDate
+                    ? (selectedRequest.requestDate | date:'dd MMM yyyy, hh:mm a')
+                    : 'N/A'
+                }}
               </div>
             </div>
 
-            <div class="col-md-6 mb-2">
+            <div class="col-md-6 mb-3">
               <strong>Foreclosure Type:</strong>
-              <div>{{ selectedRequest.foreClosureType }}</div>
+              <div>{{ selectedRequest.foreClosureType || 'N/A' }}</div>
             </div>
 
-            <div class="col-md-6 mb-2">
+            <div class="col-md-6 mb-3">
               <strong>Total Amount:</strong>
               <div>
-                {{ selectedRequest.foreClosureAmount | currency:'INR':'symbol':'1.2-2' }}
+                {{
+                  selectedRequest.foreClosureAmount != null
+                    ? (selectedRequest.foreClosureAmount | currency:'INR':'symbol':'1.2-2')
+                    : 'N/A'
+                }}
               </div>
             </div>
 
-            <div class="col-md-6 mb-2">
+            <div class="col-md-6 mb-3">
               <strong>Expected Closure Date:</strong>
               <div>
-                {{ selectedRequest.expectedClosureDate | date:'dd MMM yyyy' }}
+                {{
+                  selectedRequest.expectedClosureDate
+                    ? (selectedRequest.expectedClosureDate | date:'dd MMM yyyy')
+                    : 'N/A'
+                }}
               </div>
             </div>
 
-            <div class="col-md-6 mb-2">
+            <div class="col-md-6 mb-3">
               <strong>Status:</strong>
               <div>
-                <span class="badge"
+                <span
+                  class="badge"
                   [ngClass]="{
                     'text-bg-success': selectedRequest.status === 'Approved',
                     'text-bg-danger': selectedRequest.status === 'Rejected',
-                    'text-bg-warning': selectedRequest.status === 'Pending'
+                    'text-bg-warning': selectedRequest.status === 'Pending',
+                    'text-bg-secondary':
+                      selectedRequest.status !== 'Approved' &&
+                      selectedRequest.status !== 'Rejected' &&
+                      selectedRequest.status !== 'Pending'
                   }">
-                  {{ selectedRequest.status }}
+                  {{ selectedRequest.status || 'Unknown' }}
                 </span>
               </div>
             </div>
@@ -235,8 +330,8 @@
 
           <hr>
 
-          <!-- Customer Note -->
-          <h6>Customer Note</h6>
+          <h6 class="mb-2">Customer Note</h6>
+
           <p class="mb-0">
             {{ selectedRequest.customerNote || 'Nil' }}
           </p>
@@ -248,25 +343,31 @@
       <!-- Modal Footer -->
       <div class="modal-footer">
 
-        <ng-container *ngIf="selectedRequest?.status === 'Pending'">
+        <ng-container
+          *ngIf="selectedRequest?.status === 'Pending' && !loadingDetails">
 
-          <button type="button"
-                  class="btn btn-success"
-                  (click)="changeStatus('Approved')">
-            Accept
+          <button
+            type="button"
+            class="btn btn-success"
+            [disabled]="updatingStatus"
+            (click)="changeStatus('Approved')">
+            {{ updatingStatus ? 'Updating...' : 'Accept' }}
           </button>
 
-          <button type="button"
-                  class="btn btn-danger"
-                  (click)="changeStatus('Rejected')">
-            Reject
+          <button
+            type="button"
+            class="btn btn-danger"
+            [disabled]="updatingStatus"
+            (click)="changeStatus('Rejected')">
+            {{ updatingStatus ? 'Updating...' : 'Reject' }}
           </button>
 
         </ng-container>
 
-        <button type="button"
-                class="btn btn-secondary"
-                data-bs-dismiss="modal">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-bs-dismiss="modal">
           Close
         </button>
 
