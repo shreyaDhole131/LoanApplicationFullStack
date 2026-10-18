@@ -15,7 +15,6 @@ namespace LoanApp_API.Infrastructure.Repositories
     {
         private readonly AppDbContext context;
 
-        // Temporary assumption. Confirm the required FOIR later.
         private const decimal FoirLimit = 0.50m;
         private const decimal AnnualInterestRate = 11.5m;
 

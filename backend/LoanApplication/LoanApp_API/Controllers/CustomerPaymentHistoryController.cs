@@ -29,7 +29,6 @@ namespace LoanApp_API.Controllers
             return int.TryParse(customerId, out int id) ? id : null;
         }
 
-        // GET: api/customer/payment-history?loanAccountId=1&months=3
         [HttpGet]
         public async Task<IActionResult> GetPaymentHistory(
             [FromQuery] int? loanAccountId,

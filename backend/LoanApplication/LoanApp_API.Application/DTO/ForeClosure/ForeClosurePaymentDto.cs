@@ -4,7 +4,6 @@ using System.Text;
 
 namespace LoanApp_API.Application.DTO.ForeClosure
 {
-    // Sent to frontend after the Razorpay order is created
     public class ForeClosureOrderDto
     {
         public int RequestId { get; set; }
@@ -14,7 +13,6 @@ namespace LoanApp_API.Application.DTO.ForeClosure
         public string KeyId { get; set; } = string.Empty;
     }
 
-    // Sent by frontend after the Razorpay payment succeeds
     public class VerifyForeClosurePaymentDto
     {
         public int RequestId { get; set; }

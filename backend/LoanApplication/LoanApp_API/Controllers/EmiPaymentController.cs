@@ -19,7 +19,6 @@ namespace LoanApp_API.Controllers
             _repository = repository;
         }
 
-        // Get EMI payment details
         [HttpGet("details/{emiScheduleId}")]
         public async Task<IActionResult> GetPaymentDetails(int emiScheduleId)
         {
@@ -37,7 +36,6 @@ namespace LoanApp_API.Controllers
             return Ok(result);
         }
 
-        // Create Razorpay order
         [HttpPost("create-order/{emiScheduleId}")]
         public async Task<IActionResult> CreatePaymentOrder(int emiScheduleId)
         {
@@ -55,7 +53,6 @@ namespace LoanApp_API.Controllers
             return Ok(result.Data);
         }
 
-        // Verify Razorpay payment
         [HttpPost("verify-payment")]
         public async Task<IActionResult> VerifyPayment(
             VerifyEmiPaymentDto dto)
@@ -73,7 +70,6 @@ namespace LoanApp_API.Controllers
             return Ok(new { Message = result.Message });
         }
 
-        // Get customer ID from JWT
         private int GetCustomerId()
         {
             string? id =

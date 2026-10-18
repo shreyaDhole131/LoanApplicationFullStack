@@ -9,7 +9,7 @@ namespace LoanApp_API.Controllers
 {
     [ApiController]
     [Route("api/customer/foreclosure")]
-    // [Authorize]
+    [Authorize]
     public class CustomerForeClosureController : ControllerBase
     {
         private readonly IForeClosureRepository _foreClosureRepository;
@@ -25,7 +25,6 @@ namespace LoanApp_API.Controllers
 
         private int? GetCustomerId()
         {
-            // 1. Use the CustomerId claim if the token has it
             string? customerClaim =
                 User.FindFirst("CustomerId")?.Value ??
                 User.FindFirst("customerId")?.Value;
@@ -33,7 +32,6 @@ namespace LoanApp_API.Controllers
             if (int.TryParse(customerClaim, out int customerId))
                 return customerId;
 
-            // 2. Otherwise the token holds the USER id, so find that user's customer
             string? userClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
             if (int.TryParse(userClaim, out int userId))
@@ -50,7 +48,6 @@ namespace LoanApp_API.Controllers
             return null;
         }
 
-        // GET: api/customer/foreclosure/loans
         [HttpGet("loans")]
         public async Task<IActionResult> GetCustomerLoans()
         {
@@ -64,7 +61,6 @@ namespace LoanApp_API.Controllers
             return Ok(loans);
         }
 
-        // GET: api/customer/foreclosure/summary/5
         [HttpGet("summary/{loanAccountId}")]
         public async Task<IActionResult> GetSummary(int loanAccountId)
         {
@@ -73,7 +69,6 @@ namespace LoanApp_API.Controllers
             if (customerId == null)
                 return Unauthorized(new { message = "Customer ID not found in token." });
 
-            // Ensure the loan belongs to the logged-in customer
             var loans = await _foreClosureRepository.GetCustomerLoans(customerId.Value);
 
             if (!loans.Any(x => x.LoanAccountId == loanAccountId))
@@ -87,7 +82,6 @@ namespace LoanApp_API.Controllers
             return Ok(summary);
         }
 
-        // POST: api/customer/foreclosure
         [HttpPost]
         public async Task<IActionResult> SubmitRequest(
             [FromBody] ForeClosureDto dto)
@@ -97,7 +91,6 @@ namespace LoanApp_API.Controllers
             if (customerId == null)
                 return Unauthorized(new { message = "Customer ID not found in token." });
 
-            // Take the customer ID from the token, not the request body
             dto.CustomerId = customerId.Value;
 
             var (success, message) =
@@ -109,7 +102,6 @@ namespace LoanApp_API.Controllers
             return Ok(new { message });
         }
 
-        // GET: api/customer/foreclosure/requests
         [HttpGet("requests")]
         public async Task<IActionResult> GetMyRequests()
         {
@@ -124,7 +116,6 @@ namespace LoanApp_API.Controllers
             return Ok(requests);
         }
 
-        // POST: api/customer/foreclosure/payment/create-order/5
         [HttpPost("payment/create-order/{requestId}")]
         public async Task<IActionResult> CreatePaymentOrder(int requestId)
         {
@@ -142,7 +133,6 @@ namespace LoanApp_API.Controllers
             return Ok(data);
         }
 
-        // POST: api/customer/foreclosure/payment/verify
         [HttpPost("payment/verify")]
         public async Task<IActionResult> VerifyPayment(
             [FromBody] VerifyForeClosurePaymentDto dto)

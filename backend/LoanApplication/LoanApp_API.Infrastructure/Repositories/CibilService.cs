@@ -15,7 +15,6 @@ namespace LoanApp_API.Infrastructure.Repositories
             this.context = context;
         }
 
-        // Generate CIBIL Score
         public async Task<CibilScoreResponseDto?> GenerateScoreAsync(int customerId)
         {
             var customer = await context.Customers
@@ -28,7 +27,6 @@ namespace LoanApp_API.Infrastructure.Repositories
 
             int score = 500;
 
-            // Income points
             if (income < 25000)
                 score += 100;
             else if (income < 50000)
@@ -38,7 +36,6 @@ namespace LoanApp_API.Infrastructure.Repositories
             else
                 score += 400;
 
-            // Employment points
             if (customer.EmploymentType == "Government")
                 score += 200;
             else if (customer.EmploymentType == "Private")
@@ -46,7 +43,6 @@ namespace LoanApp_API.Infrastructure.Repositories
             else if (customer.EmploymentType == "Self-employed")
                 score += 100;
 
-            // Age points
             if (customer.Age >= 21 && customer.Age <= 24)
                 score += 50;
             else if (customer.Age >= 25 && customer.Age <= 45)
@@ -54,7 +50,6 @@ namespace LoanApp_API.Infrastructure.Repositories
             else if (customer.Age >= 46 && customer.Age <= 60)
                 score += 100;
 
-            // Calculate FOIR
             var loans = await context.LoanAccounts
                 .Where(l => l.CustomerId == customerId &&
                             l.LoanStatus != "Closed")
@@ -73,13 +68,10 @@ namespace LoanApp_API.Infrastructure.Repositories
             else if (foir <= 60)
                 score += 75;
 
-            // Limit score
             score = Math.Clamp(score, 300, 900);
 
-            // Get status
             string status = GetScoreStatus(score);
 
-            // Find existing report
             var report = await context.CibilReports
                 .FirstOrDefaultAsync(r => r.CustomerId == customerId);
 
@@ -93,7 +85,6 @@ namespace LoanApp_API.Infrastructure.Repositories
                 context.CibilReports.Add(report);
             }
 
-            // Save report
             report.PanNo = customer.Pan;
             report.CibilScore = score;
             report.CheckDate = DateTime.Now;
@@ -111,7 +102,6 @@ namespace LoanApp_API.Infrastructure.Repositories
             };
         }
 
-        // Get CIBIL Report by Customer ID
         public async Task<CibilScoreResponseDto?> GetCibilReportAsync(int customerId)
         {
             var report = await context.CibilReports
@@ -133,7 +123,6 @@ namespace LoanApp_API.Infrastructure.Repositories
             };
         }
 
-        // Get All CIBIL Reports
         public async Task<List<CibilScoreResponseDto>> GetAllCibilReportsAsync()
         {
             var reports = await context.CibilReports
@@ -155,7 +144,6 @@ namespace LoanApp_API.Infrastructure.Repositories
                 .ToList();
         }
 
-        // Common method for score status
         private string GetScoreStatus(int score)
         {
             if (score >= 900)

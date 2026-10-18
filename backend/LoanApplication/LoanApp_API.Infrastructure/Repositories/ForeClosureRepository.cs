@@ -32,7 +32,6 @@ namespace LoanApp_API.Infrastructure.Repositories
 
         // Customer side
 
-        // Active loans of this customer
         public async Task<List<CustomerLoanDto>> GetCustomerLoans(int customerId)
         {
             var loans = await _db.LoanAccounts
@@ -43,7 +42,6 @@ namespace LoanApp_API.Infrastructure.Repositories
             return _mapper.Map<List<CustomerLoanDto>>(loans);
         }
 
-        // Foreclosure summary
         public async Task<ForeClosureSummaryDto?> GetSummary(int loanAccountId)
         {
             var loan = await _db.LoanAccounts.FindAsync(loanAccountId);
@@ -62,7 +60,6 @@ namespace LoanApp_API.Infrastructure.Repositories
             };
         }
 
-        // Submit foreclosure request
         public async Task<(bool Success, string Message)> SubmitRequest(
             ForeClosureDto dto)
         {
@@ -124,7 +121,6 @@ namespace LoanApp_API.Infrastructure.Repositories
             }
             else
             {
-                // Outstanding + interest + 2% charges
                 decimal outstanding = nextEmi.OpeningBalance;
 
                 DateTime lastPaidDate =
@@ -149,7 +145,6 @@ namespace LoanApp_API.Infrastructure.Repositories
             return (true, "Foreclosure request submitted");
         }
 
-        // Customer foreclosure requests
         public async Task<List<CustomerForeClosureDto>> GetMyRequests(
             int customerId)
         {
@@ -162,20 +157,17 @@ namespace LoanApp_API.Infrastructure.Repositories
                 .ToListAsync();
         }
 
-        // Officer dashboard
         public async Task<List<OfficerForeClosureDto>> GetAllRequests()
         {
             return await OfficerQuery().ToListAsync();
         }
 
-        // Officer request details
         public async Task<OfficerForeClosureDto?> GetRequestById(int id)
         {
             return await OfficerQuery()
                 .FirstOrDefaultAsync(x => x.RequestId == id);
         }
 
-        // Next pending EMI
         private async Task<EmiSchedule?> GetNextPendingEmi(int loanAccountId)
         {
             return await _db.EmiSchedules
@@ -185,7 +177,6 @@ namespace LoanApp_API.Infrastructure.Repositories
                 .FirstOrDefaultAsync();
         }
 
-        // Last paid EMI
         private async Task<EmiSchedule?> GetLastPaidEmi(int loanAccountId)
         {
             return await _db.EmiSchedules
@@ -195,8 +186,7 @@ namespace LoanApp_API.Infrastructure.Repositories
                 .FirstOrDefaultAsync();
         }
 
-        // Common query for officer list and details
-        // Sort the entity before projecting into the DTO.
+       
         private IQueryable<OfficerForeClosureDto> OfficerQuery()
         {
             return _db.ForeClosureRequests
@@ -205,9 +195,7 @@ namespace LoanApp_API.Infrastructure.Repositories
                     _mapper.ConfigurationProvider);
         }
 
-        // Customer payment (Razorpay)
-
-        // Create Razorpay order for an approved request
+        
         public async Task<(
             bool Success,
             string Message,
@@ -237,7 +225,6 @@ namespace LoanApp_API.Infrastructure.Repositories
             if (amount <= 0)
                 return (false, "Invalid payment amount", null);
 
-            // Amount always comes from the database, never from the frontend
             long amountInPaise = (long)Math.Round(amount * 100);
 
             try
@@ -277,7 +264,6 @@ namespace LoanApp_API.Infrastructure.Repositories
             }
         }
 
-        // Verify payment, mark request as Paid and add entry in LoanPayment
         public async Task<(bool Success, string Message)> VerifyPayment(
             VerifyForeClosurePaymentDto dto,
             int customerId)
@@ -293,7 +279,6 @@ namespace LoanApp_API.Infrastructure.Repositories
             if (request.RazorpayOrderId != dto.RazorpayOrderId)
                 return (false, "Order does not match this request");
 
-            // Signature = HMAC_SHA256(orderId + "|" + paymentId, keySecret)
             string payload =
                 dto.RazorpayOrderId + "|" + dto.RazorpayPaymentId;
 
@@ -312,7 +297,6 @@ namespace LoanApp_API.Infrastructure.Repositories
                 return (false, "Payment verification failed");
             }
 
-            // Payment mode (UPI / CARD / NETBANKING) from Razorpay
             string paymentMode = "Razorpay";
 
             try
@@ -330,18 +314,15 @@ namespace LoanApp_API.Infrastructure.Repositories
             }
             catch
             {
-                // Keep default payment mode
             }
 
             decimal amount = GetPayableAmount(request);
 
-            // 1. Update foreclosure request
             request.IsPaid = true;
             request.Status = "Paid";
             request.RazorpayPaymentId = dto.RazorpayPaymentId;
             request.PaidDate = DateTime.Now;
 
-            // 2. Add entry in LoanPayment table
             _db.Set<LoanPayment>().Add(new LoanPayment
             {
                 LoanAccountId = request.LoanAccountId,
@@ -356,13 +337,11 @@ namespace LoanApp_API.Infrastructure.Repositories
                 PaymentStatus = "Success"
             });
 
-            // Both changes are saved together
             await _db.SaveChangesAsync();
 
             return (true, "Payment successful");
         }
 
-        // Request that belongs to this customer
         private async Task<ForeClosureRequest?> GetOwnRequest(
             int requestId,
             int customerId)
@@ -386,7 +365,6 @@ namespace LoanApp_API.Infrastructure.Repositories
             return request;
         }
 
-        // Full = ForeClosureAmount, Partial = PartialAmount
         private static decimal GetPayableAmount(
             ForeClosureRequest request)
         {
@@ -395,7 +373,6 @@ namespace LoanApp_API.Infrastructure.Repositories
                 : request.ForeClosureAmount;
         }
 
-        // Approve or reject
         public async Task<(bool Success, string Message)> ChangeStatus(
             int id,
             string status)

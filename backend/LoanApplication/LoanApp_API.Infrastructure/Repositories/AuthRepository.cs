@@ -59,7 +59,6 @@ namespace LoanApp_API.Infrastructure.Repositories
                         "Email already registered");
                 }
 
-                // Generate a new OTP for an unverified customer.
                 existingCustomer.EmailOtp =
                     Random.Shared.Next(100000, 1000000).ToString();
 
@@ -237,7 +236,6 @@ namespace LoanApp_API.Infrastructure.Repositories
                     : null;
             }
 
-            // Recover an older customer record if its User record is missing.
             var customer = GetCustomerByEmail(email);
 
             if (customer == null ||
@@ -388,23 +386,18 @@ namespace LoanApp_API.Infrastructure.Repositories
             return true;
         }
 
-        // =========================================================
-        // ADDED SEED METHOD FOR HARDCODED OFFICER
-        // =========================================================
+       
         public void SeedOfficer()
         {
-            // 1. Define the hardcoded officer details
             var officerEmail = "officer@loanapp.com";
             var officerPassword = "Officer@123";
             var officerFirstName = "Default";
             var officerLastName = "Officer";
 
-            // 2. Check if the officer already exists
             var existingOfficer = GetUserByEmail(officerEmail);
 
             if (existingOfficer == null)
             {
-                // 3. Create the new officer
                 var officer = new User
                 {
                     FirstName = officerFirstName,

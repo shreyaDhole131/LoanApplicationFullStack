@@ -34,7 +34,6 @@ namespace LoanApp_API.Controllers
             _totpService = totpService;
         }
 
-        // 1. CUSTOMER REGISTRATION
         [HttpPost("register")]
         [AllowAnonymous]
         public async Task<IActionResult> Register(
@@ -81,7 +80,6 @@ namespace LoanApp_API.Controllers
             }
         }
 
-        // 2. VERIFY REGISTRATION EMAIL OTP
         [HttpPost("verify-otp")]
         [AllowAnonymous]
         public IActionResult VerifyOtp(
@@ -149,7 +147,6 @@ namespace LoanApp_API.Controllers
             });
         }
 
-        // 3. PASSWORD LOGIN
         [HttpPost("login")]
         [AllowAnonymous]
         public IActionResult Login([FromBody] LoginDTO model)
@@ -202,7 +199,6 @@ namespace LoanApp_API.Controllers
             });
         }
 
-        // 4. GENERATE AUTHENTICATOR QR CODE
         [Authorize]
         [HttpPost("setup-2fa")]
         public IActionResult SetupTwoFactor()
@@ -259,7 +255,6 @@ namespace LoanApp_API.Controllers
             });
         }
 
-        // 5. RETURN QR CODE AS AN IMAGE
         [Authorize]
         [HttpGet("setup-2fa/qr")]
         [Produces("image/png")]
@@ -313,7 +308,6 @@ namespace LoanApp_API.Controllers
             return qrCode.GetGraphic(10);
         }
 
-        // 6. VERIFY INITIAL AUTHENTICATOR OTP AND ENABLE 2FA
         [Authorize]
         [HttpPost("verify-2fa-setup")]
         public IActionResult VerifyTwoFactorSetup(
@@ -379,7 +373,6 @@ namespace LoanApp_API.Controllers
             return CreateJwtResponse(updatedUser);
         }
 
-        // 7. VERIFY LOGIN AUTHENTICATOR OTP
         [Authorize]
         [HttpPost("verify-login-otp")]
         public IActionResult VerifyLoginOtp(
@@ -423,7 +416,6 @@ namespace LoanApp_API.Controllers
             return CreateJwtResponse(user);
         }
 
-        // 8. GOOGLE LOGIN
         [HttpPost("google")]
         [AllowAnonymous]
         public async Task<IActionResult> GoogleLogin(
@@ -543,7 +535,6 @@ namespace LoanApp_API.Controllers
             });
         }
 
-        // 9. CREATE SHORT-LIVED AUTHENTICATION STAGE TOKEN
         private string CreateStageToken(User user, string stage)
         {
             var claims = new[]
@@ -566,12 +557,10 @@ namespace LoanApp_API.Controllers
  DateTime.UtcNow.AddDays(1));
         }
 
-        // 10. VALIDATE AUTHENTICATION STAGE TOKEN
         private bool TryGetStageUser(string requiredStage, out User user)
         {
             user = null!;
 
-            // 1. Get the raw token string from the header
             var authHeader = Request.Headers["Authorization"].ToString();
             if (string.IsNullOrWhiteSpace(authHeader) || !authHeader.StartsWith("Bearer "))
             {
@@ -579,14 +568,11 @@ namespace LoanApp_API.Controllers
                 return false;
             }
 
-            // 2. Strip "Bearer " and get the token
             var rawToken = authHeader.Substring("Bearer ".Length).Trim();
 
-            // 3. Manually parse the token
             var handler = new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler();
             var jwtToken = handler.ReadJwtToken(rawToken);
 
-            // 4. Read the exact auth_stage claim
             var stage = jwtToken.Claims.FirstOrDefault(c => c.Type == "auth_stage")?.Value;
 
             Console.WriteLine($"✅ RAW CHECK: Expected '{requiredStage}', Found '{stage}'");
@@ -596,7 +582,6 @@ namespace LoanApp_API.Controllers
                 return false;
             }
 
-            // 5. Read the user ID
             var userIdValue = jwtToken.Claims.FirstOrDefault(c =>
                 c.Type == System.Security.Claims.ClaimTypes.NameIdentifier ||
                 c.Type == "nameid" ||
@@ -620,7 +605,6 @@ namespace LoanApp_API.Controllers
             return true;
         }
 
-        // 11. CREATE FINAL JWT RESPONSE
         private IActionResult CreateJwtResponse(User user)
         {
             var claims = new[]
@@ -650,7 +634,6 @@ namespace LoanApp_API.Controllers
             });
         }
 
-        // 12. CREATE JWT
         private string CreateToken(
             IEnumerable<Claim> claims,
             DateTime expiry)
