@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
 @Component({
   imports: [FormsModule, CommonModule],
   selector: 'app-score-report',
-  styleUrl: './score-report.scss',
+  styleUrl: './score-report.css',
   templateUrl: './score-report.html',
 })
 export class ScoreReport {

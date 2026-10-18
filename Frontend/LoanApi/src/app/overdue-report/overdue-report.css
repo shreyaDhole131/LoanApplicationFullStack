@@ -1,0 +1,14 @@
+.container {
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+h3 {
+  color: #0b2545;
+  font-weight: 600;
+}
+
+.table th,
+.table td {
+  vertical-align: middle;
+}

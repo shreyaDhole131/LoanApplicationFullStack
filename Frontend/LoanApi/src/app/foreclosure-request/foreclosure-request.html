@@ -1,3 +1,5 @@
+  <app-sidebar></app-sidebar>
+
 <label for="LoanAccount">Select Loan Account</label>
 
 <select id="LoanAccount" name="LoanAccount" class="form-select" [(ngModel)]="SelectedLoanAccount" (change)="getCardsData(+$any($event.target).value    )" (ngModelChange)="onLoanChange($event)">

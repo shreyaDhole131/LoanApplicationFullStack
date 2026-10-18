@@ -4,15 +4,16 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { customer_loans } from '../services/customer-loans';
 import { nextTick } from 'process';
+import { Sidebar } from '../customer/sidebar/sidebar';
 
 declare const Razorpay: any;
 declare var $:any;
 @Component({
   selector: 'app-foreclosure-request',
     standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule,Sidebar],
   templateUrl: './foreclosure-request.html',
-  styleUrl: './foreclosure-request.scss'
+  styleUrl: './foreclosure-request.css'
 })
 export class foreclosure_request{
   constructor(private service:customer_loans, private cd:ChangeDetectorRef){
