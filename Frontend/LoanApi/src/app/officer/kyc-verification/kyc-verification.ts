@@ -16,17 +16,11 @@ export class KycVerification {
 
   selectedDocuments: number[] = [];
 
-
   constructor(private service: Officer) {
 
     this.getKycCustomers();
 
   }
-
-
-  // =========================================================
-  // GET CUSTOMERS HAVING KYC
-  // =========================================================
 
   getKycCustomers() {
 
@@ -49,11 +43,6 @@ export class KycVerification {
     });
 
   }
-
-
-  // =========================================================
-  // VIEW CUSTOMER KYC
-  // =========================================================
 
   viewKyc(customerId: number) {
 
@@ -79,11 +68,6 @@ export class KycVerification {
 
   }
 
-
-  // =========================================================
-  // VIEW DOCUMENT
-  // =========================================================
-
   viewDocument(documentId: number) {
 
     console.log('VIEW KYC DOCUMENT:', documentId);
@@ -98,7 +82,6 @@ export class KycVerification {
 
     }
 
-
     this.service.viewKycDocument(documentId).subscribe({
 
       next: (file: Blob) => {
@@ -109,7 +92,6 @@ export class KycVerification {
 
         newTab.location.href = fileUrl;
 
-
         setTimeout(() => {
 
           URL.revokeObjectURL(fileUrl);
@@ -117,7 +99,6 @@ export class KycVerification {
         }, 60000);
 
       },
-
 
       error: (err: any) => {
 
@@ -132,11 +113,6 @@ export class KycVerification {
     });
 
   }
-
-
-  // =========================================================
-  // SELECT / UNSELECT DOCUMENT
-  // =========================================================
 
   selectDocument(
     documentId: number,
@@ -168,11 +144,6 @@ export class KycVerification {
 
   }
 
-
-  // =========================================================
-  // APPROVE SELECTED DOCUMENTS
-  // =========================================================
-
   approve() {
 
     if (this.selectedDocuments.length === 0) {
@@ -182,7 +153,6 @@ export class KycVerification {
       return;
 
     }
-
 
     this.service
       .approveKyc(this.selectedDocuments)
@@ -202,7 +172,6 @@ export class KycVerification {
 
         },
 
-
         error: (err: any) => {
 
           console.log('APPROVE KYC ERROR:', err);
@@ -215,11 +184,6 @@ export class KycVerification {
 
   }
 
-
-  // =========================================================
-  // REJECT SELECTED DOCUMENTS
-  // =========================================================
-
   reject() {
 
     if (this.selectedDocuments.length === 0) {
@@ -229,7 +193,6 @@ export class KycVerification {
       return;
 
     }
-
 
     this.service
       .rejectKyc(this.selectedDocuments)
@@ -249,7 +212,6 @@ export class KycVerification {
 
         },
 
-
         error: (err: any) => {
 
           console.log('REJECT KYC ERROR:', err);
@@ -261,11 +223,6 @@ export class KycVerification {
       });
 
   }
-
-
-  // =========================================================
-  // BACK TO CUSTOMER LIST
-  // =========================================================
 
   backToCustomers() {
 

@@ -6,7 +6,26 @@
     color: #202938;
 }
 
-/* Center the page */
+.dashboard-layout {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f4f6fb;
+}
+
+app-officer-sidebar {
+  width: 260px;
+  min-width: 260px;
+  flex-shrink: 0;
+  display: block;
+}
+
+.main-content {
+  flex-grow: 1;
+  width: 100%;
+  min-width: 0;
+  overflow-x: auto;
+}
+
 .result-page {
     width: 100%;
     max-width: 1050px;
@@ -15,7 +34,6 @@
     box-sizing: border-box;
 }
 
-/* Header and result card */
 .page-header,
 .result-card {
     width: 100%;
@@ -54,7 +72,6 @@
     flex-shrink: 0;
 }
 
-/* Customer and EMI information */
 .detail-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -87,7 +104,6 @@
     font-weight: 700;
 }
 
-/* Status banner */
 .status-banner {
     text-align: center;
     padding: 22px 16px;
@@ -121,7 +137,6 @@
     color: #805300;
 }
 
-/* EMI and tenure sections */
 .calculation-section {
     margin-top: 28px;
 }
@@ -138,7 +153,6 @@
     font-size: 14px;
 }
 
-/* Tenure table */
 .table-wrapper {
     width: 100%;
     overflow-x: auto;
@@ -190,7 +204,6 @@
     margin: 20px 0 0;
 }
 
-/* Loading and errors */
 .alert-error {
     padding: 13px 16px;
     border-radius: 8px;
@@ -204,7 +217,6 @@
     color: #667085;
 }
 
-/* Refresh button */
 .btn {
     padding: 11px 17px;
     border: none;
@@ -230,7 +242,6 @@
     background: #0755d3;
 }
 
-/* Mobile layout */
 @media (max-width: 650px) {
     .result-page {
         padding: 15px;

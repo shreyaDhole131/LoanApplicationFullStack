@@ -8,10 +8,11 @@ import {
 
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { ScorecardService } from '../services/scorecard';
+import { Sidebar } from '../officer/sidebar/sidebar';
 
 @Component({
     selector: 'app-scorecard',
-    imports: [CommonModule],
+    imports: [CommonModule,Sidebar],
     templateUrl: './scorecard.html',
     styleUrl: './scorecard.css'
 })
@@ -23,7 +24,6 @@ export class Scorecard implements OnInit {
 
     loadingCustomers = false;
 
-    // Store the ID of the customer currently being processed
     generatingCustomerId: number | null = null;
 
     showDetails = false;
@@ -43,7 +43,6 @@ export class Scorecard implements OnInit {
         }
     }
 
-    // Check whether the Officer JWT exists
     hasToken(): boolean {
         if (!isPlatformBrowser(this.platformId)) {
             return false;
@@ -61,7 +60,6 @@ export class Scorecard implements OnInit {
         return true;
     }
 
-    // Fetch customers from the backend
     GetCustomers() {
         if (!this.hasToken()) {
             return;
@@ -120,13 +118,11 @@ export class Scorecard implements OnInit {
         });
     }
 
-    // Generate or update the selected customer's scorecard
     ViewScoreCard(customer: any) {
         if (!this.hasToken()) {
             return;
         }
 
-        // Set only the selected customer's ID
         this.generatingCustomerId = customer.customerId;
 
         this.errorMessage = '';
@@ -198,7 +194,6 @@ export class Scorecard implements OnInit {
         });
     }
 
-    // Return to the customer list
     BackToCustomers() {
         this.showDetails = false;
 

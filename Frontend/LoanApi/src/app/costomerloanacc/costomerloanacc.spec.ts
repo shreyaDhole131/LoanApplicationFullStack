@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Costomerloanacc } from './costomerloanacc';
+import { Customerloanaccounts } from './costomerloanacc'; // <-- Matched the class name
 
-describe('Costomerloanacc', () => {
-  let component: Costomerloanacc;
-  let fixture: ComponentFixture<Costomerloanacc>;
+describe('Customerloanaccounts', () => { // <-- Matched the class name
+  let component: Customerloanaccounts; // <-- Matched the class name
+  let fixture: ComponentFixture<Customerloanaccounts>; // <-- Matched the class name
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Costomerloanacc],
+      imports: [Customerloanaccounts], // <-- Matched the class name
     }).compileComponents();
 
-    fixture = TestBed.createComponent(Costomerloanacc);
+    fixture = TestBed.createComponent(Customerloanaccounts); // <-- Matched the class name
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

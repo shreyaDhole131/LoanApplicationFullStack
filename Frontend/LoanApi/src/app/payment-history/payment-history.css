@@ -1,0 +1,18 @@
+.dashboard-layout {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f4f6fb;
+}
+
+app-sidebar {
+  width: 260px;
+  flex-shrink: 0;
+}
+
+.payment-page {
+  flex-grow: 1;
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+  overflow-y: auto;
+}

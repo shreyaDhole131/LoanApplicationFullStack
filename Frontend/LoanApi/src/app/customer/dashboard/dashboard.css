@@ -1,40 +1,20 @@
-/* =========================================
-   MAIN LAYOUT
-========================================= */
-
 .layout {
   display: flex;
-
   width: 100%;
   height: 100vh;
-
   overflow: hidden;
-
   background: #f4f6fb;
 }
 
-
-/* =========================================
-   DASHBOARD CONTENT
-========================================= */
-
 .content {
   flex: 1;
-
   min-width: 0;
-
   height: 100vh;
-
   overflow-y: auto;
   overflow-x: hidden;
-
   padding: 22px 28px;
-
   box-sizing: border-box;
 }
-
-
-/* Dashboard scrollbar */
 
 .content::-webkit-scrollbar {
   width: 6px;
@@ -53,49 +33,29 @@
   background: #aeb6c3;
 }
 
-
-/* Firefox */
-
 .content {
   scrollbar-width: thin;
-
-  scrollbar-color:
-    #c8ced8
-    transparent;
+  scrollbar-color: #c8ced8 transparent;
 }
-
-
-/* =========================================
-   HEADER
-========================================= */
 
 .page-header {
   height: 55px;
-
   display: flex;
-
   justify-content: space-between;
-
   align-items: center;
-
   margin-bottom: 12px;
 }
 
 .page-header h1 {
   margin: 0;
-
   color: #102a43;
-
   font-size: 26px;
-
   font-weight: 700;
 }
 
 .page-header p {
   margin: 3px 0 0;
-
   color: #7c8ca3;
-
   font-size: 12px;
 }
 
@@ -105,291 +65,186 @@
 
 .customer-id {
   background: white;
-
   border: 1px solid #e4e8f0;
-
   border-radius: 8px;
-
   padding: 9px 14px;
-
   min-width: 80px;
 }
 
 .customer-id span {
   display: block;
-
   color: #8290a5;
-
   font-size: 9px;
 }
 
 .customer-id strong {
   display: block;
-
   margin-top: 3px;
-
   color: #172b4d;
-
   font-size: 13px;
 }
 
-
-/* =========================================
-   DASHBOARD
-========================================= */
-
 .dashboard-container {
   display: flex;
-
   flex-direction: column;
-
   gap: 12px;
 }
 
-
-/* =========================================
-   TOP 4 CARDS
-========================================= */
-
 .summary-grid {
   display: grid;
-
-  grid-template-columns:
-    repeat(4, 1fr);
-
+  grid-template-columns: repeat(4, 1fr);
   gap: 12px;
 }
 
 .summary-card {
   height: 70px;
-
   display: flex;
-
   align-items: center;
-
   gap: 12px;
-
   padding: 10px 13px;
-
   background: white;
-
   border: 1px solid #e3e8f0;
-
   border-radius: 9px;
-
   box-sizing: border-box;
 }
 
 .summary-icon {
   width: 40px;
-
   height: 40px;
-
   min-width: 40px;
-
   display: flex;
-
   align-items: center;
-
   justify-content: center;
-
   border-radius: 9px;
-
   font-size: 18px;
-
   font-weight: 600;
 }
 
 .summary-icon.blue {
   background: #edf1ff;
-
   color: #5060e8;
 }
 
 .summary-icon.green {
   background: #e6f8ef;
-
   color: #10a568;
 }
 
 .summary-icon.orange {
   background: #fff2dc;
-
   color: #f09a20;
 }
 
 .summary-icon.purple {
   background: #eee9ff;
-
   color: #7856e8;
 }
 
 .summary-card span {
   display: block;
-
   color: #8391a6;
-
   font-size: 9px;
 }
 
 .summary-card strong {
   display: block;
-
   color: #172b4d;
-
   font-size: 17px;
-
   line-height: 20px;
 }
 
 .summary-card small {
   display: block;
-
   color: #9aa5b5;
-
   font-size: 8px;
 }
 
-
-/* =========================================
-   COMMON CARD
-========================================= */
-
 .dashboard-card {
   background: white;
-
   border: 1px solid #e3e8f0;
-
   border-radius: 9px;
-
   box-sizing: border-box;
-
   overflow: hidden;
 }
 
-
-/* =========================================
-   ROW 2
-   PROGRESS + ACTIVE LOAN
-========================================= */
-
 .top-two-grid {
   display: grid;
-
   grid-template-columns: 1fr 1fr;
-
   gap: 12px;
 }
 
-
-/* =========================================
-   PROGRESS
-========================================= */
-
 .progress-card {
   height: 205px;
-
   padding: 16px 18px;
 }
 
 .card-header {
   display: flex;
-
   align-items: center;
-
   justify-content: space-between;
 }
 
 .card-header h2 {
   margin: 0;
-
   color: #132b4d;
-
   font-size: 16px;
-
   font-weight: 600;
 }
 
 .card-header p {
   margin: 3px 0 0;
-
   color: #8794a8;
-
   font-size: 9px;
 }
 
 .progress-percent {
   color: #5146e5;
-
   font-size: 13px;
 }
 
 .progress-bar {
   height: 5px;
-
   margin-top: 22px;
-
   background: #e5e7ed;
-
   border-radius: 10px;
-
   overflow: hidden;
 }
 
 .progress-fill {
   height: 100%;
-
   background: #5146e5;
-
   border-radius: 10px;
 }
 
 .progress-steps {
   display: grid;
-
-  grid-template-columns:
-    repeat(4, 1fr);
-
+  grid-template-columns: repeat(4, 1fr);
   margin-top: 17px;
 }
 
 .progress-step {
   display: flex;
-
   flex-direction: column;
-
   align-items: center;
-
   gap: 5px;
-
   color: #9aa5b5;
-
   font-size: 9px;
 }
 
 .step-circle {
   width: 25px;
-
   height: 25px;
-
   display: flex;
-
   align-items: center;
-
   justify-content: center;
-
   border-radius: 50%;
-
   background: #e5e7ed;
-
   color: white;
-
   font-size: 11px;
 }
 
 .progress-step.completed {
   color: #263d5a;
-
   font-weight: 600;
 }
 
@@ -397,198 +252,128 @@
   background: #5146e5;
 }
 
-
-/* =========================================
-   ACTIVE LOAN
-========================================= */
-
 .loan-card {
   height: 205px;
-
   padding: 16px 18px;
 }
 
 .status-badge {
   padding: 5px 9px;
-
   border-radius: 12px;
-
   background: #e5f8ee;
-
   color: #119b61;
-
   font-size: 9px;
-
   font-weight: 600;
 }
 
 .loan-account {
   display: flex;
-
   justify-content: space-between;
-
   align-items: center;
-
   margin-top: 13px;
-
   padding: 8px 10px;
-
   background: #f7f8fc;
-
   border-radius: 6px;
 }
 
 .loan-account span {
   color: #8795a9;
-
   font-size: 9px;
 }
 
 .loan-account strong {
   color: #5146e5;
-
   font-size: 10px;
 }
 
 .loan-details {
   display: grid;
-
-  grid-template-columns:
-    repeat(3, 1fr);
-
+  grid-template-columns: repeat(3, 1fr);
   gap: 14px;
-
   margin-top: 14px;
 }
 
 .loan-details span {
   display: block;
-
   margin-bottom: 3px;
-
   color: #8996aa;
-
   font-size: 8px;
 }
 
 .loan-details strong {
   color: #172d4e;
-
   font-size: 10px;
 }
 
-
-/* =========================================
-   BOTTOM LAYOUT
-========================================= */
-
 .bottom-layout {
   display: grid;
-
   grid-template-columns: 1fr 1fr;
-
   gap: 12px;
 }
-
-
-/* =========================================
-   LEFT COLUMN
-========================================= */
 
 .left-column {
   display: flex;
-
   flex-direction: column;
-
   gap: 12px;
 }
 
-
-/* =========================================
-   EMI SUMMARY
-========================================= */
-
 .emi-card {
   height: 145px;
-
   padding: 14px 17px;
 }
 
 .emi-content {
   display: flex;
-
   align-items: center;
-
   justify-content: center;
-
   gap: 45px;
-
   height: 70px;
 }
 
 .donut {
   width: 65px;
-
   height: 65px;
-
   border-radius: 50%;
-
   display: flex;
-
   align-items: center;
-
   justify-content: center;
 }
 
 .donut-inner {
   width: 47px;
-
   height: 47px;
-
   border-radius: 50%;
-
   background: white;
-
   display: flex;
-
   flex-direction: column;
-
   align-items: center;
-
   justify-content: center;
 }
 
 .donut-inner strong {
   color: #172b4d;
-
   font-size: 13px;
 }
 
 .donut-inner span {
   color: #8996aa;
-
   font-size: 7px;
 }
 
 .emi-stats {
   display: flex;
-
   gap: 18px;
 }
 
 .emi-stat {
   display: flex;
-
   align-items: center;
-
   gap: 5px;
 }
 
 .dot {
   width: 7px;
-
   height: 7px;
-
   border-radius: 50%;
 }
 
@@ -606,58 +391,39 @@
 
 .emi-stat strong {
   display: block;
-
   color: #172d4e;
-
   font-size: 10px;
 }
 
 .emi-stat small {
   display: block;
-
   color: #8996aa;
-
   font-size: 7px;
 }
 
 .next-emi {
   display: grid;
-
   grid-template-columns: 1fr 1fr;
-
   padding: 6px 9px;
-
   background: #f7f8fc;
-
   border-radius: 6px;
 }
 
 .next-emi span {
   display: block;
-
   color: #8996aa;
-
   font-size: 7px;
 }
 
 .next-emi strong {
   display: block;
-
   margin-top: 2px;
-
   color: #172d4e;
-
   font-size: 9px;
 }
 
-
-/* =========================================
-   RECENT PAYMENTS
-========================================= */
-
 .payments-card {
   height: 135px;
-
   padding: 14px 17px;
 }
 
@@ -667,80 +433,50 @@
 
 .payment-row {
   display: flex;
-
   justify-content: space-between;
-
   align-items: center;
-
   padding: 6px 8px;
-
   margin-bottom: 4px;
-
   background: #f7f8fc;
-
   border-radius: 5px;
 }
 
 .payment-row strong {
   display: block;
-
   color: #172d4e;
-
   font-size: 9px;
 }
 
 .payment-row small {
   display: block;
-
   color: #8996aa;
-
   font-size: 7px;
 }
 
 .paid-status {
   display: inline-block;
-
   margin-top: 2px;
-
   padding: 2px 6px;
-
   border-radius: 8px;
-
   background: #e5f8ee;
-
   color: #119b61;
-
   font-size: 7px;
 }
 
-
-/* =========================================
-   KYC DOCUMENTS
-========================================= */
-
 .kyc-card {
   height: 292px;
-
   padding: 14px 17px;
 }
 
 .count-badge {
   width: 22px;
-
   height: 22px;
-
   display: flex;
-
   align-items: center;
-
   justify-content: center;
-
   border-radius: 50%;
-
   background: #eef0ff;
-
   color: #5146e5;
-
   font-size: 8px;
 }
 
@@ -750,100 +486,66 @@
 
 .kyc-row {
   display: flex;
-
   justify-content: space-between;
-
   align-items: center;
-
   padding: 7px 5px;
-
   border-bottom: 1px solid #edf0f4;
 }
 
 .kyc-info strong {
   display: block;
-
   color: #172d4e;
-
   font-size: 9px;
 }
 
 .kyc-info small {
   display: block;
-
   margin-top: 2px;
-
   color: #8996aa;
-
   font-size: 7px;
 }
 
 .kyc-status {
   padding: 3px 7px;
-
   border-radius: 9px;
-
   font-size: 7px;
-
   font-weight: 600;
 }
 
-
-/* =========================================
-   STATUS
-========================================= */
-
 .status-success {
   background: #e5f8ee;
-
   color: #119b61;
 }
 
 .status-warning {
   background: #fff2dc;
-
   color: #d88a12;
 }
 
 .status-danger {
   background: #ffe8e8;
-
   color: #d33b3b;
 }
 
 .status-default {
   background: #edf0f5;
-
   color: #6d7888;
 }
 
-
-/* =========================================
-   EMPTY / LOADING
-========================================= */
-
 .empty-data {
   display: flex;
-
   align-items: center;
-
   justify-content: center;
-
   height: 45px;
-
   color: #9aa5b5;
-
   font-size: 9px;
 }
 
 .loading,
 .error {
   background: white;
-
   padding: 30px;
-
   text-align: center;
-
   border-radius: 8px;
 }
 
@@ -851,13 +553,7 @@
   color: #d33b3b;
 }
 
-
-/* =========================================
-   RESPONSIVE
-========================================= */
-
 @media (max-width: 1100px) {
-
   .content {
     padding: 16px;
   }
@@ -874,27 +570,19 @@
   .emi-stats {
     gap: 8px;
   }
-
 }
 
-
 @media (max-width: 800px) {
-
   .layout {
     width: 100%;
-
     height: 100vh;
-
     overflow: hidden;
   }
 
   .content {
     height: 100vh;
-
     overflow-y: auto;
-
     overflow-x: hidden;
-
     padding: 12px;
   }
 
@@ -913,8 +601,6 @@
   .payments-card,
   .kyc-card {
     height: auto;
-
     min-height: 150px;
   }
-
 }

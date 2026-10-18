@@ -7,7 +7,7 @@ import { Sidebar as OfficerSidebar } from '../officer/sidebar/sidebar';
 
 @Component({
   selector: 'app-pending-loans',
-  standalone: true, // Added this back in case you are using standalone components
+  standalone: true,
   imports: [CommonModule, RouterLink, FormsModule, OfficerSidebar],
   templateUrl: './pending-loans.html',
   styleUrl: './pending-loans.css'
@@ -73,7 +73,6 @@ export class PendingLoans {
     this.getAllPendingDeals();
   }
 
-  // pagination
   page = 1;
   pageSize = 10;
 

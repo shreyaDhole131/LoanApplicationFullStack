@@ -8,10 +8,12 @@ import {
 
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { EligibilityService } from '../services/eligibility';
+import { Sidebar } from '../officer/sidebar/sidebar';
+
 
 @Component({
     selector: 'app-eligibility-result',
-    imports: [CommonModule],
+    imports: [CommonModule,Sidebar],
     templateUrl: './eligibility-result.html',
     styleUrl: './eligibility-result.css'
 })

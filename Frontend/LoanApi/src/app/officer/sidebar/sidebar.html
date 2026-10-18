@@ -10,8 +10,6 @@
     <span>Dashboard</span>
   </a>
 
-
-  <!-- CUSTOMER MANAGEMENT -->
   <div class="menu-title" (click)="toggleCustomer()">
     <span>👥 Customer Management</span>
     <span>{{ customerOpen ? '⌃' : '⌄' }}</span>
@@ -25,17 +23,15 @@
     <a routerLink="/officer/kyc-verification">
       🪪 <span>KYC Verification</span>
     </a>
-    <a routerLink="/officer/eligibility">
+    <a routerLink="/eligibility-result">
       ✅ <span>Eligibility Check</span>
     </a>
-    <a routerLink="/officer/score-cards">
+    <a routerLink="/scorecard">
       📈 <span>Score Cards</span>
     </a>
   </div>
   }
 
-
-  <!-- LOAN PROCESSING -->
   <div class="menu-title" (click)="toggleLoan()">
     <span>🏦 Loan Processing</span>
     <span>{{ loanOpen ? '⌃' : '⌄' }}</span>
@@ -55,8 +51,6 @@
   </div>
   }
 
-
-  <!-- REQUESTS & COLLECTIONS -->
   <div class="menu-title" (click)="toggleRequest()">
     <span>📄 Requests & Collections</span>
     <span>{{ requestOpen ? '⌃' : '⌄' }}</span>
@@ -67,14 +61,10 @@
     <a routerLink="/closure-requests">
       📑 <span>Closure Requests</span>
     </a>
-    <a routerLink="/officer/penalty-charges">
-      ⚠️ <span>Penalty Charges</span>
-    </a>
+   
   </div>
   }
 
-
-  <!-- REPORTS -->
   <div class="menu-title" (click)="toggleReport()">
     <span>📄 Reports </span>
     <span>{{ reportOpen ? '⌃' : '⌄' }}</span>
@@ -112,15 +102,11 @@
   </div>
   }
 
-
-  <!-- SUPPORT -->
   <a routerLink="/officer/support-tickets" class="menu-item">
     <span>🎫</span>
     <span>Support Tickets</span>
   </a>
 
-
-  <!-- LOGOUT -->
   <div class="bottom-menu">
     <a routerLink="/login" class="menu-item">
       <span>🚪</span>

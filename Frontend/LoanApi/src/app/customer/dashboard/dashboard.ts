@@ -11,31 +11,17 @@ import { Sidebar } from '../sidebar/sidebar';
 })
 export class Dashboard {
 
-  // Customer service
   customer = inject(Customer);
 
-  // Dashboard API data
   data: any = null;
 
-  // Loading state
   loading = true;
 
-  // Error message
   errorMessage = '';
-
-
-  // ==========================================
-  // CONSTRUCTOR
-  // ==========================================
 
   constructor() {
     this.getDashboard();
   }
-
-
-  // ==========================================
-  // GET CUSTOMER DASHBOARD
-  // ==========================================
 
   getDashboard() {
 
@@ -66,11 +52,6 @@ export class Dashboard {
     });
   }
 
-
-  // ==========================================
-  // FORMAT MONEY
-  // ==========================================
-
   formatAmount(
     amount: number | null | undefined
   ): string {
@@ -82,11 +63,6 @@ export class Dashboard {
     return '₹' +
       Number(amount).toLocaleString('en-IN');
   }
-
-
-  // ==========================================
-  // FORMAT DATE
-  // ==========================================
 
   formatDate(
     date: string | null | undefined
@@ -106,11 +82,6 @@ export class Dashboard {
     );
   }
 
-
-  // ==========================================
-  // EMI PAID PERCENTAGE
-  // ==========================================
-
   getEmiPercentage(): number {
 
     const total =
@@ -127,11 +98,6 @@ export class Dashboard {
       (paid / total) * 100
     );
   }
-
-
-  // ==========================================
-  // EMI REMAINING PERCENTAGE
-  // ==========================================
 
   getRemainingPercentage(): number {
 
@@ -150,11 +116,6 @@ export class Dashboard {
     );
   }
 
-
-  // ==========================================
-  // APPLICATION PROGRESS
-  // ==========================================
-
   getApplicationProgress(): number {
 
     const application =
@@ -171,44 +132,28 @@ export class Dashboard {
       this.data?.selectedLoanDetails
         ?.loanStatus?.toLowerCase();
 
-
-    // Active loan means complete journey
     if (loanStatus === 'active') {
       return 100;
     }
 
-
-    // Approved application
     if (status === 'approved') {
       return 75;
     }
 
-
-    // Processing application
     if (status === 'processing') {
       return 50;
     }
 
-
-    // Pending application
     if (status === 'pending') {
       return 25;
     }
 
-
-    // Submitted application
     if (status === 'submitted') {
       return 25;
     }
 
-
     return 0;
   }
-
-
-  // ==========================================
-  // CHECK APPLICATION STEP
-  // ==========================================
 
   isStepCompleted(step: string): boolean {
 
@@ -226,14 +171,10 @@ export class Dashboard {
       this.data?.selectedLoanDetails
         ?.loanStatus?.toLowerCase();
 
-
-    // Submitted
     if (step === 'submitted') {
       return true;
     }
 
-
-    // Approved
     if (step === 'approved') {
 
       return (
@@ -242,28 +183,18 @@ export class Dashboard {
       );
     }
 
-
-    // Disbursed
     if (step === 'disbursed') {
 
       return loanStatus === 'active';
     }
 
-
-    // Active
     if (step === 'active') {
 
       return loanStatus === 'active';
     }
 
-
     return false;
   }
-
-
-  // ==========================================
-  // STATUS CSS CLASS
-  // ==========================================
 
   getStatusClass(status: string): string {
 
@@ -274,8 +205,6 @@ export class Dashboard {
     const value =
       status.toLowerCase();
 
-
-    // SUCCESS
     if (
       value === 'active' ||
       value === 'approved' ||
@@ -285,8 +214,6 @@ export class Dashboard {
       return 'status-success';
     }
 
-
-    // WARNING
     if (
       value === 'pending' ||
       value === 'processing'
@@ -295,8 +222,6 @@ export class Dashboard {
       return 'status-warning';
     }
 
-
-    // DANGER
     if (
       value === 'rejected' ||
       value === 'failed'
@@ -305,8 +230,6 @@ export class Dashboard {
       return 'status-danger';
     }
 
-
-    // DEFAULT
     return 'status-default';
   }
 

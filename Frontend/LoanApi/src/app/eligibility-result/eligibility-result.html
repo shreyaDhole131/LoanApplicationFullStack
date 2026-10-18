@@ -1,177 +1,182 @@
-<div class="result-page">
+<div class="dashboard-layout">
+  <app-officer-sidebar></app-officer-sidebar>
 
-    <div class="page-header">
-        <h1>
-            <span class="title-icon">✓</span>
-            Eligibility Result
-        </h1>
+  <div class="main-content">
+    <div class="result-page">
 
-        <p>View the status of your loan eligibility application.</p>
-    </div>
-
-    <div *ngIf="loading" class="result-card info-message">
-        Loading your eligibility result...
-    </div>
-
-    <div *ngIf="errorMessage" class="alert-error">
-        {{ errorMessage }}
-    </div>
-
-    <div *ngIf="result && !loading" class="result-card">
-
-        <div class="detail-grid">
-
-            <div class="detail-item">
-                <span>Customer Name</span>
-                <strong>{{ result.customerName }}</strong>
-            </div>
-
-            <div class="detail-item">
-                <span>PAN Number</span>
-                <strong>{{ result.panNumber }}</strong>
-            </div>
-
-            <div class="detail-item">
-                <span>Monthly Income</span>
-                <strong>
-                    {{ result.monthlyIncome | currency:'INR':'symbol':'1.2-2' }}
-                </strong>
-            </div>
-
-            <div class="detail-item">
-                <span>CIBIL Score</span>
-                <strong>{{ result.cibilScore }}</strong>
-            </div>
-
-            <div class="detail-item" *ngIf="!IsPending()">
-                <span>Eligible Loan Amount</span>
-                <strong class="loan-amount">
-                    {{ result.loanAmount | currency:'INR':'symbol':'1.2-2' }}
-                </strong>
-            </div>
-
+        <div class="page-header">
+            <h1>
+                <span class="title-icon">✓</span>
+                Eligibility Result
+            </h1>
+            <p>View the status of your loan eligibility application.</p>
         </div>
 
-        <!-- Eligibility decision -->
-        <div
-            class="status-banner"
-            [ngClass]="GetStatusClass()">
-
-            <h2>{{ GetStatusTitle() }}</h2>
-
-            <p>{{ GetStatusMessage() }}</p>
-
-            <p *ngIf="IsRejected() && result.rejectionReason">
-                <strong>Reason:</strong>
-                {{ result.rejectionReason }}
-            </p>
-
+        <div *ngIf="loading" class="result-card info-message">
+            Loading your eligibility result...
         </div>
 
-        <!-- EMI calculation summary -->
-        <div *ngIf="IsApproved()" class="calculation-section">
+        <div *ngIf="errorMessage" class="alert-error">
+            {{ errorMessage }}
+        </div>
 
-            <h2>Monthly EMI Summary</h2>
+        <div *ngIf="result && !loading" class="result-card">
 
             <div class="detail-grid">
 
                 <div class="detail-item">
-                    <span>Existing Monthly EMI</span>
+                    <span>Customer Name</span>
+                    <strong>{{ result.customerName }}</strong>
+                </div>
+
+                <div class="detail-item">
+                    <span>PAN Number</span>
+                    <strong>{{ result.panNumber }}</strong>
+                </div>
+
+                <div class="detail-item">
+                    <span>Monthly Income</span>
                     <strong>
-                        {{ result.existingMonthlyEmi | currency:'INR':'symbol':'1.2-2' }}
+                        {{ result.monthlyIncome | currency:'INR':'symbol':'1.2-2' }}
                     </strong>
                 </div>
 
                 <div class="detail-item">
-                    <span>Maximum Allowable EMI (40%)</span>
-                    <strong>
-                        {{ result.maxAllowableEmi | currency:'INR':'symbol':'1.2-2' }}
-                    </strong>
+                    <span>CIBIL Score</span>
+                    <strong>{{ result.cibilScore }}</strong>
                 </div>
 
-                <div class="detail-item">
-                    <span>Available EMI</span>
+                <div class="detail-item" *ngIf="!IsPending()">
+                    <span>Eligible Loan Amount</span>
                     <strong class="loan-amount">
-                        {{ result.availableEmi | currency:'INR':'symbol':'1.2-2' }}
+                        {{ result.loanAmount | currency:'INR':'symbol':'1.2-2' }}
                     </strong>
-                </div>
-
-                <div class="detail-item">
-                    <span>Interest Rate for Selected Summary</span>
-                    <strong>{{ result.interestRate }}%</strong>
                 </div>
 
             </div>
 
-        </div>
+            <!-- Eligibility decision -->
+            <div
+                class="status-banner"
+                [ngClass]="GetStatusClass()">
 
-        <!-- Eligible loan amounts for different tenures -->
-        <div
-            *ngIf="IsApproved() && result.tenureOptions?.length > 0"
-            class="calculation-section">
+                <h2>{{ GetStatusTitle() }}</h2>
 
-            <h2>Loan Tenure Options</h2>
+                <p>{{ GetStatusMessage() }}</p>
 
-            <p class="section-description">
-                Compare the calculated eligible amount for each repayment period.
+                <p *ngIf="IsRejected() && result.rejectionReason">
+                    <strong>Reason:</strong>
+                    {{ result.rejectionReason }}
+                </p>
+
+            </div>
+
+            <!-- EMI calculation summary -->
+            <div *ngIf="IsApproved()" class="calculation-section">
+
+                <h2>Monthly EMI Summary</h2>
+
+                <div class="detail-grid">
+
+                    <div class="detail-item">
+                        <span>Existing Monthly EMI</span>
+                        <strong>
+                            {{ result.existingMonthlyEmi | currency:'INR':'symbol':'1.2-2' }}
+                        </strong>
+                    </div>
+
+                    <div class="detail-item">
+                        <span>Maximum Allowable EMI (40%)</span>
+                        <strong>
+                            {{ result.maxAllowableEmi | currency:'INR':'symbol':'1.2-2' }}
+                        </strong>
+                    </div>
+
+                    <div class="detail-item">
+                        <span>Available EMI</span>
+                        <strong class="loan-amount">
+                            {{ result.availableEmi | currency:'INR':'symbol':'1.2-2' }}
+                        </strong>
+                    </div>
+
+                    <div class="detail-item">
+                        <span>Interest Rate for Selected Summary</span>
+                        <strong>{{ result.interestRate }}%</strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Eligible loan amounts for different tenures -->
+            <div
+                *ngIf="IsApproved() && result.tenureOptions?.length > 0"
+                class="calculation-section">
+
+                <h2>Loan Tenure Options</h2>
+
+                <p class="section-description">
+                    Compare the calculated eligible amount for each repayment period.
+                </p>
+
+                <div class="table-wrapper">
+
+                    <table class="tenure-table">
+
+                        <thead>
+                            <tr>
+                                <th>Tenure</th>
+                                <th>Interest Rate</th>
+                                <th>Available EMI</th>
+                                <th>Eligible Loan Amount</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr *ngFor="let tenure of result.tenureOptions">
+
+                                <td>
+                                    {{ tenure.tenureMonths }} months
+                                    <span class="tenure-years">
+                                        ({{ tenure.tenureMonths / 12 }} years)
+                                    </span>
+                                </td>
+
+                                <td>{{ tenure.interestRate }}%</td>
+
+                                <td>
+                                    {{ tenure.availableEmi | currency:'INR':'symbol':'1.2-2' }}
+                                </td>
+
+                                <td class="loan-amount">
+                                    {{ tenure.eligibleLoanAmount | currency:'INR':'symbol':'1.2-2' }}
+                                </td>
+
+                            </tr>
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+            <p *ngIf="IsApproved()" class="result-disclaimer">
+                These figures are eligibility estimates. Final loan sanction and
+                disbursement are subject to the lender's process.
             </p>
 
-            <div class="table-wrapper">
-
-                <table class="tenure-table">
-
-                    <thead>
-                        <tr>
-                            <th>Tenure</th>
-                            <th>Interest Rate</th>
-                            <th>Available EMI</th>
-                            <th>Eligible Loan Amount</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        <tr *ngFor="let tenure of result.tenureOptions">
-
-                            <td>
-                                {{ tenure.tenureMonths }} months
-                                <span class="tenure-years">
-                                    ({{ tenure.tenureMonths / 12 }} years)
-                                </span>
-                            </td>
-
-                            <td>{{ tenure.interestRate }}%</td>
-
-                            <td>
-                                {{ tenure.availableEmi | currency:'INR':'symbol':'1.2-2' }}
-                            </td>
-
-                            <td class="loan-amount">
-                                {{ tenure.eligibleLoanAmount | currency:'INR':'symbol':'1.2-2' }}
-                            </td>
-
-                        </tr>
-                    </tbody>
-
-                </table>
-
-            </div>
-
         </div>
 
-        <p *ngIf="IsApproved()" class="result-disclaimer">
-            These figures are eligibility estimates. Final loan sanction and
-            disbursement are subject to the lender's process.
-        </p>
+        <button
+            class="btn btn-refresh"
+            (click)="GetMyResult()"
+            [disabled]="loading">
+
+            {{ loading ? 'Refreshing...' : 'Refresh Result' }}
+
+        </button>
 
     </div>
-
-    <button
-        class="btn btn-refresh"
-        (click)="GetMyResult()"
-        [disabled]="loading">
-
-        {{ loading ? 'Refreshing...' : 'Refresh Result' }}
-
-    </button>
-
+  </div>
 </div>

@@ -1,11 +1,9 @@
 <div class="layout">
 
-  <!-- EXISTING CUSTOMER SIDEBAR -->
   <app-sidebar></app-sidebar>
 
   <div class="content">
 
-    <!-- HEADER -->
     <div class="page-header">
 
       <div>
@@ -23,26 +21,17 @@
 
     </div>
 
-
-    <!-- LOADING -->
     <div class="loading" *ngIf="loading">
       Loading dashboard...
     </div>
 
-
-    <!-- ERROR -->
     <div class="error" *ngIf="errorMessage">
       {{ errorMessage }}
     </div>
 
-
-    <!-- DASHBOARD -->
-    <div class="dashboard-container" *ngIf="data && !loading">
-
-
-      <!-- ==========================================
-           TOP 4 SUMMARY CARDS
-      =========================================== -->
+    <div
+      class="dashboard-container"
+      *ngIf="data && !loading">
 
       <div class="summary-grid">
 
@@ -62,7 +51,6 @@
 
         </div>
 
-
         <div class="summary-card">
 
           <div class="summary-icon green">
@@ -79,7 +67,6 @@
 
         </div>
 
-
         <div class="summary-card">
 
           <div class="summary-icon orange">
@@ -95,7 +82,6 @@
           </div>
 
         </div>
-
 
         <div class="summary-card">
 
@@ -115,17 +101,7 @@
 
       </div>
 
-
-
-      <!-- ==========================================
-           ROW 2
-           PROGRESS + ACTIVE LOAN
-      =========================================== -->
-
       <div class="top-two-grid">
-
-
-        <!-- LOAN APPLICATION PROGRESS -->
 
         <div class="dashboard-card progress-card">
 
@@ -142,18 +118,20 @@
 
           </div>
 
-
           <div class="progress-bar">
 
-            <div class="progress-fill" [style.width.%]="getApplicationProgress()">
+            <div
+              class="progress-fill"
+              [style.width.%]="getApplicationProgress()">
             </div>
 
           </div>
 
-
           <div class="progress-steps">
 
-            <div class="progress-step" [class.completed]="isStepCompleted('submitted')">
+            <div
+              class="progress-step"
+              [class.completed]="isStepCompleted('submitted')">
 
               <div class="step-circle">
                 ✓
@@ -163,8 +141,9 @@
 
             </div>
 
-
-            <div class="progress-step" [class.completed]="isStepCompleted('approved')">
+            <div
+              class="progress-step"
+              [class.completed]="isStepCompleted('approved')">
 
               <div class="step-circle">
                 ✓
@@ -174,8 +153,9 @@
 
             </div>
 
-
-            <div class="progress-step" [class.completed]="isStepCompleted('disbursed')">
+            <div
+              class="progress-step"
+              [class.completed]="isStepCompleted('disbursed')">
 
               <div class="step-circle">
                 ✓
@@ -185,8 +165,9 @@
 
             </div>
 
-
-            <div class="progress-step" [class.completed]="isStepCompleted('active')">
+            <div
+              class="progress-step"
+              [class.completed]="isStepCompleted('active')">
 
               <div class="step-circle">
                 ✓
@@ -199,10 +180,6 @@
           </div>
 
         </div>
-
-
-
-        <!-- ACTIVE LOAN OVERVIEW -->
 
         <div class="dashboard-card loan-card">
 
@@ -219,8 +196,9 @@
 
           </div>
 
-
-          <div class="loan-account" *ngIf="data.selectedLoanDetails">
+          <div
+            class="loan-account"
+            *ngIf="data.selectedLoanDetails">
 
             <span>Loan Account</span>
 
@@ -230,8 +208,9 @@
 
           </div>
 
-
-          <div class="loan-details" *ngIf="data.selectedLoanDetails">
+          <div
+            class="loan-details"
+            *ngIf="data.selectedLoanDetails">
 
             <div>
               <span>Loan Type</span>
@@ -278,8 +257,9 @@
 
           </div>
 
-
-          <div class="empty-data" *ngIf="!data.selectedLoanDetails">
+          <div
+            class="empty-data"
+            *ngIf="!data.selectedLoanDetails">
 
             No active loan found.
 
@@ -289,28 +269,9 @@
 
       </div>
 
-
-
-      <!-- ==========================================
-           BOTTOM AREA
-           
-           LEFT:
-           EMI SUMMARY
-           RECENT PAYMENTS
-
-           RIGHT:
-           KYC DOCUMENTS
-      =========================================== -->
-
       <div class="bottom-layout">
 
-
-        <!-- LEFT COLUMN -->
-
         <div class="left-column">
-
-
-          <!-- EMI SUMMARY -->
 
           <div class="dashboard-card emi-card">
 
@@ -323,13 +284,11 @@
 
             </div>
 
-
             <div class="emi-content">
 
-
-              <!-- DONUT -->
-
-              <div class="donut" [style.background]="
+              <div
+                class="donut"
+                [style.background]="
                   'conic-gradient(#5146e5 ' +
                   getEmiPercentage() +
                   '%, #e7e9ef 0)'
@@ -346,9 +305,6 @@
                 </div>
 
               </div>
-
-
-              <!-- EMI STATS -->
 
               <div class="emi-stats">
 
@@ -368,7 +324,6 @@
 
                 </div>
 
-
                 <div class="emi-stat">
 
                   <span class="dot remaining-dot"></span>
@@ -384,7 +339,6 @@
                   </div>
 
                 </div>
-
 
                 <div class="emi-stat">
 
@@ -406,9 +360,6 @@
 
             </div>
 
-
-            <!-- NEXT EMI -->
-
             <div class="next-emi">
 
               <div>
@@ -417,14 +368,13 @@
 
                 <strong>
                   {{
-                  formatAmount(
-                  data.emiSummary?.nextEmiAmount
-                  )
+                    formatAmount(
+                      data.emiSummary?.nextEmiAmount
+                    )
                   }}
                 </strong>
 
               </div>
-
 
               <div>
 
@@ -432,9 +382,9 @@
 
                 <strong>
                   {{
-                  formatDate(
-                  data.emiSummary?.nextEmiDate
-                  )
+                    formatDate(
+                      data.emiSummary?.nextEmiDate
+                    )
                   }}
                 </strong>
 
@@ -443,10 +393,6 @@
             </div>
 
           </div>
-
-
-
-          <!-- RECENT PAYMENTS -->
 
           <div class="dashboard-card payments-card">
 
@@ -459,11 +405,13 @@
 
             </div>
 
+            <div
+              class="payment-list"
+              *ngIf="data.recentPayments?.length">
 
-            <div class="payment-list" *ngIf="data.recentPayments?.length">
-
-
-              <div class="payment-row" *ngFor="
+              <div
+                class="payment-row"
+                *ngFor="
                   let payment of data.recentPayments
                 ">
 
@@ -478,7 +426,6 @@
                   </small>
 
                 </div>
-
 
                 <div>
 
@@ -496,8 +443,9 @@
 
             </div>
 
-
-            <div class="empty-data" *ngIf="!data.recentPayments?.length">
+            <div
+              class="empty-data"
+              *ngIf="!data.recentPayments?.length">
 
               No payments yet.
 
@@ -506,10 +454,6 @@
           </div>
 
         </div>
-
-
-
-        <!-- RIGHT COLUMN -->
 
         <div class="dashboard-card kyc-card">
 
@@ -526,10 +470,11 @@
 
           </div>
 
-
           <div class="kyc-list">
 
-            <div class="kyc-row" *ngFor="
+            <div
+              class="kyc-row"
+              *ngFor="
                 let document of data.kycDocuments
               ">
 
@@ -545,8 +490,9 @@
 
               </div>
 
-
-              <span class="kyc-status" [ngClass]="
+              <span
+                class="kyc-status"
+                [ngClass]="
                   getStatusClass(
                     document.verificationStatus
                   )
@@ -558,8 +504,9 @@
 
             </div>
 
-
-            <div class="empty-data" *ngIf="!data.kycDocuments?.length">
+            <div
+              class="empty-data"
+              *ngIf="!data.kycDocuments?.length">
 
               No KYC documents found.
 

@@ -18,7 +18,6 @@ export class NotificationComponent implements OnInit {
 
   showDropdown = false;
 
-
   ngOnInit(): void {
 
     this.loadNotifications();
@@ -26,11 +25,6 @@ export class NotificationComponent implements OnInit {
     this.loadUnreadCount();
 
   }
-
-
-  // --------------------------------------------------
-  // Open / Close notification dropdown
-  // --------------------------------------------------
 
   toggleDropdown(): void {
 
@@ -45,11 +39,6 @@ export class NotificationComponent implements OnInit {
     }
 
   }
-
-
-  // --------------------------------------------------
-  // Load notifications
-  // --------------------------------------------------
 
   loadNotifications(): void {
 
@@ -83,11 +72,6 @@ export class NotificationComponent implements OnInit {
 
   }
 
-
-  // --------------------------------------------------
-  // Load unread notification count
-  // --------------------------------------------------
-
   loadUnreadCount(): void {
 
     this.notificationService
@@ -118,18 +102,12 @@ export class NotificationComponent implements OnInit {
 
   }
 
-
-  // --------------------------------------------------
-  // Mark notification as read
-  // --------------------------------------------------
-
   markAsRead(notificationId: number): void {
 
     console.log(
       'Clicked notification ID:',
       notificationId
     );
-
 
     this.notificationService
       .markAsRead(notificationId)
@@ -142,21 +120,11 @@ export class NotificationComponent implements OnInit {
             response
           );
 
-
-          // ------------------------------------------
-          // Remove notification immediately from UI
-          // ------------------------------------------
-
           this.notifications =
             this.notifications.filter(
               item =>
                 item.notificationId !== notificationId
             );
-
-
-          // ------------------------------------------
-          // Decrease bell count immediately
-          // ------------------------------------------
 
           if (this.unreadCount > 0) {
 
@@ -164,17 +132,7 @@ export class NotificationComponent implements OnInit {
 
           }
 
-
-          // ------------------------------------------
-          // Synchronize count with database
-          // ------------------------------------------
-
           this.loadUnreadCount();
-
-
-          // ------------------------------------------
-          // Close dropdown after reading
-          // ------------------------------------------
 
           this.showDropdown = false;
 

@@ -9,10 +9,11 @@ import {
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { EligibilityService } from '../services/eligibility';
+import { Sidebar } from '../customer/sidebar/sidebar';
 
 @Component({
     selector: 'app-eligibility',
-    imports: [CommonModule, FormsModule],
+    imports: [CommonModule, FormsModule,Sidebar],
     templateUrl: './eligibility.html',
     styleUrl: './eligibility.css'
 })
@@ -59,7 +60,6 @@ export class Eligibility implements OnInit {
         return true;
     }
 
-    // Process automatic decisions, then load pending customers
     LoadPendingCustomers() {
         if (!this.hasToken()) return;
 
@@ -122,7 +122,6 @@ export class Eligibility implements OnInit {
         });
     }
 
-    // Reset previously displayed details when another customer is selected
     OnCustomerChange() {
         this.evaluation = null;
         this.errorMessage = '';
@@ -130,7 +129,6 @@ export class Eligibility implements OnInit {
         this.otherReason = '';
     }
 
-    // Preview the selected customer's eligibility
     CheckEligibility() {
         if (this.selectedCustomerId == null) {
             this.errorMessage = 'Please select a customer.';
@@ -180,7 +178,6 @@ export class Eligibility implements OnInit {
         });
     }
 
-    // Approve the selected customer
     ApproveEligibility() {
         if (this.selectedCustomerId == null) return;
 
@@ -231,7 +228,6 @@ export class Eligibility implements OnInit {
         });
     }
 
-    // Reject the selected customer
     RejectEligibility() {
         if (this.selectedCustomerId == null) return;
 

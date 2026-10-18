@@ -1,18 +1,8 @@
 <div class="kyc-layout">
 
-  <!-- SIDEBAR -->
-
   <app-officer-sidebar></app-officer-sidebar>
 
-
-  <!-- MAIN CONTENT -->
-
   <div class="kyc-main">
-
-
-    <!-- ================================================= -->
-    <!-- CUSTOMER LIST -->
-    <!-- ================================================= -->
 
     @if (!selectedCustomer) {
 
@@ -21,7 +11,6 @@
       <p class="subtitle">
         View and verify customer KYC documents
       </p>
-
 
       @if (customers.length === 0) {
 
@@ -58,7 +47,6 @@
 
             </thead>
 
-
             <tbody>
 
               @for (
@@ -72,21 +60,17 @@
                     {{ customer.customerId }}
                   </td>
 
-
                   <td>
                     {{ customer.customerName }}
                   </td>
-
 
                   <td>
                     {{ customer.email }}
                   </td>
 
-
                   <td>
                     {{ customer.mobile }}
                   </td>
-
 
                   <td>
 
@@ -115,15 +99,7 @@
 
     }
 
-
-    <!-- ================================================= -->
-    <!-- CUSTOMER KYC DETAILS -->
-    <!-- ================================================= -->
-
     @else {
-
-
-      <!-- BACK BUTTON -->
 
       <button
         type="button"
@@ -134,16 +110,11 @@
 
       </button>
 
-
       <h2>KYC Details</h2>
-
-
-      <!-- CUSTOMER INFORMATION -->
 
       <div class="customer-info">
 
         <h4>Customer Details</h4>
-
 
         <div class="info-row">
 
@@ -157,7 +128,6 @@
 
           </div>
 
-
           <div>
 
             <strong>Name</strong>
@@ -167,7 +137,6 @@
             </span>
 
           </div>
-
 
           <div>
 
@@ -183,9 +152,6 @@
 
       </div>
 
-
-      <!-- KYC DOCUMENTS -->
-
       <div class="documents-section">
 
         <div class="documents-header">
@@ -200,7 +166,6 @@
           </span>
 
         </div>
-
 
         @if (selectedCustomer.documents.length === 0) {
 
@@ -237,7 +202,6 @@
 
               </thead>
 
-
               <tbody>
 
                 @for (
@@ -246,9 +210,6 @@
                 ) {
 
                   <tr>
-
-
-                    <!-- SELECT -->
 
                     <td>
 
@@ -270,26 +231,17 @@
 
                     </td>
 
-
-                    <!-- DOCUMENT ID -->
-
                     <td>
 
                       {{ document.documentId }}
 
                     </td>
 
-
-                    <!-- DOCUMENT TYPE -->
-
                     <td>
 
                       {{ document.documentType }}
 
                     </td>
-
-
-                    <!-- VIEW DOCUMENT -->
 
                     <td>
 
@@ -307,9 +259,6 @@
                       </button>
 
                     </td>
-
-
-                    <!-- STATUS -->
 
                     <td>
 
@@ -357,11 +306,7 @@
 
           </div>
 
-
-          <!-- APPROVE / REJECT BUTTONS -->
-
           <div class="kyc-buttons">
-
 
             <button
               type="button"
@@ -373,7 +318,6 @@
 
             </button>
 
-
             <button
               type="button"
               class="btn btn-danger"
@@ -383,7 +327,6 @@
               Reject Selected
 
             </button>
-
 
           </div>
 

@@ -13,7 +13,6 @@
 
 form {
   max-width: 640px;
-  /* ← ADD THIS */
 }
 
 .form-group {
@@ -69,44 +68,23 @@ form {
   border-color: #1d4ed8;
 }
 
-
-/* =========================================
-   MAIN LAYOUT
-========================================= */
-
 .layout {
   display: flex;
-
   width: 100%;
   height: 100vh;
-
   overflow: hidden;
-
   background: #f4f6fb;
 }
 
-
-/* =========================================
-   DASHBOARD CONTENT
-========================================= */
-
 .content {
   flex: 1;
-
   min-width: 0;
-
   height: 100vh;
-
   overflow-y: auto;
   overflow-x: hidden;
-
   padding: 22px 28px;
-
   box-sizing: border-box;
 }
-
-
-/* Dashboard scrollbar */
 
 .content::-webkit-scrollbar {
   width: 6px;
@@ -125,12 +103,7 @@ form {
   background: #aeb6c3;
 }
 
-
-/* Firefox */
-
 .content {
   scrollbar-width: thin;
-
-  scrollbar-color:
-    #c8ced8 transparent;
+  scrollbar-color: #c8ced8 transparent;
 }

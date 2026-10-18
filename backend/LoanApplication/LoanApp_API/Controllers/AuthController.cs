@@ -34,7 +34,7 @@ namespace LoanApp_API.Controllers
             _totpService = totpService;
         }
 
-        // 1. CUSTOMER REGISTRATION
+       
         [HttpPost("register")]
         [AllowAnonymous]
         public async Task<IActionResult> Register(

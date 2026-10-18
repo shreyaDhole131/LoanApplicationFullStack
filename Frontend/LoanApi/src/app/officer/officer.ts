@@ -11,9 +11,6 @@ export class Officer {
   supportTicketUrl = "https://localhost:7277/api/officer/support-tickets";
 
 dashboardUrl = 'https://localhost:7277/api/officer-dashboard';
-// =========================================================
-// OFFICER DASHBOARD
-// =========================================================
 getOfficerDashboard() {
   const token = localStorage.getItem('token');
 
@@ -26,9 +23,6 @@ getOfficerDashboard() {
     { headers }
   );
 }
-  // =========================================================
-  // CUSTOMER
-  // =========================================================
 
   getAllCustomers() {
 
@@ -44,7 +38,6 @@ getOfficerDashboard() {
     );
   }
 
-
   getCustomerProfile(customerId: number) {
 
     const token = localStorage.getItem('token');
@@ -58,11 +51,6 @@ getOfficerDashboard() {
       { headers }
     );
   }
-
-
-  // =========================================================
-  // KYC
-  // =========================================================
 
   getKycCustomers() {
 
@@ -78,7 +66,6 @@ getOfficerDashboard() {
     );
   }
 
-
   getCustomerKyc(customerId: number) {
 
     const token = localStorage.getItem('token');
@@ -92,11 +79,6 @@ getOfficerDashboard() {
       { headers }
     );
   }
-
-
-  // =========================================================
-  // VIEW KYC DOCUMENT
-  // =========================================================
 
   viewKycDocument(documentId: number) {
 
@@ -114,11 +96,6 @@ getOfficerDashboard() {
       }
     );
   }
-
-
-  // =========================================================
-  // APPROVE KYC
-  // =========================================================
 
   approveKyc(documentIds: number[]) {
 
@@ -139,11 +116,6 @@ getOfficerDashboard() {
     );
   }
 
-
-  // =========================================================
-  // REJECT KYC
-  // =========================================================
-
   rejectKyc(documentIds: number[]) {
 
     const token = localStorage.getItem('token');
@@ -163,11 +135,6 @@ getOfficerDashboard() {
     );
   }
 
-
-  // =========================================================
-  // SUPPORT TICKETS
-  // =========================================================
-
   getAllSupportTickets() {
 
     const token = localStorage.getItem('token');
@@ -182,7 +149,6 @@ getOfficerDashboard() {
     );
   }
 
-
   getSupportTicket(ticketId: number) {
 
     const token = localStorage.getItem('token');
@@ -196,11 +162,6 @@ getOfficerDashboard() {
       { headers }
     );
   }
-
-
-  // =========================================================
-  // VIEW SUPPORT ATTACHMENT
-  // =========================================================
 
   viewSupportAttachment(ticketId: number) {
 
@@ -218,11 +179,6 @@ getOfficerDashboard() {
       }
     );
   }
-
-
-  // =========================================================
-  // RESOLVE SUPPORT TICKET
-  // =========================================================
 
   resolveSupportTicket(ticketId: number) {
 
