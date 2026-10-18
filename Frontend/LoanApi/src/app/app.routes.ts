@@ -1,6 +1,5 @@
 import { Routes } from '@angular/router';
 
-// import { ForeclosureRequest } from './foreclosure-request/foreclosure-request';
 import { Loanaccount } from './loanaccount/loanaccount';
 import { Emischedule } from './emischedule/emischedule';
 import { Loandetails } from './loandetails/loandetails';
@@ -47,7 +46,6 @@ import { Scorecard } from './scorecard/scorecard';
 import { Eligibility } from './eligibility/eligibility';
 import { EligibilityResult } from './eligibility-result/eligibility-result';
 
-
 export const routes: Routes = [
   // Default and authentication
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -63,18 +61,6 @@ export const routes: Routes = [
   { path: 'kyc', component: Kyc },
   { path: 'support', component: Support },
 
-
-  { path: '', redirectTo: '/applyLoan', pathMatch: 'full' },
-  { path: 'cibil-report', component: CibilReport },
-  { path: 'score-report', component: ScoreReport },
-  { path: 'product-report', component: ProductReport },
-  { path: 'loan-protfolio', component: LoanProtfolioReport },
-  { path: 'emi-report', component: EmiReport },
-  { path: 'disburse-report', component: DisburseReport },
-  { path: 'overdue-report', component: OverdueReport },
-  { path: 'prepayment-report', component: PrepaymentReport },
-  { path: 'tat-report', component: TatReport },
-
   // Officer
   { path: 'officer-dashboard', component: OfficerDashboard },
   { path: 'officer/customers', component: Customers },
@@ -89,7 +75,7 @@ export const routes: Routes = [
 
   // Payments and foreclosure
   { path: 'payment-history', component: PaymentHistory },
- { path: 'foreclosure-request', component: foreclosure_request },
+  { path: 'foreclosure-request', component: foreclosure_request },
   { path: 'closure-requests', component: ClosureRequests },
   { path: 'emi-payment/:emiScheduleId', component: EmiPayment },
 
@@ -110,9 +96,6 @@ export const routes: Routes = [
   { path: 'eligibility', component: Eligibility },
   { path: 'eligibility-result', component: EligibilityResult },
 
-  // Fallback
-  { path: '**', redirectTo: 'login' }
-];
   // Existing loan account routes
   { path: 'loanaccount', component: Loanaccount },
   { path: 'emischedule', component: Emischedule },
@@ -122,4 +105,3 @@ export const routes: Routes = [
   // Fallback
   { path: '**', redirectTo: 'login' }
 ];
-

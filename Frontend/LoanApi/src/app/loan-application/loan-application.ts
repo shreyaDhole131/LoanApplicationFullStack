@@ -6,11 +6,10 @@ import { Sidebar } from '../customer/sidebar/sidebar';
 
 @Component({
   selector: 'app-loan-application',
+  standalone: true,
   imports: [CommonModule, ReactiveFormsModule, Sidebar],
   templateUrl: './loan-application.html',
-  styleUrl: './loan-application.css',
-  imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './loan-application.html'
+  styleUrl: './loan-application.css'
 })
 export class LoanApplication {
   constructor(private service: Applyloan) {
@@ -27,6 +26,7 @@ export class LoanApplication {
       ifscCode: data.ifscCode,
       emiDay: Number(data.emiDay)
     }
+    
     this.service.SaveLoan(payload).subscribe({
       next: res => {
         alert(res.message);
@@ -64,9 +64,6 @@ export class LoanApplication {
         });
       },
       error: (err) => console.log(err)
-
     });
-
-
   }
 }
