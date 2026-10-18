@@ -50,6 +50,10 @@
             "production": {
               "budgets": [
                 {
+  "type": "initial",
+  "maximumWarning": "1100kB",
+  "maximumError": "1200kB"
+},
                   "type": "initial",
                   "maximumWarning": "2MB",
                   "maximumError": "3MB"
