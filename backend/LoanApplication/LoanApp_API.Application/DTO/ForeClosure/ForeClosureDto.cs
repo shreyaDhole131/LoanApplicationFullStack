@@ -6,31 +6,28 @@ namespace LoanApp_API.Application.DTO.ForeClosure
 {
     public class ForeClosureDto
     {
-        public int CustomerId { get; set; }          // later: take it from the JWT token
+        public int CustomerId { get; set; }          
         public int LoanAccountId { get; set; }
-        public string ForeClosureType { get; set; } = "";   // "Full" or "Partial"
-        public decimal PartialAmount { get; set; }          // only for Partial
+        public string ForeClosureType { get; set; } = "";   
+        public decimal PartialAmount { get; set; }          
         public DateTime ExpectedClosureDate { get; set; }
         public string? Reason { get; set; }
     }
 
-    // "Select Loan Account" dropdown
     public class CustomerLoanDto
     {
         public int LoanAccountId { get; set; }
         public string LoanAccountNo { get; set; } = "";
     }
 
-    // 3 cards on top of the customer page
     public class ForeClosureSummaryDto
     {
         public int LoanAccountId { get; set; }
         public string LoanAccountNo { get; set; } = "";
         public decimal OutstandingPrincipal { get; set; }
-        public DateTime? NextEmiDate { get; set; }          // null => "No Pending EMI"
+        public DateTime? NextEmiDate { get; set; }          
     }
 
-    // "My Foreclosure Requests" table
 
     public class CustomerForeClosureDto
     {
@@ -44,12 +41,11 @@ namespace LoanApp_API.Application.DTO.ForeClosure
     }
 
 
-    // --Officer side DTO
-    // ONE dto used for both the dashboard table and the View page
+   
     public class OfficerForeClosureDto
     {
         public int RequestId { get; set; }
-        public string RequestNo => $"FR{100 + RequestId}";   // FR106 for RequestId 6
+        public string RequestNo => $"FR{100 + RequestId}";   
 
         public string LoanAccountNo { get; set; } = "";
         public string CustomerName { get; set; } = "";

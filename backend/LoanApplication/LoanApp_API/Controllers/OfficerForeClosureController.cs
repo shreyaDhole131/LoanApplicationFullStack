@@ -18,7 +18,6 @@ namespace LoanApp_API.Controllers
             _foreClosureRepository = foreClosureRepository;
         }
 
-        // GET: api/officer/foreclosure
         [HttpGet]
         public async Task<IActionResult> GetAllRequests()
         {
@@ -28,7 +27,6 @@ namespace LoanApp_API.Controllers
             return Ok(requests);
         }
 
-        // GET: api/officer/foreclosure/5
         [HttpGet("{id}")]
         public async Task<IActionResult> GetRequestById(int id)
         {
@@ -41,8 +39,7 @@ namespace LoanApp_API.Controllers
             return Ok(request);
         }
 
-        // PUT: api/officer/foreclosure/5
-        // Request body: "Approved" or "Rejected"
+       
         [HttpPut("{id}")]
         public async Task<IActionResult> ChangeStatus(
             int id,

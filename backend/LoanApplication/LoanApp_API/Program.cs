@@ -21,9 +21,7 @@ using System.Threading.RateLimiting;
 var builder = WebApplication.CreateBuilder(args);
 
 
-// ============================================================
-// 1. REPOSITORY AND SERVICE REGISTRATIONS
-// ============================================================
+
 
 builder.Services.AddScoped<IEmiPaymentRepository, EmiPaymentRepository>();
 builder.Services.AddScoped<IForeClosureRepository, ForeClosureRepository>();
@@ -62,9 +60,7 @@ builder.Services.AddScoped<IPrepaymentReport, PrepaymentReportService>();
 
 
 
-// ============================================================
-// 2. CIBIL, SCORECARD, ELIGIBILITY AND TOTP SERVICES
-// ============================================================
+
 
 builder.Services.AddScoped<ICibilService, CibilService>();
 builder.Services.AddScoped<IScoreCardService, ScoreCardService>();
@@ -72,18 +68,12 @@ builder.Services.AddScoped<IEligibilityService, EligibilityService>();
 builder.Services.AddScoped<ITotpService, TotpService>();
 
 
-// ============================================================
-// 3. CONTROLLERS AND MEMORY CACHE
-// ============================================================
 
 builder.Services.AddControllers();
 
 builder.Services.AddMemoryCache();
 
 
-// ============================================================
-// 4. RATE LIMITING
-// ============================================================
 
 builder.Services.AddRateLimiter(options =>
 {
@@ -98,9 +88,6 @@ builder.Services.AddRateLimiter(options =>
 });
 
 
-// ============================================================
-// 5. DATABASE CONNECTION
-// ============================================================
 
 var connectionString =
     builder.Configuration.GetConnectionString("dbconn")
@@ -111,9 +98,6 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(connectionString));
 
 
-// ============================================================
-// 6. JWT CONFIGURATION
-// ============================================================
 
 var jwtKey = builder.Configuration["Jwt:Key"];
 
@@ -139,10 +123,7 @@ builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
-        // ====================================================
-        // JWT TOKEN VALIDATION
-        // ====================================================
-        // ADD THIS LINE HERE:
+        
         options.MapInboundClaims = false;
         options.TokenHandlers.Clear();
         options.TokenHandlers.Add(new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler());
@@ -150,45 +131,31 @@ builder.Services
         options.TokenValidationParameters =
             new TokenValidationParameters
             {
-                // -------------------------------
-                // Validate Issuer
-                // -------------------------------
 
                 ValidateIssuer = true,
 
                 ValidIssuer = jwtIssuer,
 
 
-                // -------------------------------
-                // Validate Audience
-                // -------------------------------
-
+               
                 ValidateAudience = true,
 
                 ValidAudience = jwtAudience,
 
 
-                // -------------------------------
-                // Validate Expiration
-                // -------------------------------
 
                 ValidateLifetime = true,
 
                 ClockSkew = TimeSpan.FromMinutes(1),
 
 
-                // -------------------------------
-                // Validate Signing Key
-                // -------------------------------
 
                 ValidateIssuerSigningKey = true,
 
                 IssuerSigningKey = signingKey,
 
 
-                // -------------------------------
-                // Claim Mapping
-                // -------------------------------
+             
 
                 NameClaimType = ClaimTypes.NameIdentifier,
 
@@ -196,26 +163,19 @@ builder.Services
             };
 
 
-        // ====================================================
-        // JWT EVENTS
-        // ====================================================
+     
 
         options.Events = new JwtBearerEvents
         {
-            // ------------------------------------------------
-            // TOKEN RECEIVED
-            // ------------------------------------------------
+
 
             OnMessageReceived = context =>
             {
-                // 👇 ADD THIS BLOCK TO ALLOW CORS PREFLIGHT 👇
                 var request = context.HttpContext.Request;
                 if (HttpMethods.IsOptions(request.Method))
                 {
-                    // Skip JWT validation for OPTIONS preflight requests
                     return Task.CompletedTask;
                 }
-                // 👆 END OF BLOCK 👆
 
                 Console.WriteLine();
                 Console.WriteLine("==========================================");
@@ -227,9 +187,7 @@ builder.Services
             },
 
 
-            // ------------------------------------------------
-            // AUTHENTICATION FAILED
-            // ------------------------------------------------
+           
 
             OnAuthenticationFailed = context =>
             {
@@ -256,10 +214,7 @@ builder.Services
             },
 
 
-            // ------------------------------------------------
-            // TOKEN VALIDATED
-            // ------------------------------------------------
-
+          
             OnTokenValidated = context =>
             {
                 Console.WriteLine();
@@ -290,9 +245,7 @@ builder.Services
 builder.Services.AddAuthorization();
 
 
-// ============================================================
-// 7. SWAGGER CONFIGURATION
-// ============================================================
+
 
 builder.Services.AddEndpointsApiExplorer();
 
@@ -328,9 +281,6 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 
-// ============================================================
-// 8. HANGFIRE BACKGROUND JOBS
-// ============================================================
 
 builder.Services.AddHangfire(config =>
     config.UseSqlServerStorage(connectionString));
@@ -338,9 +288,7 @@ builder.Services.AddHangfire(config =>
 builder.Services.AddHangfireServer();
 
 
-// ============================================================
-// 9. AUTOMAPPER
-// ============================================================
+
 
 builder.Services.AddAutoMapper(cfg =>
 {
@@ -350,9 +298,6 @@ builder.Services.AddAutoMapper(cfg =>
 }, typeof(MappingData).Assembly);
 
 
-// ============================================================
-// 10. CORS
-// ============================================================
 
 builder.Services.AddCors(options =>
 {
@@ -383,7 +328,6 @@ using (var scope = app.Services.CreateScope())
     try
     {
         var authRepo = services.GetRequiredService<IAuthRepository>();
-        // Cast to AuthRepository to access the SeedOfficer method
         if (authRepo is AuthRepository concreteRepo)
         {
             concreteRepo.SeedOfficer();
@@ -394,14 +338,9 @@ using (var scope = app.Services.CreateScope())
         Console.WriteLine($"Error seeding officer: {ex.Message}");
     }
 }
-// 👆 END OF BLOCK 👆
 
 
 
-
-// ============================================================
-// 12. HTTPS AND SWAGGER
-// ============================================================
 
 if (!app.Environment.IsDevelopment())
 {
@@ -423,8 +362,8 @@ if (app.Environment.IsDevelopment())
 // 13. MIDDLEWARE PIPELINE
 // ============================================================
 
-// Keep this commented for now.
-// app.UseMiddleware<ExceptionMiddleware>();
+
+
 
 app.UseHttpsRedirection();
 
@@ -435,19 +374,12 @@ app.UseRateLimiter();
 app.UseStaticFiles();
 
 
-// IMPORTANT:
-// Authentication must come BEFORE Authorization.
 
 app.UseAuthentication();
 
 app.UseAuthorization();
 
 app.MapControllers();
-
-
-// ============================================================
-// 14. HANGFIRE DASHBOARD
-// ============================================================
 
 app.UseHangfireDashboard("/hangfire");
 

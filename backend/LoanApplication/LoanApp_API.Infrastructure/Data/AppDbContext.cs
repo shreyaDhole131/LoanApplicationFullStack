@@ -59,7 +59,6 @@ public class AppDbContext : DbContext
 
             entity.Property(x => x.ForeClosureAmount)
                 .HasColumnType("decimal(18,2)");
-            // One account  have many foreclosure requests
             entity.Property(x => x.PartialAmount)
                 .HasColumnType("decimal(18,2)");
 

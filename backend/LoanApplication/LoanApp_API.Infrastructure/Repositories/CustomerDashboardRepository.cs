@@ -21,9 +21,7 @@ namespace LoanApp_API.Infrastructure.Repositories
 
         public CustomerDashboardVM? GetCustomerDashboard(int userId)
         {
-            // =====================================================
-            // 1. FIND LOGGED-IN USER
-            // =====================================================
+            
 
             var user = _db.Users
                 .FirstOrDefault(x => x.UserId == userId);
@@ -32,16 +30,9 @@ namespace LoanApp_API.Infrastructure.Repositories
                 return null;
 
 
-            // =====================================================
-            // 2. GET CUSTOMER ID
-            // =====================================================
-
             int customerId = user.CustomerId.Value;
 
 
-            // =====================================================
-            // 3. GET PARTICULAR CUSTOMER
-            // =====================================================
 
             var customer = _db.Customers
                 .FirstOrDefault(x => x.CustomerId == customerId);
@@ -50,27 +41,19 @@ namespace LoanApp_API.Infrastructure.Repositories
                 return null;
 
 
-            // =====================================================
-            // 4. GET ONLY THIS CUSTOMER'S LOAN DEALS
-            // =====================================================
+            
 
             var deals = _db.LoanDeals
                 .Where(x => x.CustomerId == customerId)
                 .ToList();
 
 
-            // =====================================================
-            // 5. GET ONLY THIS CUSTOMER'S LOAN ACCOUNTS
-            // =====================================================
 
             var loanAccounts = _db.LoanAccounts
                 .Where(x => x.CustomerId == customerId)
                 .ToList();
 
 
-            // =====================================================
-            // 6. CREATE DASHBOARD
-            // =====================================================
 
             var dashboard = new CustomerDashboardVM
             {
@@ -105,9 +88,6 @@ namespace LoanApp_API.Infrastructure.Repositories
             };
 
 
-            // =====================================================
-            // 7. IF CUSTOMER HAS NO LOAN
-            // =====================================================
 
             if (loanAccounts.Count == 0)
             {
@@ -115,9 +95,6 @@ namespace LoanApp_API.Infrastructure.Repositories
             }
 
 
-            // =====================================================
-            // 8. SELECT FIRST LOAN
-            // =====================================================
 
             var selectedLoan = loanAccounts.First();
 
@@ -126,9 +103,6 @@ namespace LoanApp_API.Infrastructure.Repositories
                 selectedLoan.LoanAccountNo;
 
 
-            // =====================================================
-            // 9. GET EMI SCHEDULE
-            // =====================================================
 
             var emiSchedules = _db.EmiSchedules
                 .Where(x =>
@@ -138,9 +112,6 @@ namespace LoanApp_API.Infrastructure.Repositories
                 .ToList();
 
 
-            // =====================================================
-            // 10. PAID EMI
-            // =====================================================
 
             var paidEmis = emiSchedules
                 .Where(x =>
@@ -149,9 +120,7 @@ namespace LoanApp_API.Infrastructure.Repositories
                 .ToList();
 
 
-            // =====================================================
-            // 11. NEXT EMI
-            // =====================================================
+            
 
             var nextEmi = emiSchedules
                 .Where(x =>
@@ -162,9 +131,7 @@ namespace LoanApp_API.Infrastructure.Repositories
                 .FirstOrDefault();
 
 
-            // =====================================================
-            // 12. MAP LOAN ACCOUNT
-            // =====================================================
+           
 
             var loanDetails =
                 _mapper.Map<CustomerLoanDetailsVM>(
@@ -172,9 +139,7 @@ namespace LoanApp_API.Infrastructure.Repositories
                 );
 
 
-            // =====================================================
-            // 13. ADD CALCULATED EMI INFORMATION
-            // =====================================================
+            
 
             loanDetails.NextEmiDate =
                 nextEmi?.DueDate;
@@ -194,9 +159,7 @@ namespace LoanApp_API.Infrastructure.Repositories
                 loanDetails;
 
 
-            // =====================================================
-            // 14. EMI SUMMARY
-            // =====================================================
+           
 
             dashboard.EmiSummary =
                 new CustomerEmiSummaryVM
@@ -222,9 +185,7 @@ namespace LoanApp_API.Infrastructure.Repositories
                 };
 
 
-            // =====================================================
-            // 15. RECENT PAYMENTS
-            // =====================================================
+           
 
             dashboard.RecentPayments =
                 _mapper.Map<List<CustomerEmiPaymentVM>>(
@@ -235,9 +196,7 @@ namespace LoanApp_API.Infrastructure.Repositories
                 );
 
 
-            // =====================================================
-            // 16. RETURN CUSTOMER DASHBOARD
-            // =====================================================
+            
 
             return dashboard;
         }

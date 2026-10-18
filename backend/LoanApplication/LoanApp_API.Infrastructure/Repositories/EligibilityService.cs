@@ -15,6 +15,8 @@ namespace LoanApp_API.Infrastructure.Repositories
     {
         private readonly AppDbContext context;
 
+        private const decimal FoirLimit = 0.50m;
+        private const decimal AnnualInterestRate = 11.5m;
         // Annual interest rates and tenure periods.
         private static readonly (int TenureMonths, decimal InterestRate)[] TenurePlans =
         {

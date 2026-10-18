@@ -47,6 +47,7 @@ namespace LoanApp_API.Infrastructure.Repositories
             else
                 score += 400;
 
+            if (customer.EmploymentType == "Government")
             // 2. Employment score
             if (string.Equals(
                 customer.EmploymentType?.Trim(),
@@ -78,6 +79,9 @@ namespace LoanApp_API.Infrastructure.Repositories
             else if (customer.Age >= 46 && customer.Age <= 60)
                 score += 100;
 
+            var loans = await context.LoanAccounts
+                .Where(l => l.CustomerId == customerId &&
+                            l.LoanStatus != "Closed")
             // 4. Calculate FOIR from existing fixed monthly obligations
             // LoanAccounts stores the monthly EMI for each loan account.
             var loanAccounts = await context.LoanAccounts
@@ -112,6 +116,10 @@ namespace LoanApp_API.Infrastructure.Repositories
             // Customers exceeding 40% receive no FOIR points.
             // All other scoring components remain unchanged.
             const decimal maxFoirPercent = 40m;
+
+            score = Math.Clamp(score, 300, 900);
+
+            string status = GetScoreStatus(score);
 
             bool isWithinFoirLimit = foir <= maxFoirPercent;
 
