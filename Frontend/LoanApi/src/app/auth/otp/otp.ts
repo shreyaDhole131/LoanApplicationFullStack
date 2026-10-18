@@ -33,7 +33,6 @@ export class Otp {
       next: res => {
         alert(res.message);
 
-        // Navigate to login after successful verification
         this.router.navigate(['/login']);
       },
       error: err => {

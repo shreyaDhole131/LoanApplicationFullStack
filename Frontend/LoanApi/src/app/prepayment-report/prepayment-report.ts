@@ -2,9 +2,10 @@ import { ChangeDetectorRef, Component } from '@angular/core';
 import { PrepaymentService } from '../services/prepayment-service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Sidebar } from '../officer/sidebar/sidebar';
 
 @Component({
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, Sidebar],
   selector: 'app-prepayment-report',
   styleUrl: './prepayment-report.css',
   templateUrl: './prepayment-report.html',

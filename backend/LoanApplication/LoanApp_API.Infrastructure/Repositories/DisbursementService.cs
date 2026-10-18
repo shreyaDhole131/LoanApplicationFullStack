@@ -16,10 +16,13 @@ namespace LoanApp_API.Infrastructure.Repositories
         AppDbContext db;
         IMapper mapper;
 
-        public DisbursementService(AppDbContext db, IMapper mapper)
+        ILoanAccountService loanService;
+
+        public DisbursementService(AppDbContext db, IMapper mapper, ILoanAccountService loanService)
         {
             this.db = db;
             this.mapper = mapper;
+            this.loanService = loanService;
         }
 
         public async Task ApplyDisbursement(CreateDisbursementDTO dto)
@@ -34,11 +37,13 @@ namespace LoanApp_API.Infrastructure.Repositories
             await db.Disbursements.AddAsync(disb);
 
             await db.SaveChangesAsync();
+
+            await loanService.CreateLoanAccount(disb.DisbursementId);
         }
 
         public async Task<DisbursePrefillDTO?> fetchDisbursePrefill(int dealId)
         {
-            var letter = await db.SanctionLetters.FirstOrDefaultAsync(s => s.DealId == dealId);
+            var letter = await db.LoanDeals.FirstOrDefaultAsync(d => d.DealId == dealId);
             if (letter == null) return null;
 
             return new DisbursePrefillDTO
@@ -48,6 +53,7 @@ namespace LoanApp_API.Infrastructure.Repositories
                 DisbursementDate = DateTime.UtcNow
             };
         }
+
 
 
     }

@@ -1,15 +1,15 @@
-
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { customer_loans } from '../services/customer-loans';
+import { Sidebar } from '../customer/sidebar/sidebar';
 
 declare const Razorpay: any;
 
 @Component({
   selector: 'app-foreclosure-request',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, Sidebar],
   templateUrl: './foreclosure-request.html',
   styleUrl: './foreclosure-request.css'
 })

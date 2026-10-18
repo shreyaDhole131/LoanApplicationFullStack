@@ -3,16 +3,20 @@ import { Pendingdeals } from '../services/pendingdeals';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
+import { Sidebar as OfficerSidebar } from '../officer/sidebar/sidebar';
 
 @Component({
   selector: 'app-pending-loans',
-  imports: [CommonModule, RouterLink, FormsModule],
-  templateUrl: './pending-loans.html'})
+  standalone: true,
+  imports: [CommonModule, RouterLink, FormsModule, OfficerSidebar],
+  templateUrl: './pending-loans.html',
+  styleUrl: './pending-loans.css'
+})
 export class PendingLoans {
   constructor(private service: Pendingdeals, private cdr: ChangeDetectorRef) {
     this.getAllPendingDeals();
   }
+  
   pendingdeals: any;
 
   loanType = '';
@@ -69,8 +73,6 @@ export class PendingLoans {
     this.getAllPendingDeals();
   }
 
-
-  // pagination
   page = 1;
   pageSize = 10;
 
@@ -99,7 +101,4 @@ export class PendingLoans {
   onPageSizeChange() {
     this.page = 1;
   }
-
-
-
 }

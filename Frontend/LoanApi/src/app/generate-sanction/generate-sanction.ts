@@ -1,14 +1,18 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component } from '@angular/core';
-import { error } from 'console';
 import { SanctionService } from '../services/sanction-service';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Sidebar } from '../officer/sidebar/sidebar';
+
 declare var $: any;
 
 @Component({
   selector: 'app-generate-sanction',
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
-  templateUrl: './generate-sanction.html'})
+  standalone: true,
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, Sidebar],
+  templateUrl: './generate-sanction.html',
+  styleUrl: './generate-sanction.css'
+})
 export class GenerateSanction {
   constructor(private service: SanctionService, private cd: ChangeDetectorRef) {
     this.fetchpendingcusts();
@@ -88,7 +92,6 @@ export class GenerateSanction {
         console.log(err);
       }
     });
-
   }
 
   name = '';
@@ -125,7 +128,6 @@ export class GenerateSanction {
     this.GetSanctionGrid();
   }
 
-
   dealId: any;
   disbursemntAmount: any;
   prefilDisbursement(dealId: number) {
@@ -140,14 +142,10 @@ export class GenerateSanction {
         this.dealId = res.dealId;
         this.disbursementAmount = res.disburseAmount;
         this.cd.detectChanges();
-
-
       },
       error: (err: any) => console.log(err)
     });
-
   }
-
 
   disbursementAmount: any;
   disbursementDate: any;
@@ -168,7 +166,6 @@ export class GenerateSanction {
         $("#exampleModal2").modal('hide');
         this.GetSanctionGrid();
         this.cd.detectChanges();
-
       },
       error: (err: any) => {
         console.log(err);
@@ -194,7 +191,6 @@ export class GenerateSanction {
         console.log(err);
       }
     })
-
   }
 
   openPdf(letterId: number) {
@@ -207,7 +203,6 @@ export class GenerateSanction {
     window.open(this.service.downloadPdf(letterId), '_blank');
   }
 
-  // pagination
   page = 1;
   pageSize = 10;
 
@@ -236,8 +231,4 @@ export class GenerateSanction {
   onPageSizeChange() {
     this.page = 1;
   }
-
-
-
-
 }

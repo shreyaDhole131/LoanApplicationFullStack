@@ -40,11 +40,9 @@ export class VerifyLoginOtp {
             return;
           }
 
-          // Save final JWT and clear the challenge token
           localStorage.setItem('token', res.token);
           sessionStorage.removeItem('challengeToken');
 
-          // Route based on user role
           if (res.roleId == 1) {
             this.router.navigate(['/customer-dashboard']);
           } else if (res.roleId == 2) {
@@ -58,15 +56,13 @@ export class VerifyLoginOtp {
           console.error('FULL ERROR OBJECT:', err);
           this.loading = false;
           
-          // Handles HTTP errors (from backend) and custom errors from auth.ts
           this.errorMessage = err.error?.message || err.message || 'OTP verification failed. Please try again.';
           
           this.cdr.detectChanges();
         }
       });
     } catch (error: any) {
-      // This catches the synchronous errors thrown by auth.ts 
-      // (e.g., "Challenge token missing" or "Invalid token stage")
+    
       this.loading = false;
       this.errorMessage = error.message || 'An unexpected error occurred.';
       this.cdr.detectChanges();

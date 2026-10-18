@@ -1,77 +1,83 @@
-<div class="customer-profile-page">
+<div class="customers-layout">
 
-  @if (custprofile) {
+  <app-officer-sidebar></app-officer-sidebar>
 
-  <!-- ===== Customer Profile section ===== -->
-  <h3 class="section-title">Customer Profile</h3>
+  <div class="customers-main">
 
-  <h4 class="customer-name">{{ custprofile.customerName }}</h4>
+    <div class="customer-profile-page">
 
-  <div class="detail-list">
-    <div class="detail-row">
-      <span class="detail-label">Email :</span>
-      <span class="detail-value">{{ custprofile.email }}</span>
+      @if (custprofile) {
+
+      <h3 class="section-title">Customer Profile</h3>
+
+      <h4 class="customer-name">{{ custprofile.customerName }}</h4>
+
+      <div class="detail-list">
+        <div class="detail-row">
+          <span class="detail-label">Email :</span>
+          <span class="detail-value">{{ custprofile.email }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Mobile :</span>
+          <span class="detail-value">{{ custprofile.mobileNo }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">PAN :</span>
+          <span class="detail-value">{{ custprofile.pan }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Salary :</span>
+          <span class="detail-value">{{ custprofile.monthlyIncome }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">CIBIL :</span>
+          <span class="detail-value">{{ custprofile.cibilScore }}</span>
+        </div>
+      </div>
+
+      <hr class="section-divider">
+
+      <h3 class="section-title">Loan Details</h3>
+
+      <div class="detail-list">
+        <div class="detail-row">
+          <span class="detail-label">Loan Type :</span>
+          <span class="detail-value">{{ custprofile.loanType }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Loan Amount :</span>
+          <span class="detail-value">{{ custprofile.loanAmount }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Interest :</span>
+          <span class="detail-value">{{ custprofile.interestRate }} %</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">EMI :</span>
+          <span class="detail-value">{{ custprofile.emiAmount }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Tenure :</span>
+          <span class="detail-value">{{ custprofile.tenureMonths }} Months</span>
+        </div>
+      </div>
+
+      <hr class="section-divider">
+
+      <div class="action-block">
+        <button class="btn btn-approve" (click)="reviewDeals(custprofile.dealId, 'Approved')">
+          Approve
+        </button>
+        <button class="btn btn-reject" (click)="reviewDeals(custprofile.dealId, 'Rejected')">
+          Reject
+        </button>
+      </div>
+
+      } @else {
+      <p class="text-muted">Loading profile...</p>
+      }
+
     </div>
-    <div class="detail-row">
-      <span class="detail-label">Mobile :</span>
-      <span class="detail-value">{{ custprofile.mobileNo }}</span>
-    </div>
-    <div class="detail-row">
-      <span class="detail-label">PAN :</span>
-      <span class="detail-value">{{ custprofile.pan }}</span>
-    </div>
-    <div class="detail-row">
-      <span class="detail-label">Salary :</span>
-      <span class="detail-value">{{ custprofile.monthlyIncome }}</span>
-    </div>
-    <div class="detail-row">
-      <span class="detail-label">CIBIL :</span>
-      <span class="detail-value">{{ custprofile.cibilScore }}</span>
-    </div>
+
   </div>
-
-  <hr class="section-divider">
-
-  <!-- ===== Loan Details section ===== -->
-  <h3 class="section-title">Loan Details</h3>
-
-  <div class="detail-list">
-    <div class="detail-row">
-      <span class="detail-label">Loan Type :</span>
-      <span class="detail-value">{{ custprofile.loanType }}</span>
-    </div>
-    <div class="detail-row">
-      <span class="detail-label">Loan Amount :</span>
-      <span class="detail-value">{{ custprofile.loanAmount }}</span>
-    </div>
-    <div class="detail-row">
-      <span class="detail-label">Interest :</span>
-      <span class="detail-value">{{ custprofile.interestRate }} %</span>
-    </div>
-    <div class="detail-row">
-      <span class="detail-label">EMI :</span>
-      <span class="detail-value">{{ custprofile.emiAmount }}</span>
-    </div>
-    <div class="detail-row">
-      <span class="detail-label">Tenure :</span>
-      <span class="detail-value">{{ custprofile.tenureMonths }} Months</span>
-    </div>
-  </div>
-
-  <hr class="section-divider">
-
-  <!-- ===== Action buttons ===== -->
-  <div class="action-block">
-    <button class="btn btn-approve" (click)="reviewDeals(custprofile.dealId, 'Approved')">
-      Approve
-    </button>
-    <button class="btn btn-reject" (click)="reviewDeals(custprofile.dealId, 'Rejected')">
-      Reject
-    </button>
-  </div>
-
-  } @else {
-  <p class="text-muted">Loading profile...</p>
-  }
-
 </div>

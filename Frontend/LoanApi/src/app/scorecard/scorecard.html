@@ -1,0 +1,202 @@
+<div class="dashboard-layout">
+  <app-officer-sidebar></app-officer-sidebar>
+
+  <div class="main-content">
+    <div class="scorecard-page">
+
+        <div class="page-header">
+            <div>
+                <h1>ScoreCard Management</h1>
+                <p>View customers and generate their loan scorecards.</p>
+            </div>
+
+            <button
+                *ngIf="showDetails"
+                class="btn btn-secondary"
+                (click)="BackToCustomers()">
+
+                ← Back to Customers
+
+            </button>
+        </div>
+
+        <div *ngIf="errorMessage" class="alert-error">
+            {{ errorMessage }}
+        </div>
+
+        <div *ngIf="!showDetails" class="content-card">
+
+            <div class="section-header">
+                <h2>Customer List</h2>
+
+                <button
+                    class="btn btn-refresh"
+                    (click)="GetCustomers()"
+                    [disabled]="loadingCustomers">
+
+                    {{ loadingCustomers ? 'Loading...' : 'Refresh' }}
+
+                </button>
+            </div>
+
+            <p *ngIf="loadingCustomers" class="message">
+                Loading customers...
+            </p>
+
+            <div
+                *ngIf="
+                    !loadingCustomers &&
+                    customers.length === 0 &&
+                    !errorMessage
+                "
+                class="message">
+
+                No customers found.
+
+            </div>
+
+            <div
+                class="table-wrapper"
+                *ngIf="!loadingCustomers && customers.length > 0">
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Customer ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Income</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr *ngFor="let customer of customers">
+
+                            <td>
+                                {{ customer.customerId }}
+                            </td>
+
+                            <td>
+                                {{ customer.name }}
+                            </td>
+
+                            <td>
+                                {{ customer.email }}
+                            </td>
+
+                            <td>
+                                {{ customer.monthlyIncome
+                                    | currency:'INR':'symbol':'1.2-2' }}
+                            </td>
+
+                            <td>
+                                <button
+                                    class="btn btn-primary"
+                                    (click)="ViewScoreCard(customer)"
+                                    [disabled]="generatingCustomerId !== null">
+
+                                    {{
+                                        generatingCustomerId === customer.customerId
+                                            ? 'Generating...'
+                                            : 'View Score Card'
+                                    }}
+
+                                </button>
+                            </td>
+
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+
+        <div
+            *ngIf="showDetails && scoreCard"
+            class="content-card">
+
+            <div class="scorecard-title">
+                <h2>Loan Score Card</h2>
+                <p>Generated scorecard details</p>
+            </div>
+
+            <div *ngIf="successMessage" class="alert-success">
+                {{ successMessage }}
+            </div>
+
+            <div class="detail-grid">
+
+                <div class="detail-item">
+                    <span>Customer ID</span>
+
+                    <strong>
+                        {{ scoreCard.customerId }}
+                    </strong>
+                </div>
+
+                <div class="detail-item">
+                    <span>Customer Name</span>
+
+                    <strong>
+                        {{ selectedCustomer?.name }}
+                    </strong>
+                </div>
+
+                <div class="detail-item">
+                    <span>Email</span>
+
+                    <strong>
+                        {{ selectedCustomer?.email }}
+                    </strong>
+                </div>
+
+                <div class="detail-item">
+                    <span>Monthly Income</span>
+
+                    <strong>
+                        {{ selectedCustomer?.monthlyIncome
+                            | currency:'INR':'symbol':'1.2-2' }}
+                    </strong>
+                </div>
+
+                <div class="detail-item">
+                    <span>Risk Category</span>
+
+                    <strong
+                        class="risk-badge"
+                        [ngClass]="{
+                            'risk-low': scoreCard.riskCategory === 'Low',
+                            'risk-medium': scoreCard.riskCategory === 'Medium',
+                            'risk-high': scoreCard.riskCategory === 'High'
+                        }">
+
+                        {{ scoreCard.riskCategory }}
+
+                    </strong>
+                </div>
+
+                <div class="detail-item">
+                    <span>Eligible Loan Amount</span>
+
+                    <strong class="loan-amount">
+                        {{ scoreCard.eligibleLoanAmount
+                            | currency:'INR':'symbol':'1.0-0' }}
+                    </strong>
+                </div>
+
+            </div>
+
+            <button
+                class="btn btn-primary"
+                (click)="BackToCustomers()">
+
+                Back to Customer List
+
+            </button>
+
+        </div>
+
+    </div>
+  </div>
+</div>

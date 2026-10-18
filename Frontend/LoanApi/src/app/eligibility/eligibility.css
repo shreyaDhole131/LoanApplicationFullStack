@@ -1,0 +1,270 @@
+:host {
+    display: block;
+    min-height: 100%;
+    background: #f3f6fc;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #202938;
+}
+
+.dashboard-layout {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f3f6fc;
+}
+
+app-sidebar {
+  width: 260px;
+  flex-shrink: 0;
+}
+
+.eligibility-page {
+    flex-grow: 1;
+    width: 100%;
+    min-height: 100%;
+    padding: 30px;
+    box-sizing: border-box;
+    overflow-y: auto;
+}
+
+.page-header,
+.content-card {
+    background: white;
+    padding: 26px;
+    border-radius: 16px;
+    box-shadow: 0 5px 22px rgba(20, 40, 80, 0.08);
+    margin-bottom: 24px;
+}
+
+.page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.page-header h1 {
+    margin: 0 0 8px;
+    color: #1267e8;
+    font-size: 27px;
+}
+
+.page-header p {
+    margin: 0;
+    color: #718096;
+}
+
+.card-title {
+    background: #1267f5;
+    color: white;
+    padding: 18px 22px;
+    border-radius: 9px;
+    margin-bottom: 24px;
+}
+
+.card-title h2 {
+    margin: 0;
+    font-size: 23px;
+}
+
+.selection-area {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(200px, 1fr);
+    align-items: end;
+    gap: 20px;
+}
+
+.selection-field,
+.reject-area {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+}
+
+label {
+    font-weight: 600;
+    color: #344054;
+}
+
+select,
+input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #d5dce7;
+    border-radius: 8px;
+    background: white;
+    color: #202938;
+    font: inherit;
+    box-sizing: border-box;
+}
+
+select:focus,
+input:focus {
+    outline: 2px solid #b7d1ff;
+    border-color: #1267f5;
+}
+
+.btn {
+    padding: 12px 18px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.btn-primary {
+    background: #1267f5;
+    color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+    background: #0755d3;
+}
+
+.btn-secondary {
+    color: #253b5b;
+    background: #e8eef8;
+}
+
+.btn-approve {
+    background: #118348;
+    color: white;
+}
+
+.btn-approve:hover:not(:disabled) {
+    background: #096a39;
+}
+
+.btn-reject {
+    background: #c83232;
+    color: white;
+}
+
+.btn-reject:hover:not(:disabled) {
+    background: #a91e1e;
+}
+
+.check-button {
+    min-height: 46px;
+}
+
+.info-message {
+    color: #667085;
+    margin: 22px 0 0;
+}
+
+.alert-error,
+.alert-success {
+    padding: 14px 18px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.alert-error {
+    color: #a82020;
+    background: #fee4e2;
+    border: 1px solid #ffc9c4;
+}
+
+.alert-success {
+    color: #087443;
+    background: #d8f5e5;
+    border: 1px solid #a8e8c5;
+}
+
+.result-card {
+    margin-top: 26px;
+}
+
+.detail-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 17px;
+    margin-bottom: 26px;
+}
+
+.detail-item {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 20px;
+    border: 1px solid #dce2eb;
+    border-radius: 10px;
+    overflow-wrap: anywhere;
+}
+
+.detail-item span {
+    color: #718096;
+    font-size: 14px;
+}
+
+.detail-item strong {
+    font-size: 18px;
+}
+
+.loan-amount {
+    color: #139447;
+}
+
+.decision-area {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    margin-bottom: 24px;
+    padding: 20px;
+    border-radius: 10px;
+    background: #f7f9fc;
+}
+
+.reject-area {
+    display: grid;
+    grid-template-columns: minmax(180px, 1fr) minmax(150px, 1fr) auto;
+    align-items: end;
+    gap: 12px;
+}
+
+.decision-banner {
+    padding: 18px;
+    border-radius: 9px;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 22px;
+}
+
+.decision-banner p {
+    font-size: 14px;
+    font-weight: normal;
+}
+
+.approved {
+    color: #087443;
+    background: #d8f5e5;
+}
+
+.rejected {
+    color: #a82020;
+    background: #fee4e2;
+}
+
+@media (max-width: 750px) {
+    .eligibility-page {
+        padding: 15px;
+    }
+
+    .page-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .selection-area,
+    .detail-grid,
+    .reject-area {
+        grid-template-columns: 1fr;
+    }
+}

@@ -4,31 +4,19 @@
   background: #f4f6fb;
 }
 
-
-/* =========================================================
-   MAIN
-   ========================================================= */
-
 .kyc-main {
   flex: 1;
   padding: 30px;
 }
 
-
 .kyc-main h2 {
   margin-bottom: 10px;
 }
-
 
 .subtitle {
   color: #777;
   margin-bottom: 25px;
 }
-
-
-/* =========================================================
-   TABLE
-   ========================================================= */
 
 .table-container {
   background: white;
@@ -36,27 +24,19 @@
   overflow: hidden;
 }
 
-
 .table {
   background: white;
   margin-bottom: 0;
 }
-
 
 .table th {
   white-space: nowrap;
   vertical-align: middle;
 }
 
-
 .table td {
   vertical-align: middle;
 }
-
-
-/* =========================================================
-   CUSTOMER INFORMATION
-   ========================================================= */
 
 .customer-info {
   background: white;
@@ -65,11 +45,9 @@
   border-radius: 6px;
 }
 
-
 .customer-info h4 {
   margin-bottom: 20px;
 }
-
 
 .info-row {
   display: flex;
@@ -77,27 +55,19 @@
   flex-wrap: wrap;
 }
 
-
 .info-row div {
   display: flex;
   flex-direction: column;
   gap: 5px;
 }
 
-
 .info-row strong {
   color: #555;
 }
 
-
 .info-row span {
   color: #222;
 }
-
-
-/* =========================================================
-   DOCUMENT SECTION
-   ========================================================= */
 
 .documents-section {
   background: white;
@@ -106,7 +76,6 @@
   border-radius: 6px;
 }
 
-
 .documents-header {
   display: flex;
   justify-content: space-between;
@@ -114,21 +83,14 @@
   margin-bottom: 20px;
 }
 
-
 .documents-header h4 {
   margin: 0;
 }
-
 
 .selected-count {
   font-weight: 600;
   color: #555;
 }
-
-
-/* =========================================================
-   CHECKBOX
-   ========================================================= */
 
 .document-checkbox {
   width: 18px;
@@ -136,53 +98,33 @@
   cursor: pointer;
 }
 
-
-/* =========================================================
-   STATUS
-   ========================================================= */
-
 .status {
   font-weight: 600;
 }
-
 
 .status.pending {
   color: #f0ad4e;
 }
 
-
 .status.approved {
   color: #28a745;
 }
-
 
 .status.rejected {
   color: #dc3545;
 }
 
-
-/* =========================================================
-   BUTTONS
-   ========================================================= */
-
 .kyc-buttons {
   margin-top: 20px;
 }
-
 
 .kyc-buttons button {
   min-width: 150px;
 }
 
-
 .back-btn {
   margin-bottom: 20px;
 }
-
-
-/* =========================================================
-   NO DATA
-   ========================================================= */
 
 .no-data {
   background: white;
@@ -192,31 +134,21 @@
   color: #777;
 }
 
-
 .no-data p {
   margin: 0;
 }
 
-
-/* =========================================================
-   RESPONSIVE
-   ========================================================= */
-
 @media (max-width: 768px) {
-
   .kyc-main {
     padding: 20px;
   }
-
 
   .info-row {
     flex-direction: column;
     gap: 15px;
   }
 
-
   .table-container {
     overflow-x: auto;
   }
-
 }

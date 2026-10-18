@@ -3,11 +3,12 @@ import { Component, OnInit, ChangeDetectorRef, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { customer_loans } from '../services/customer-loans';
+import { Sidebar } from '../officer/sidebar/sidebar';
 
 @Component({
   selector: 'app-closure-requests',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,Sidebar],
   templateUrl: './closure-requests.html',
   styleUrl: './closure-requests.css',
 })

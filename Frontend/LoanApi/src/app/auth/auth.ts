@@ -10,28 +10,13 @@ export class Auth {
   private http = inject(HttpClient);
 
   private baseUrl = 'https://localhost:7277/api/auth';
-
-  // =========================
-  // API URLs
-  // =========================
-
   url = `${this.baseUrl}/register`;
   loginUrl = `${this.baseUrl}/login`;
   otpUrl = `${this.baseUrl}/verify-otp`;
-
-  // POST - Generate 2FA QR code
   setup2FAUrl = `${this.baseUrl}/setup-2fa`;
-
-  // GET - QR image endpoint (not used for <img src>)
   setup2FAQrUrl = `${this.baseUrl}/setup-2fa/qr`;
-
   verify2FASetupUrl = `${this.baseUrl}/verify-2fa-setup`;
   verifyLoginOtpUrl = `${this.baseUrl}/verify-login-otp`;
-
-
-  // =========================
-  // REGISTER
-  // =========================
 
   register(model: any) {
     return this.http.post<any>(
@@ -39,11 +24,6 @@ export class Auth {
       model
     );
   }
-
-
-  // =========================
-  // LOGIN
-  // =========================
 
   login(model: any) {
     return this.http.post<any>(
@@ -53,9 +33,6 @@ export class Auth {
   }
 
 
-  // =========================
-  // REGISTRATION OTP
-  // =========================
 
   otp(model: any) {
     return this.http.post<any>(
@@ -65,9 +42,6 @@ export class Auth {
   }
 
 
-  // =========================
-  // CHALLENGE TOKEN
-  // =========================
 
   saveChallengeToken(token: string): void {
 
@@ -103,9 +77,6 @@ export class Auth {
   }
 
 
-  // =========================
-  // JWT PAYLOAD
-  // =========================
 
   private decodePayload(token: string): any {
 
@@ -142,10 +113,7 @@ export class Auth {
   }
 
 
-  // =========================
-  // CHALLENGE HEADERS
-  // =========================
-
+ 
   getChallengeHeaders(): HttpHeaders {
 
     const token =
@@ -162,9 +130,6 @@ export class Auth {
       this.decodePayload(token);
 
 
-    // =========================
-    // CHECK EXPIRATION
-    // =========================
 
     if (
       !payload.exp ||
@@ -179,9 +144,7 @@ export class Auth {
     }
 
 
-    // =========================
-    // DEBUG TOKEN INFORMATION
-    // =========================
+   
 
     console.log(
       'Challenge token information:',
@@ -212,9 +175,6 @@ export class Auth {
     );
 
 
-    // =========================
-    // BEARER HEADER
-    // =========================
 
     return new HttpHeaders({
       'Authorization': `Bearer ${token}`,
@@ -223,9 +183,6 @@ export class Auth {
   }
 
 
-  // =========================
-  // SETUP 2FA
-  // =========================
 
    setup2FA() {
     const token = this.getChallengeToken();
@@ -233,7 +190,6 @@ export class Auth {
       throw new Error('Challenge token missing.');
     }
 
-    // Force Angular to send the header by creating a fresh HttpHeaders object
     const headers = new HttpHeaders()
       .set('Authorization', 'Bearer ' + token.trim())
       .set('Content-Type', 'application/json');
@@ -247,9 +203,7 @@ export class Auth {
   }
 
 
-  // =========================
-  // VERIFY 2FA SETUP
-  // =========================
+  
 
   verify2FASetup(model: any) {
 
@@ -266,9 +220,7 @@ export class Auth {
   }
 
 
-  // =========================
-  // VERIFY LOGIN OTP
-  // =========================
+  
 
    verifyLoginOtp(model: any) {
     const token = this.getChallengeToken();
@@ -277,7 +229,6 @@ export class Auth {
       throw new Error('Challenge token missing. Please log in again.');
     }
 
-    // No decodePayload here. Just send the request.
     const headers = new HttpHeaders()
       .set('Authorization', `Bearer ${token}`)
       .set('Content-Type', 'application/json');

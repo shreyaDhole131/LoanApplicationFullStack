@@ -4,7 +4,6 @@
   min-height: 100vh;
 }
 
-
 .section-title {
   font-size: 1.6rem;
   font-weight: 700;
@@ -12,14 +11,12 @@
   margin-bottom: 0.75rem;
 }
 
-
 .customer-name {
   font-size: 1.35rem;
   font-weight: 600;
   color: #1e293b;
   margin-bottom: 1rem;
 }
-
 
 .detail-list {
   margin-bottom: 0.5rem;
@@ -42,18 +39,15 @@
   color: #0f172a;
 }
 
-
 .section-divider {
   border: 0;
   border-top: 1px solid #e2e8f0;
   margin: 1.5rem 0;
 }
 
-
 .action-block {
   margin-top: 1rem;
 }
-
 
 .btn-approve {
   display: block;
@@ -74,7 +68,6 @@
   color: #ffffff;
 }
 
-
 .btn-reject {
   background-color: #d9363e;
   border: none;
@@ -89,4 +82,25 @@
 .btn-reject:focus {
   background-color: #b52a32;
   color: #ffffff;
+}
+
+.customers-layout {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f8f9fa;
+}
+
+app-officer-sidebar {
+  width: 260px;
+  flex-shrink: 0;
+  display: block;
+}
+
+.customers-main {
+  flex-grow: 1;
+  overflow-x: auto;
+}
+
+app-officer-sidebar ::ng-deep .sidebar {
+  height: 100vh;
 }

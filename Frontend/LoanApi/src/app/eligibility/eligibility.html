@@ -1,0 +1,214 @@
+<div class="dashboard-layout">
+  <app-sidebar></app-sidebar>
+
+  <div class="eligibility-page">
+
+    <div class="page-header">
+        <div>
+            <h1>Loan Officer - Eligibility Check</h1>
+            <p>Review pending customers and make eligibility decisions.</p>
+        </div>
+
+        <button
+            class="btn btn-secondary"
+            (click)="LoadPendingCustomers()"
+            [disabled]="loadingCustomers || checking || decisionInProgress">
+            {{ loadingCustomers ? 'Loading...' : 'Refresh' }}
+        </button>
+    </div>
+
+    <div *ngIf="errorMessage" class="alert-error">
+        {{ errorMessage }}
+    </div>
+
+    <div *ngIf="successMessage" class="alert-success">
+        {{ successMessage }}
+    </div>
+
+    <div class="content-card">
+
+        <div class="card-title">
+            <h2>Eligibility Check</h2>
+        </div>
+
+        <div class="selection-area">
+            <div class="selection-field">
+                <label for="customerSelect">Select Pending Customer</label>
+
+                <select
+                    id="customerSelect"
+                    [(ngModel)]="selectedCustomerId"
+                    (ngModelChange)="OnCustomerChange()"
+                    [disabled]="loadingCustomers || customers.length === 0">
+
+                    <option [ngValue]="null">-- Select Customer --</option>
+
+                    <option
+                        *ngFor="let customer of customers"
+                        [ngValue]="customer.customerId">
+
+                        {{ customer.customerName }}
+                        (ID: {{ customer.customerId }}, CIBIL: {{ customer.cibilScore }})
+
+                    </option>
+                </select>
+            </div>
+
+            <button
+                class="btn btn-primary check-button"
+                (click)="CheckEligibility()"
+                [disabled]="selectedCustomerId == null || checking || decisionInProgress">
+
+                {{ checking ? 'Checking...' : 'Check Eligibility' }}
+
+            </button>
+        </div>
+
+        <p *ngIf="loadingCustomers" class="info-message">
+            Processing automatic decisions and loading pending customers...
+        </p>
+
+        <p
+            *ngIf="!loadingCustomers && customers.length === 0 && !errorMessage"
+            class="info-message">
+
+            No customers are currently pending for manual review.
+
+        </p>
+    </div>
+
+    <!-- Selected customer's eligibility preview or final decision -->
+    <div *ngIf="evaluation" class="content-card result-card">
+
+        <div class="card-title">
+            <h2>Eligibility Details</h2>
+        </div>
+
+        <div class="detail-grid">
+
+            <div class="detail-item">
+                <span>Customer Name</span>
+                <strong>{{ evaluation.customerName }}</strong>
+            </div>
+
+            <div class="detail-item">
+                <span>PAN Number</span>
+                <strong>{{ evaluation.panNumber }}</strong>
+            </div>
+
+            <div class="detail-item">
+                <span>Monthly Income</span>
+                <strong>
+                    {{ evaluation.monthlyIncome | currency:'INR':'symbol':'1.2-2' }}
+                </strong>
+            </div>
+
+            <div class="detail-item">
+                <span>CIBIL Score</span>
+                <strong>{{ evaluation.cibilScore }}</strong>
+            </div>
+
+            <div class="detail-item">
+                <span>Indicative Loan Amount</span>
+                <strong class="loan-amount">
+                    {{ evaluation.loanAmount | currency:'INR':'symbol':'1.0-0' }}
+                </strong>
+            </div>
+
+            <div class="detail-item">
+                <span>Application Status</span>
+                <strong>{{ evaluation.applicationStatus }}</strong>
+            </div>
+
+        </div>
+
+        <!-- Only pending applications can be approved or rejected -->
+        <div
+            *ngIf="evaluation.applicationStatus === 'Manual Review'"
+            class="decision-area">
+
+            <button
+                class="btn btn-approve"
+                (click)="ApproveEligibility()"
+                [disabled]="decisionInProgress">
+
+                {{ decisionInProgress ? 'Saving...' : 'Approve' }}
+
+            </button>
+
+            <div class="reject-area">
+
+                <label for="rejectionReason">Rejection Reason</label>
+
+                <select
+                    id="rejectionReason"
+                    [(ngModel)]="rejectionReason"
+                    [disabled]="decisionInProgress">
+
+                    <option value="Insufficient repayment capacity">
+                        Insufficient repayment capacity
+                    </option>
+
+                    <option value="Low income">
+                        Low income
+                    </option>
+
+                    <option value="Incomplete documentation">
+                        Incomplete documentation
+                    </option>
+
+                    <option value="Other">Other</option>
+
+                </select>
+
+                <input
+                    *ngIf="rejectionReason === 'Other'"
+                    type="text"
+                    [(ngModel)]="otherReason"
+                    placeholder="Enter rejection reason"
+                    [disabled]="decisionInProgress" />
+
+                <button
+                    class="btn btn-reject"
+                    (click)="RejectEligibility()"
+                    [disabled]="decisionInProgress">
+
+                    {{ decisionInProgress ? 'Saving...' : 'Reject' }}
+
+                </button>
+
+            </div>
+        </div>
+
+        <div
+            *ngIf="evaluation.applicationStatus === 'Approved'"
+            class="decision-banner approved">
+
+            Eligibility Approved
+
+        </div>
+
+        <div
+            *ngIf="evaluation.applicationStatus === 'Rejected'"
+            class="decision-banner rejected">
+
+            Eligibility Rejected
+
+            <p *ngIf="evaluation.rejectionReason">
+                Reason: {{ evaluation.rejectionReason }}
+            </p>
+
+        </div>
+
+        <button
+            class="btn btn-secondary"
+            (click)="ResetEvaluation()"
+            [disabled]="decisionInProgress">
+
+            Back to Eligibility Check
+
+        </button>
+
+    </div>
+  </div>
+</div>

@@ -1,11 +1,9 @@
 <div class="layout">
 
-  <!-- EXISTING CUSTOMER SIDEBAR -->
   <app-sidebar></app-sidebar>
 
   <div class="content">
 
-    <!-- HEADER -->
     <div class="page-header">
 
       <div>
@@ -23,28 +21,17 @@
 
     </div>
 
-
-    <!-- LOADING -->
     <div class="loading" *ngIf="loading">
       Loading dashboard...
     </div>
 
-
-    <!-- ERROR -->
     <div class="error" *ngIf="errorMessage">
       {{ errorMessage }}
     </div>
 
-
-    <!-- DASHBOARD -->
     <div
       class="dashboard-container"
       *ngIf="data && !loading">
-
-
-      <!-- ==========================================
-           TOP 4 SUMMARY CARDS
-      =========================================== -->
 
       <div class="summary-grid">
 
@@ -64,7 +51,6 @@
 
         </div>
 
-
         <div class="summary-card">
 
           <div class="summary-icon green">
@@ -81,7 +67,6 @@
 
         </div>
 
-
         <div class="summary-card">
 
           <div class="summary-icon orange">
@@ -97,7 +82,6 @@
           </div>
 
         </div>
-
 
         <div class="summary-card">
 
@@ -117,17 +101,7 @@
 
       </div>
 
-
-
-      <!-- ==========================================
-           ROW 2
-           PROGRESS + ACTIVE LOAN
-      =========================================== -->
-
       <div class="top-two-grid">
-
-
-        <!-- LOAN APPLICATION PROGRESS -->
 
         <div class="dashboard-card progress-card">
 
@@ -144,7 +118,6 @@
 
           </div>
 
-
           <div class="progress-bar">
 
             <div
@@ -153,7 +126,6 @@
             </div>
 
           </div>
-
 
           <div class="progress-steps">
 
@@ -169,7 +141,6 @@
 
             </div>
 
-
             <div
               class="progress-step"
               [class.completed]="isStepCompleted('approved')">
@@ -182,7 +153,6 @@
 
             </div>
 
-
             <div
               class="progress-step"
               [class.completed]="isStepCompleted('disbursed')">
@@ -194,7 +164,6 @@
               <span>Disbursed</span>
 
             </div>
-
 
             <div
               class="progress-step"
@@ -212,10 +181,6 @@
 
         </div>
 
-
-
-        <!-- ACTIVE LOAN OVERVIEW -->
-
         <div class="dashboard-card loan-card">
 
           <div class="card-header">
@@ -231,7 +196,6 @@
 
           </div>
 
-
           <div
             class="loan-account"
             *ngIf="data.selectedLoanDetails">
@@ -243,7 +207,6 @@
             </strong>
 
           </div>
-
 
           <div
             class="loan-details"
@@ -294,7 +257,6 @@
 
           </div>
 
-
           <div
             class="empty-data"
             *ngIf="!data.selectedLoanDetails">
@@ -307,28 +269,9 @@
 
       </div>
 
-
-
-      <!-- ==========================================
-           BOTTOM AREA
-           
-           LEFT:
-           EMI SUMMARY
-           RECENT PAYMENTS
-
-           RIGHT:
-           KYC DOCUMENTS
-      =========================================== -->
-
       <div class="bottom-layout">
 
-
-        <!-- LEFT COLUMN -->
-
         <div class="left-column">
-
-
-          <!-- EMI SUMMARY -->
 
           <div class="dashboard-card emi-card">
 
@@ -341,11 +284,7 @@
 
             </div>
 
-
             <div class="emi-content">
-
-
-              <!-- DONUT -->
 
               <div
                 class="donut"
@@ -367,9 +306,6 @@
 
               </div>
 
-
-              <!-- EMI STATS -->
-
               <div class="emi-stats">
 
                 <div class="emi-stat">
@@ -388,7 +324,6 @@
 
                 </div>
 
-
                 <div class="emi-stat">
 
                   <span class="dot remaining-dot"></span>
@@ -404,7 +339,6 @@
                   </div>
 
                 </div>
-
 
                 <div class="emi-stat">
 
@@ -426,9 +360,6 @@
 
             </div>
 
-
-            <!-- NEXT EMI -->
-
             <div class="next-emi">
 
               <div>
@@ -444,7 +375,6 @@
                 </strong>
 
               </div>
-
 
               <div>
 
@@ -464,10 +394,6 @@
 
           </div>
 
-
-
-          <!-- RECENT PAYMENTS -->
-
           <div class="dashboard-card payments-card">
 
             <div class="card-header">
@@ -479,11 +405,9 @@
 
             </div>
 
-
             <div
               class="payment-list"
               *ngIf="data.recentPayments?.length">
-
 
               <div
                 class="payment-row"
@@ -503,7 +427,6 @@
 
                 </div>
 
-
                 <div>
 
                   <strong>
@@ -520,7 +443,6 @@
 
             </div>
 
-
             <div
               class="empty-data"
               *ngIf="!data.recentPayments?.length">
@@ -532,10 +454,6 @@
           </div>
 
         </div>
-
-
-
-        <!-- RIGHT COLUMN -->
 
         <div class="dashboard-card kyc-card">
 
@@ -551,7 +469,6 @@
             </span>
 
           </div>
-
 
           <div class="kyc-list">
 
@@ -573,7 +490,6 @@
 
               </div>
 
-
               <span
                 class="kyc-status"
                 [ngClass]="
@@ -587,7 +503,6 @@
               </span>
 
             </div>
-
 
             <div
               class="empty-data"

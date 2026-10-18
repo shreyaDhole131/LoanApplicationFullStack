@@ -1,52 +1,65 @@
-<div class="container mt-4">
+<div class="customers-layout">
 
-  <h3 class="mb-3">Score Card Report</h3>
+  <app-officer-sidebar></app-officer-sidebar>
 
-  <div class="row g-3 align-items-end mb-3">
+  <div class="customers-main">
 
-    <div class="col-md-3">
-      <label class="form-label">From Date</label>
-      <input type="date" class="form-control" [(ngModel)]="fromDate" name="fromDate" (ngModelChange)="applyfilters()">
+
+    <div class="container mt-4">
+
+      <h3 class="mb-3">Score Card Report</h3>
+
+      <div class="row g-3 align-items-end mb-3">
+
+        <div class="col-md-3">
+          <label class="form-label">From Date</label>
+          <input type="date" class="form-control" [(ngModel)]="fromDate" name="fromDate"
+            (ngModelChange)="applyfilters()">
+        </div>
+
+        <div class="col-md-3">
+          <label class="form-label">To Date</label>
+          <input type="date" class="form-control" [(ngModel)]="toDate" name="toDate" (ngModelChange)="applyfilters()">
+        </div>
+
+        <div class="col-md-2">
+          <button class="btn btn-primary w-100" (click)="applyfilters()">Search</button>
+        </div>
+
+        <div class="col-md-2">
+          <button class="btn btn-outline-secondary w-100" (click)="resetFilters()">Reset</button>
+        </div>
+
+      </div>
+
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped align-middle mb-0">
+          <thead class="table-light">
+            <tr>
+              <th scope="col">Score Card</th>
+              <th scope="col">Applicants</th>
+              <th scope="col">Approved</th>
+              <th scope="col">Rejected</th>
+              <th scope="col">Pending</th>
+              <th scope="col">Approval %</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let e of scoreReport">
+              <td>{{ e.scoreCard }}</td>
+              <td>{{ e.applicants }}</td>
+              <td>{{ e.approved }}</td>
+              <td>{{ e.rejected }}</td>
+              <td>{{ e.pending }}</td>
+              <td>{{ e.approval }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
     </div>
 
-    <div class="col-md-3">
-      <label class="form-label">To Date</label>
-      <input type="date" class="form-control" [(ngModel)]="toDate" name="toDate" (ngModelChange)="applyfilters()">
-    </div>
 
-    <div class="col-md-2">
-      <button class="btn btn-primary w-100" (click)="applyfilters()">Search</button>
-    </div>
-
-    <div class="col-md-2">
-      <button class="btn btn-outline-secondary w-100" (click)="resetFilters()">Reset</button>
-    </div>
 
   </div>
-
-  <div class="table-responsive">
-    <table class="table table-bordered table-striped align-middle mb-0">
-      <thead class="table-light">
-        <tr>
-          <th scope="col">Score Card</th>
-          <th scope="col">Applicants</th>
-          <th scope="col">Approved</th>
-          <th scope="col">Rejected</th>
-          <th scope="col">Pending</th>
-          <th scope="col">Approval %</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let e of scoreReport">
-          <td>{{ e.scoreCard }}</td>
-          <td>{{ e.applicants }}</td>
-          <td>{{ e.approved }}</td>
-          <td>{{ e.rejected }}</td>
-          <td>{{ e.pending }}</td>
-          <td>{{ e.approval }}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
 </div>

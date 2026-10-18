@@ -1,0 +1,82 @@
+<div class="dashboard-layout">
+  <app-sidebar></app-sidebar>
+
+  <div class="cibil-page">
+    <section class="cibil-card">
+
+      <div class="card-heading">
+        <h1>
+          <span class="chart-icon">⌁</span>
+          CIBIL Score
+        </h1>
+        <button
+          class="check-button"
+          (click)="GenerateCibil()"
+          [disabled]="generating || loading">
+          {{ generating ? 'Checking...' : 'Check Score' }}
+        </button>
+      </div>
+
+      <div class="loading-message" *ngIf="loading">
+        Loading your CIBIL report...
+      </div>
+
+      <div class="profile-grid" *ngIf="customer">
+        <div class="profile-box">
+          <div class="profile-label">Name</div>
+          <div class="profile-value">{{ customer.customerName }}</div>
+        </div>
+        <div class="profile-box">
+          <div class="profile-label">PAN Number</div>
+          <div class="profile-value">{{ customer.panNo }}</div>
+        </div>
+      </div>
+
+      <div class="empty-message" *ngIf="!loading && !customer && !errorMessage">
+        Your CIBIL report has not been generated yet.
+        Click <strong>Check Score</strong> to generate your report.
+      </div>
+
+      <div class="alert error-alert" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </div>
+
+      <div class="alert success-alert" *ngIf="successMessage">
+        {{ successMessage }}
+      </div>
+
+      <div class="score-section" *ngIf="showScore && result">
+        <div class="gauge">
+          <div class="gauge-arc"></div>
+          <div class="gauge-inner"></div>
+          <div
+            class="gauge-needle"
+            [style.transform]="'rotate(' + getNeedleAngle() + 'deg)'">
+          </div>
+          <div class="gauge-dot"></div>
+        </div>
+
+        <div class="gauge-labels">
+          <span>500</span>
+          <span>700</span>
+          <span>900</span>
+        </div>
+
+        <div class="score-number">
+          {{ result.cibilScore }}
+        </div>
+
+        <div class="score-status" [ngClass]="getStatusClass()">
+          {{ result.scoreStatus }}
+        </div>
+
+        <div class="last-checked">
+          <div>Last Checked Date</div>
+          <strong>{{ result.checkDate | date:'dd MMM yyyy' }}</strong>
+          <span>{{ result.checkDate | date:'hh.mm a' }}</span>
+        </div>
+      </div>
+
+    </section>
+  </div>
+</div>

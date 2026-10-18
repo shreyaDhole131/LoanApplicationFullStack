@@ -1,0 +1,22 @@
+
+.dashboard-layout {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f4f6fb;
+}
+
+app-officer-sidebar {
+  width: 260px;
+  min-width: 260px;
+  flex-shrink: 0;
+  display: block;
+}
+
+.closure-main {
+  flex-grow: 1;
+  width: 100%;
+  min-width: 0;
+  padding: 20px;
+  box-sizing: border-box;
+  overflow-x: auto;
+}

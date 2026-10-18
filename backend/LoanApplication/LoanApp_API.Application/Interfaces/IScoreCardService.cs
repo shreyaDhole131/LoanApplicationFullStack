@@ -1,6 +1,4 @@
-﻿
-using LoanApp_API.Application.DTO.ScoreCard;
-using LoanApp_API.Domain.Entities;
+﻿using LoanApp_API.Application.DTO.ScoreCard;
 
 namespace LoanApp_API.Application.Interfaces
 {
@@ -8,10 +6,6 @@ namespace LoanApp_API.Application.Interfaces
     {
         Task<List<ScoreCardCustomerDto>> GetCustomersAsync();
 
-        Task<ScoreCard?> GenerateScoreCardAsync(int customerId);
-
-        Task<ScoreCard?> GetScoreCardAsync(int customerId);
-
-        Task<List<ScoreCard>> GetAllScoreCardsAsync();
+        Task<ScoreCardDto?> GenerateScoreCardAsync(int customerId);
     }
 }
