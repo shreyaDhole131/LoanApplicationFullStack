@@ -1,5 +1,4 @@
-﻿
-using LoanApp_API.Application.DTO.Cibil;
+﻿using LoanApp_API.Application.DTO.Cibil;
 using LoanApp_API.Application.Interfaces;
 using LoanApp_API.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
@@ -20,7 +19,8 @@ namespace LoanApp_API.Infrastructure.Repositories
         }
 
         // Generate CIBIL demo score using the specified scoring rules
-        public async Task<CibilScoreResponseDto?> GenerateScoreAsync(int customerId)
+        public async Task<CibilScoreResponseDto?> GenerateScoreAsync(
+            int customerId)
         {
             var customer = await context.Customers
                 .FirstOrDefaultAsync(c => c.CustomerId == customerId);
@@ -28,13 +28,16 @@ namespace LoanApp_API.Infrastructure.Repositories
             if (customer == null)
                 return null;
 
-            if (!decimal.TryParse(customer.MonthlyIncome, out decimal income)
+            if (!decimal.TryParse(
+                    customer.MonthlyIncome,
+                    out decimal income)
                 || income <= 0)
+            {
                 throw new InvalidOperationException(
                     "Valid monthly income is required to calculate the score.");
+            }
 
-            // Start at zero because the specified rules define
-            // points for each factor but no additional base score.
+            // Start at zero because the rules define points for each factor.
             int score = 0;
 
             // 1. Income score
@@ -47,24 +50,33 @@ namespace LoanApp_API.Infrastructure.Repositories
             else
                 score += 400;
 
-            if (customer.EmploymentType == "Government")
             // 2. Employment score
+            string employmentType =
+                customer.EmploymentType?.Trim() ?? string.Empty;
+
             if (string.Equals(
-                customer.EmploymentType?.Trim(),
+                employmentType,
                 "Government",
                 StringComparison.OrdinalIgnoreCase))
             {
                 score += 200;
             }
-            else if (string.Equals(
-                customer.EmploymentType?.Trim(),
-                "Private",
-                StringComparison.OrdinalIgnoreCase))
+            else if (
+                string.Equals(
+                    employmentType,
+                    "Private",
+                    StringComparison.OrdinalIgnoreCase)
+                ||
+                string.Equals(
+                    employmentType,
+                    "Salaried",
+                    StringComparison.OrdinalIgnoreCase))
             {
+                // Treat Salaried as Private employment.
                 score += 150;
             }
             else if (string.Equals(
-                customer.EmploymentType?.Trim(),
+                employmentType,
                 "Self-employed",
                 StringComparison.OrdinalIgnoreCase))
             {
@@ -79,11 +91,8 @@ namespace LoanApp_API.Infrastructure.Repositories
             else if (customer.Age >= 46 && customer.Age <= 60)
                 score += 100;
 
-            var loans = await context.LoanAccounts
-                .Where(l => l.CustomerId == customerId &&
-                            l.LoanStatus != "Closed")
-            // 4. Calculate FOIR from existing fixed monthly obligations
-            // LoanAccounts stores the monthly EMI for each loan account.
+            // 4. Calculate existing fixed monthly obligations.
+            // Each LoanAccount is counted once.
             var loanAccounts = await context.LoanAccounts
                 .AsNoTracking()
                 .Where(l => l.CustomerId == customerId)
@@ -95,8 +104,6 @@ namespace LoanApp_API.Infrastructure.Repositories
                 .ToListAsync();
 
             // Exclude closed loans and invalid/non-positive EMI values.
-            // Each loan account is counted once to avoid double counting
-            // its EMI schedule or loan deal.
             decimal totalFixedMonthlyObligations = loanAccounts
                 .Where(l => !string.Equals(
                     l.LoanStatus?.Trim(),
@@ -105,21 +112,15 @@ namespace LoanApp_API.Infrastructure.Repositories
                 .Where(l => l.EmiAmount > 0)
                 .Sum(l => l.EmiAmount);
 
-            // MonthlyIncome is the gross monthly income available
-            // in the Customers table.
+            // 5. Calculate FOIR.
             decimal grossMonthlyIncome = income;
 
             decimal foir =
-                totalFixedMonthlyObligations / grossMonthlyIncome * 100m;
+                totalFixedMonthlyObligations
+                / grossMonthlyIncome * 100m;
 
-            // 5. Apply the maximum 40% FOIR rule to FOIR scoring.
-            // Customers exceeding 40% receive no FOIR points.
-            // All other scoring components remain unchanged.
+            // Customers exceeding 40% FOIR receive no FOIR points.
             const decimal maxFoirPercent = 40m;
-
-            score = Math.Clamp(score, 300, 900);
-
-            string status = GetScoreStatus(score);
 
             bool isWithinFoirLimit = foir <= maxFoirPercent;
 
@@ -131,13 +132,13 @@ namespace LoanApp_API.Infrastructure.Repositories
                     score += 150;
             }
 
-            // Keep the score within the 300-900 range
+            // Keep the score within the 300-900 range.
             score = Math.Clamp(score, 300, 900);
 
-            // Determine the score status
+            // Determine the score status after all points are applied.
             string status = GetScoreStatus(score);
 
-            // Find existing CIBIL report
+            // 6. Find or create the customer's CIBIL report.
             var report = await context.CibilReports
                 .FirstOrDefaultAsync(r => r.CustomerId == customerId);
 
@@ -151,18 +152,19 @@ namespace LoanApp_API.Infrastructure.Repositories
                 context.CibilReports.Add(report);
             }
 
-            // Save the generated score
+            // 7. Save the generated score.
             report.PanNo = customer.Pan;
             report.CibilScore = score;
             report.CheckDate = DateTime.Now;
 
             await context.SaveChangesAsync();
 
-            // Return DTO with masked PAN
+            // Return DTO with masked PAN.
             return new CibilScoreResponseDto
             {
                 CustomerId = customer.CustomerId,
-                CustomerName = customer.FirstName + " " + customer.LastName,
+                CustomerName =
+                    customer.FirstName + " " + customer.LastName,
                 PanNo = MaskPan(report.PanNo),
                 CibilScore = report.CibilScore,
                 ScoreStatus = status,
@@ -170,8 +172,9 @@ namespace LoanApp_API.Infrastructure.Repositories
             };
         }
 
-        // Get saved CIBIL report by customer ID
-        public async Task<CibilScoreResponseDto?> GetCibilReportAsync(int customerId)
+        // Get saved CIBIL report by customer ID.
+        public async Task<CibilScoreResponseDto?> GetCibilReportAsync(
+            int customerId)
         {
             var report = await context.CibilReports
                 .AsNoTracking()
@@ -194,8 +197,9 @@ namespace LoanApp_API.Infrastructure.Repositories
             };
         }
 
-        // Get all saved CIBIL reports
-        public async Task<List<CibilScoreResponseDto>> GetAllCibilReportsAsync()
+        // Get all saved CIBIL reports.
+        public async Task<List<CibilScoreResponseDto>>
+            GetAllCibilReportsAsync()
         {
             var reports = await context.CibilReports
                 .AsNoTracking()
@@ -215,7 +219,7 @@ namespace LoanApp_API.Infrastructure.Repositories
             }).ToList();
         }
 
-        // Get customers for the Angular frontend
+        // Get customers for the Angular frontend.
         public async Task<List<CibilCustomerDto>> GetCustomersAsync()
         {
             return await context.Customers
@@ -238,7 +242,7 @@ namespace LoanApp_API.Infrastructure.Repositories
                 .ToListAsync();
         }
 
-        // Score status based on the specified ranges
+        // Score status based on the specified ranges.
         private string GetScoreStatus(int score)
         {
             if (score >= 900)
@@ -255,7 +259,7 @@ namespace LoanApp_API.Infrastructure.Repositories
                 return "Reject";
         }
 
-        // Mask PAN before returning it to the frontend
+        // Mask PAN before returning it to the frontend.
         private string MaskPan(string? pan)
         {
             if (string.IsNullOrWhiteSpace(pan))

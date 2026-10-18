@@ -1,40 +1,42 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { inject, Service } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 
-@Service()
+@Injectable({
+  providedIn: 'root'
+})
 export class CibilService {
 
-    http = inject(HttpClient);
+  private http = inject(HttpClient);
 
-    url = "http://localhost:5095/api/Cibil/GenerateMyCibil";
+  // Backend HTTPS URL
+  private baseUrl = 'https://localhost:7277/api/Cibil';
 
-    GenerateMyCibil()
-    {
-        return this.http.post<any>(
-            this.url,
-            null,
-            { headers: this.getHeaders() }
-        );
-    }
+  // Generate CIBIL score
+  GenerateMyCibil() {
+    return this.http.post<any>(
+      `${this.baseUrl}/GenerateMyCibil`,
+      null,
+      { headers: this.getHeaders() }
+    );
+  }
 
-    url2 = "http://localhost:5095/api/Cibil/MyCibil";
+  // Get logged-in customer's CIBIL report
+  GetMyCibil() {
+    return this.http.get<any>(
+      `${this.baseUrl}/MyCibil`,
+      { headers: this.getHeaders() }
+    );
+  }
 
-    GetMyCibil()
-    {
-        return this.http.get<any>(
-            this.url2,
-            { headers: this.getHeaders() }
-        );
-    }
+  // Attach JWT token
+  private getHeaders(): HttpHeaders {
+    const token =
+      typeof localStorage !== 'undefined'
+        ? localStorage.getItem('token')
+        : null;
 
-    getHeaders()
-    {
-        const token = typeof localStorage !== 'undefined'
-            ? localStorage.getItem('token')
-            : null;
-
-        return new HttpHeaders({
-            Authorization: token ? `Bearer ${token}` : ''
-        });
-    }
+    return new HttpHeaders({
+      ...(token ? { Authorization: `Bearer ${token}` } : {})
+    });
+  }
 }

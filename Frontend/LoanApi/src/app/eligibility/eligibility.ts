@@ -9,7 +9,7 @@ import {
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { EligibilityService } from '../services/eligibility';
-import { Sidebar } from '../customer/sidebar/sidebar';
+import { Sidebar } from '../officer/sidebar/sidebar';
 
 @Component({
     selector: 'app-eligibility',
